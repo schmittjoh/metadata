@@ -25,11 +25,11 @@ namespace Metadata;
  */
 class ClassHierarchyMetadata
 {
-    private $classMetadata = array();
+    public $classMetadata = array();
 
     public function addClassMetadata(ClassMetadata $metadata)
     {
-        $this->classMetadata[] = $metadata;
+        $this->classMetadata[$metadata->name] = $metadata;
     }
 
     public function getRootClassMetadata()
@@ -40,11 +40,6 @@ class ClassHierarchyMetadata
     public function getOutsideClassMetadata()
     {
         return end($this->classMetadata);
-    }
-
-    public function getClassMetadata()
-    {
-        return $this->classMetadata;
     }
 
     public function getLastModified()

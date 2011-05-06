@@ -10,8 +10,8 @@ class ClassMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject');
 
-        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->getName());
-        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->getReflection()->getName());
+        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->name);
+        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->reflection->getName());
     }
 
     public function testSerializeUnserialize()

@@ -28,10 +28,10 @@ namespace Metadata;
  */
 class ClassMetadata implements \Serializable
 {
-    private $name;
-    private $reflection;
-    private $methodMetadata = array();
-    private $propertyMetadata = array();
+    public $name;
+    public $reflection;
+    public $methodMetadata = array();
+    public $propertyMetadata = array();
 
     public function __construct($name)
     {
@@ -42,42 +42,12 @@ class ClassMetadata implements \Serializable
 
     public function addMethodMetadata(MethodMetadata $metadata)
     {
-        $this->methodMetadata[$metadata->getName()] = $metadata;
+        $this->methodMetadata[$metadata->name] = $metadata;
     }
 
     public function addPropertyMetadata(PropertyMetadata $metadata)
     {
-        $this->propertyMetadata[$metadata->getName()] = $metadata;
-    }
-
-    public function hasMethodMetadata($name)
-    {
-        return isset($this->methodMetadata[$name]);
-    }
-
-    public function hasPropertyMetadata($name)
-    {
-        return isset($this->propertyMetadata[$name]);
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getReflection()
-    {
-        return $this->reflection;
-    }
-
-    public function getMethodMetadata()
-    {
-        return $this->methodMetadata;
-    }
-
-    public function getPropertyMetadata()
-    {
-        return $this->propertyMetadata;
+        $this->propertyMetadata[$metadata->name] = $metadata;
     }
 
     public function getLastModified()

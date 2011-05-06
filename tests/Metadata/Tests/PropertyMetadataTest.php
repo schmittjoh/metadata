@@ -12,9 +12,9 @@ class PropertyMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $metadata = new PropertyMetadata('Metadata\Tests\Fixtures\TestObject', 'foo');
 
-        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->getClass());
-        $this->assertEquals('foo', $metadata->getName());
-        $this->assertEquals(new \ReflectionProperty('Metadata\Tests\Fixtures\TestObject', 'foo'), $metadata->getReflection());
+        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->class);
+        $this->assertEquals('foo', $metadata->name);
+        $this->assertEquals(new \ReflectionProperty('Metadata\Tests\Fixtures\TestObject', 'foo'), $metadata->reflection);
     }
 
     public function testSerializeUnserialize()

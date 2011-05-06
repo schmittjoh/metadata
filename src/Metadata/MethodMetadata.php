@@ -28,9 +28,9 @@ namespace Metadata;
  */
 class MethodMetadata implements \Serializable
 {
-    private $class;
-    private $name;
-    private $reflection;
+    public $class;
+    public $name;
+    public $reflection;
 
     public function __construct($class, $name)
     {
@@ -39,21 +39,6 @@ class MethodMetadata implements \Serializable
 
         $this->reflection = new \ReflectionMethod($class, $name);
         $this->reflection->setAccessible(true);
-    }
-
-    public function getClass()
-    {
-        return $this->class;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getReflection()
-    {
-        return $this->reflection;
     }
 
     public function invoke($obj, array $args = array())

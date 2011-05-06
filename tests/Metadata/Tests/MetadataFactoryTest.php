@@ -16,7 +16,7 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('loadMetadataForClass')
             ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
             ->will($this->returnCallback(function($class) {
-                return new ClassMetadata($class);
+                return new ClassMetadata($class->getName());
             }))
         ;
         $driver
@@ -24,7 +24,7 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('loadMetadataForClass')
             ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestParent')))
             ->will($this->returnCallback(function($class) {
-                return new ClassMetadata($class);
+                return new ClassMetadata($class->getName());
             }))
         ;
 
@@ -32,6 +32,6 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
         $metadata = $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestParent');
 
         $this->assertInstanceOf('Metadata\ClassHierarchyMetadata', $metadata);
-        $this->assertEquals(2, count($metadata->getClassMetadata()));
+        $this->assertEquals(2, count($metadata->classMetadata));
     }
 }
