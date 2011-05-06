@@ -19,11 +19,11 @@
 namespace Metadata;
 
 /**
- * Wrapper around the metadata for the entire class hierarchy.
+ * Represents the metadata for the entire class hierarchy.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-final class ClassHierarchyMetadata
+class ClassHierarchyMetadata
 {
     private $classMetadata = array();
 

@@ -50,6 +50,16 @@ class ClassMetadata implements \Serializable
         $this->propertyMetadata[$metadata->getName()] = $metadata;
     }
 
+    public function hasMethodMetadata($name)
+    {
+        return isset($this->methodMetadata[$name]);
+    }
+
+    public function hasPropertyMetadata($name)
+    {
+        return isset($this->propertyMetadata[$name]);
+    }
+
     public function getName()
     {
         return $this->name;

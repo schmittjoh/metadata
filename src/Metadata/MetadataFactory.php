@@ -25,10 +25,12 @@ final class MetadataFactory implements MetadataFactoryInterface
     private $driver;
     private $loadedMetadata = array();
     private $loadedClassMetadata = array();
+    private $hierarchyMetadataClass;
 
-    public function __construct(DriverInterface $driver)
+    public function __construct(DriverInterface $driver, $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata')
     {
         $this->driver = $driver;
+        $this->hierarchyMetadataClass = $hierarchyMetadataClass;
     }
 
     public function getMetadataForClass($className)
@@ -37,7 +39,7 @@ final class MetadataFactory implements MetadataFactoryInterface
             return $this->loadedMetadata[$className];
         }
 
-        $metadata = new ClassHierarchyMetadata();
+        $metadata = new $this->hierarchyMetadataClass;
         foreach ($this->getClassHierarchy($className) as $class) {
             if (!isset($this->loadedClassMetadata[$name = $class->getName()])) {
                 if (null === $classMetadata = $this->driver->loadMetadataForClass($class)) {
