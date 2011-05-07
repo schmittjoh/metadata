@@ -18,19 +18,29 @@
 
 namespace Metadata;
 
+use Metadata\Cache\CacheInterface;
+
 use Metadata\Driver\DriverInterface;
 
 final class MetadataFactory implements MetadataFactoryInterface
 {
     private $driver;
+    private $cache;
     private $loadedMetadata = array();
     private $loadedClassMetadata = array();
     private $hierarchyMetadataClass;
+    private $debug;
 
-    public function __construct(DriverInterface $driver, $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata')
+    public function __construct(DriverInterface $driver, $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', $debug = false)
     {
         $this->driver = $driver;
         $this->hierarchyMetadataClass = $hierarchyMetadataClass;
+        $this->debug = $debug;
+    }
+
+    public function setCache(CacheInterface $cache)
+    {
+        $this->cache = $cache;
     }
 
     public function getMetadataForClass($className)
@@ -41,15 +51,31 @@ final class MetadataFactory implements MetadataFactoryInterface
 
         $metadata = new $this->hierarchyMetadataClass;
         foreach ($this->getClassHierarchy($className) as $class) {
-            if (!isset($this->loadedClassMetadata[$name = $class->getName()])) {
-                if (null === $classMetadata = $this->driver->loadMetadataForClass($class)) {
-                    continue;
-                }
-
-                $this->loadedClassMetadata[$name] = $classMetadata;
+            if (isset($this->loadedClassMetadata[$name = $class->getName()])) {
+                $metadata->addClassMetadata($this->loadedClassMetadata[$name]);
+                continue;
             }
 
-            $metadata->addClassMetadata($this->loadedClassMetadata[$name]);
+            // check the cache
+            if (null !== $this->cache
+                && (null !== $classMetadata = $this->cache->loadClassMetadataFromCache($class))
+                && (!$this->debug || $classMetadata->isFresh())) {
+                $this->loadedClassMetadata[$name] = $classMetadata;
+                $metadata->addClassMetadata($classMetadata);
+                continue;
+            }
+
+            // load from source
+            if (null !== $classMetadata = $this->driver->loadMetadataForClass($class)) {
+                $this->loadedClassMetadata[$name] = $classMetadata;
+                $metadata->addClassMetadata($classMetadata);
+
+                if (null !== $this->cache) {
+                    $this->cache->putClassMetadataInCache($classMetadata);
+                }
+
+                continue;
+            }
         }
 
         if (!$metadata->classMetadata) {

@@ -42,15 +42,14 @@ class ClassHierarchyMetadata
         return end($this->classMetadata);
     }
 
-    public function getLastModified()
+    public function isFresh($timestamp)
     {
-        $time = 0;
         foreach ($this->classMetadata as $metadata) {
-            if ($time < $mtime = $metadata->getLastModified()) {
-                $time = $mtime;
+            if (!$metadata->isFresh($timestamp)) {
+                return false;
             }
         }
 
-        return $time;
+        return true;
     }
 }

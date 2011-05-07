@@ -32,12 +32,15 @@ class ClassMetadata implements \Serializable
     public $reflection;
     public $methodMetadata = array();
     public $propertyMetadata = array();
+    public $fileResources = array();
+    public $createdAt;
 
     public function __construct($name)
     {
         $this->name = $name;
 
         $this->reflection = new \ReflectionClass($name);
+        $this->createdAt = time();
     }
 
     public function addMethodMetadata(MethodMetadata $metadata)
@@ -50,13 +53,23 @@ class ClassMetadata implements \Serializable
         $this->propertyMetadata[$metadata->name] = $metadata;
     }
 
-    public function getLastModified()
+    public function isFresh($timestamp = null)
     {
-        if (false === $filename = $this->reflection->getFileName()) {
-            return 0;
+        if (null === $timestamp) {
+            $timestamp = $this->createdAt;
         }
 
-        return filemtime($filename);
+        foreach ($this->fileResources as $filepath) {
+            if (!file_exists($filepath)) {
+                return false;
+            }
+
+            if ($timestamp < filemtime($filepath)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function serialize()
@@ -64,7 +77,9 @@ class ClassMetadata implements \Serializable
         return serialize(array(
             $this->name,
             $this->methodMetadata,
-            $this->propertyMetadata
+            $this->propertyMetadata,
+            $this->fileResources,
+            $this->createdAt,
         ));
     }
 
@@ -73,7 +88,9 @@ class ClassMetadata implements \Serializable
         list(
             $this->name,
             $this->methodMetadata,
-            $this->propertyMetadata
+            $this->propertyMetadata,
+            $this->fileResources,
+            $this->createdAt
         ) = unserialize($str);
 
         $this->reflection = new \ReflectionClass($this->name);
