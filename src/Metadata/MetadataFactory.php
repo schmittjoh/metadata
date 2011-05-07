@@ -58,11 +58,14 @@ final class MetadataFactory implements MetadataFactoryInterface
 
             // check the cache
             if (null !== $this->cache
-                && (null !== $classMetadata = $this->cache->loadClassMetadataFromCache($class))
-                && (!$this->debug || $classMetadata->isFresh())) {
-                $this->loadedClassMetadata[$name] = $classMetadata;
-                $metadata->addClassMetadata($classMetadata);
-                continue;
+                && (null !== $classMetadata = $this->cache->loadClassMetadataFromCache($class))) {
+                if ($this->debug && !$classMetadata->isFresh()) {
+                    $this->cache->evictClassMetadataFromCache($classMetadata->reflection);
+                } else {
+                    $this->loadedClassMetadata[$name] = $classMetadata;
+                    $metadata->addClassMetadata($classMetadata);
+                    continue;
+                }
             }
 
             // load from source
