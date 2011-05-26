@@ -82,7 +82,7 @@ final class MetadataFactory implements MetadataFactoryInterface
         }
 
         if (!$metadata->classMetadata) {
-            throw new \RuntimeException(sprintf('There is no metadata for class "%s".', $className));
+            return null;
         }
 
         return $this->loadedMetadata[$className] = $metadata;

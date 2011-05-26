@@ -62,4 +62,18 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($metadata, reset($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject')->classMetadata));
     }
+
+    public function testGetMetadataReturnsNullIfNoMetadataIsFound()
+    {
+        $driver = $this->getMock('Metadata\Driver\DriverInterface');
+        $driver
+            ->expects($this->once())
+            ->method('loadMetadataForClass')
+            ->will($this->returnValue(null))
+        ;
+
+        $factory = new MetadataFactory($driver);
+
+        $this->assertNull($factory->getMetadataForClass('stdClass'));
+    }
 }
