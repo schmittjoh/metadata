@@ -20,4 +20,20 @@ class ClassMetadataTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($metadata, unserialize(serialize($metadata)));
     }
+
+    public function testIsFresh()
+    {
+        $ref = new \ReflectionClass('Metadata\Tests\Fixtures\TestObject');
+        touch($ref->getFilename());
+        sleep(2);
+
+        $metadata = new ClassMetadata($ref->getName());
+        $metadata->fileResources[] = $ref->getFilename();
+        $this->assertTrue($metadata->isFresh());
+
+        sleep(2);
+        clearstatcache($ref->getFilename());
+        touch($ref->getFilename());
+        $this->assertFalse($metadata->isFresh());
+    }
 }
