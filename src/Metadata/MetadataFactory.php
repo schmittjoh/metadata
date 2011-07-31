@@ -49,10 +49,10 @@ final class MetadataFactory implements MetadataFactoryInterface
             return $this->loadedMetadata[$className];
         }
 
-        $metadata = new $this->hierarchyMetadataClass;
+        $metadata = null;
         foreach ($this->getClassHierarchy($className) as $class) {
             if (isset($this->loadedClassMetadata[$name = $class->getName()])) {
-                $metadata->addClassMetadata($this->loadedClassMetadata[$name]);
+                $this->addClassMetadata($metadata, $this->loadedClassMetadata[$name]);
                 continue;
             }
 
@@ -63,7 +63,7 @@ final class MetadataFactory implements MetadataFactoryInterface
                     $this->cache->evictClassMetadataFromCache($classMetadata->reflection);
                 } else {
                     $this->loadedClassMetadata[$name] = $classMetadata;
-                    $metadata->addClassMetadata($classMetadata);
+                    $this->addClassMetadata($metadata, $classMetadata);
                     continue;
                 }
             }
@@ -71,7 +71,7 @@ final class MetadataFactory implements MetadataFactoryInterface
             // load from source
             if (null !== $classMetadata = $this->driver->loadMetadataForClass($class)) {
                 $this->loadedClassMetadata[$name] = $classMetadata;
-                $metadata->addClassMetadata($classMetadata);
+                $this->addClassMetadata($metadata, $classMetadata);
 
                 if (null !== $this->cache) {
                     $this->cache->putClassMetadataInCache($classMetadata);
@@ -81,11 +81,24 @@ final class MetadataFactory implements MetadataFactoryInterface
             }
         }
 
-        if (!$metadata->classMetadata) {
-            return null;
-        }
-
         return $this->loadedMetadata[$className] = $metadata;
+    }
+
+    private function addClassMetadata(&$metadata, $toAdd)
+    {
+        if ($toAdd instanceof MergeableInterface) {
+            if (null === $metadata) {
+                $metadata = $toAdd;
+            } else {
+                $metadata->merge($toAdd);
+            }
+        } else {
+            if (null === $metadata) {
+                $metadata = new $this->hierarchyMetadataClass;
+            }
+
+            $metadata->addClassMetadata($toAdd);
+        }
     }
 
     private function getClassHierarchy($class)
