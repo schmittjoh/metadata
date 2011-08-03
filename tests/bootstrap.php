@@ -23,6 +23,14 @@ spl_autoload_register(function($class)
 
             return true;
         }
+    } else if (0 === strpos($class, 'Symfony\\')) {
+        $path = __DIR__.'/../../symfony/src/'.strtr($class, '\\', '/').'.php';
+
+        if (file_exists($path) && is_readable($path)) {
+            require_once $path;
+
+            return true;
+        }
     }
 });
 

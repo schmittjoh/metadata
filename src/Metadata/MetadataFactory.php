@@ -18,9 +18,8 @@
 
 namespace Metadata;
 
-use Metadata\Cache\CacheInterface;
-
 use Metadata\Driver\DriverInterface;
+use Metadata\Cache\CacheInterface;
 
 final class MetadataFactory implements MetadataFactoryInterface
 {
