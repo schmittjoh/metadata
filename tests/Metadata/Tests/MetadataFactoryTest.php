@@ -2,6 +2,8 @@
 
 namespace Metadata\Tests;
 
+use Metadata\PropertyMetadata;
+
 use Metadata\MergeableClassMetadata;
 
 use Metadata\ClassMetadata;
@@ -63,6 +65,48 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Metadata\MergeableClassMetadata', $metadata);
         $this->assertEquals('Metadata\Tests\Fixtures\TestParent', $metadata->name);
+    }
+
+    public function testGetMetadataWithComplexHierarchy()
+    {
+        $driver = $this->getMock('Metadata\Driver\DriverInterface');
+
+        $driver
+            ->expects($this->any())
+            ->method('loadMetadataForClass')
+            ->will($this->returnCallback(function($class) {
+                $metadata = new MergeableClassMetadata($class->name);
+
+                switch ($class->name) {
+                    case 'Metadata\Tests\Fixtures\ComplexHierarchy\BaseClass':
+                        $metadata->propertyMetadata['foo'] = new PropertyMetadata($class->name, 'foo');
+                        break;
+
+                    case 'Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA':
+                        $metadata->propertyMetadata['bar'] = new PropertyMetadata($class->name, 'bar');
+                        break;
+
+                    case 'Metadata\Tests\Fixtures\ComplexHierarchy\SubClassB':
+                        $metadata->propertyMetadata['baz'] = new PropertyMetadata($class->name, 'baz');
+                        break;
+
+                    default:
+                        throw new \RuntimeException(sprintf('Unsupported class "%s".', $class->name));
+                }
+
+                return $metadata;
+            }))
+        ;
+
+        $factory = new MetadataFactory($driver);
+
+        $subClassA = $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA');
+        $this->assertInstanceOf('Metadata\MergeableClassMetadata', $subClassA);
+        $this->assertEquals(array('foo', 'bar'), array_keys($subClassA->propertyMetadata));
+
+        $subClassB = $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassB');
+        $this->assertInstanceOf('Metadata\MergeableClassMetadata', $subClassB);
+        $this->assertEquals(array('foo', 'baz'), array_keys($subClassB->propertyMetadata));
     }
 
     public function testGetMetadataWithCache()

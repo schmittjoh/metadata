@@ -87,7 +87,7 @@ final class MetadataFactory implements MetadataFactoryInterface
     {
         if ($toAdd instanceof MergeableInterface) {
             if (null === $metadata) {
-                $metadata = $toAdd;
+                $metadata = clone $toAdd;
             } else {
                 $metadata->merge($toAdd);
             }
