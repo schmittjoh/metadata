@@ -150,4 +150,35 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($factory->getMetadataForClass('stdClass'));
     }
+
+    public function testGetMetadataWithInterfaces()
+    {
+        $driver = $this->getMock('Metadata\Driver\DriverInterface');
+
+        $driver
+            ->expects($this->at(3))
+            ->method('loadMetadataForClass')
+            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA')))
+        ;
+        $driver
+            ->expects($this->at(2))
+            ->method('loadMetadataForClass')
+            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\InterfaceB')))
+        ;
+        $driver
+            ->expects($this->at(1))
+            ->method('loadMetadataForClass')
+            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\BaseClass')))
+        ;
+        $driver
+            ->expects($this->at(0))
+            ->method('loadMetadataForClass')
+            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\InterfaceA')))
+        ;
+
+        $factory = new MetadataFactory($driver);
+        $factory->setIncludeInterfaces(true);
+
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA');
+    }
 }

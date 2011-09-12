@@ -28,6 +28,7 @@ final class MetadataFactory implements MetadataFactoryInterface
     private $loadedMetadata = array();
     private $loadedClassMetadata = array();
     private $hierarchyMetadataClass;
+    private $includeInterfaces = false;
     private $debug;
 
     public function __construct(DriverInterface $driver, $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', $debug = false)
@@ -35,6 +36,11 @@ final class MetadataFactory implements MetadataFactoryInterface
         $this->driver = $driver;
         $this->hierarchyMetadataClass = $hierarchyMetadataClass;
         $this->debug = $debug;
+    }
+
+    public function setIncludeInterfaces($bool)
+    {
+        $this->includeInterfaces = (Boolean) $bool;
     }
 
     public function setCache(CacheInterface $cache)
@@ -109,6 +115,28 @@ final class MetadataFactory implements MetadataFactoryInterface
             $classes[] = $refl;
         } while (false !== $refl = $refl->getParentClass());
 
-        return array_reverse($classes, false);
+        $classes = array_reverse($classes, false);
+
+        if (!$this->includeInterfaces) {
+            return $classes;
+        }
+
+        $addedInterfaces = array();
+        $newHierarchy = array();
+
+        foreach ($classes as $class) {
+            foreach ($class->getInterfaces() as $interface) {
+                if (isset($addedInterfaces[$interface->getName()])) {
+                    continue;
+                }
+                $addedInterfaces[$interface->getName()] = true;
+
+                $newHierarchy[] = $interface;
+            }
+
+            $newHierarchy[] = $class;
+        }
+
+        return $newHierarchy;
     }
 }

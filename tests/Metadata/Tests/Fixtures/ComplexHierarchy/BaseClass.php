@@ -2,7 +2,7 @@
 
 namespace Metadata\Tests\Fixtures\ComplexHierarchy;
 
-abstract class BaseClass
+abstract class BaseClass implements InterfaceA
 {
     private $foo;
 }
