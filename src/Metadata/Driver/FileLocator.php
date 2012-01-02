@@ -10,6 +10,11 @@ class FileLocator implements FileLocatorInterface
     {
         $this->dirs = $dirs;
     }
+    
+    public function getDirs()
+    {
+        return $this->dirs;
+    }
 
     public function findFileForClass(\ReflectionClass $class, $extension)
     {
