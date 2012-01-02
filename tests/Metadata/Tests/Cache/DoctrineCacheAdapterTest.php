@@ -19,12 +19,12 @@ class DoctrineCacheAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $cache = new DoctrineCacheAdapter('metadata-test', new ArrayCache());
 
-        $this->assertInternalType('null', $cache->loadClassMetadataFromCache($refl = new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')));
+        $this->assertNull($cache->loadClassMetadataFromCache($refl = new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')));
         $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject'));
 
         $this->assertEquals($metadata, $cache->loadClassMetadataFromCache($refl));
 
         $cache->evictClassMetadataFromCache($refl);
-        $this->assertInternalType('null', $cache->loadClassMetadataFromCache($refl));
+        $this->assertNull($cache->loadClassMetadataFromCache($refl));
     }
 }
