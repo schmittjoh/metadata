@@ -1,5 +1,5 @@
 {
-    "name": "metadata/metadata",
+    "name": "jms/metadata",
     "description": "Class/method/property metadata management in PHP",
     "keywords": ["annotations","metadata","yaml","xml"],
     "type": "library",
