@@ -13,12 +13,12 @@ class DoctrineCacheAdapter implements CacheInterface
     /**
      * @param string $prefix
      */
-    protected $prefix;
+    private $prefix;
 
     /**
      * @var Cache $cache
      */
-    protected $cache;
+    private $cache;
 
     /**
      * @param string $prefix
