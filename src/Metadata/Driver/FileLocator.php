@@ -24,7 +24,7 @@ class FileLocator implements FileLocatorInterface
             }
 
             $len = '' === $prefix ? 0 : strlen($prefix) + 1;
-            $path = $dir.'/'.str_replace('\\', '.', substr($class->getName(), $len)).'.'.$extension;
+            $path = $dir.'/'.str_replace('\\', '.', substr($class->name, $len)).'.'.$extension;
             if (file_exists($path)) {
                 return $path;
             }

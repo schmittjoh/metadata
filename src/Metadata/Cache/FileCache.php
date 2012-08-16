@@ -22,7 +22,7 @@ class FileCache implements CacheInterface
 
     public function loadClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.strtr($class->getName(), '\\', '-').'.cache.php';
+        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
         if (!file_exists($path)) {
             return null;
         }
@@ -38,7 +38,7 @@ class FileCache implements CacheInterface
 
     public function evictClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.strtr($class->getName(), '\\', '-').'.cache.php';
+        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }
