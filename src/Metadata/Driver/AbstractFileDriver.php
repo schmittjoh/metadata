@@ -28,7 +28,7 @@ abstract class AbstractFileDriver implements DriverInterface
     /**
      * Parses the content of the file, and converts it to the desired metadata.
      *
-     * @param string $file
+     * @param  string             $file
      * @return ClassMetadata|null
      */
     abstract protected function loadMetadataFromFile(\ReflectionClass $class, $file);

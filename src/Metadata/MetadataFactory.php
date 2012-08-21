@@ -31,6 +31,9 @@ final class MetadataFactory implements MetadataFactoryInterface
     private $includeInterfaces = false;
     private $debug;
 
+    /**
+     * @param boolean $debug
+     */
     public function __construct(DriverInterface $driver, $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', $debug = false)
     {
         $this->driver = $driver;
@@ -38,6 +41,9 @@ final class MetadataFactory implements MetadataFactoryInterface
         $this->debug = $debug;
     }
 
+    /**
+     * @param boolean $bool
+     */
     public function setIncludeInterfaces($bool)
     {
         $this->includeInterfaces = (Boolean) $bool;
@@ -48,6 +54,9 @@ final class MetadataFactory implements MetadataFactoryInterface
         $this->cache = $cache;
     }
 
+    /**
+     * @param string $className
+     */
     public function getMetadataForClass($className)
     {
         if (isset($this->loadedMetadata[$className])) {
@@ -89,6 +98,9 @@ final class MetadataFactory implements MetadataFactoryInterface
         return $this->loadedMetadata[$className] = $metadata;
     }
 
+    /**
+     * @param ClassMetadata $toAdd
+     */
     private function addClassMetadata(&$metadata, $toAdd)
     {
         if ($toAdd instanceof MergeableInterface) {

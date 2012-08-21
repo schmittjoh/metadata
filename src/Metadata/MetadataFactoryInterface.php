@@ -29,12 +29,12 @@ interface MetadataFactoryInterface
      * Returns the gathered metadata for the given class name.
      *
      * If the drivers return instances of MergeableClassMetadata, these will be
-     * merged prior to returning. Otherwise, all metadata for the inheritance 
+     * merged prior to returning. Otherwise, all metadata for the inheritance
      * hierarchy will be returned as ClassHierarchyMetadata unmerged.
      *
      * If no metadata is available, null is returned.
      *
      * @return ClassHierarchyMetadata|MergeableClassMetadata|null
      */
-    function getMetadataForClass($className);
+    public function getMetadataForClass($className);
 }

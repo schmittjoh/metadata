@@ -16,6 +16,9 @@ class FileLocator implements FileLocatorInterface
         return $this->dirs;
     }
 
+    /**
+     * @param string $extension
+     */
     public function findFileForClass(\ReflectionClass $class, $extension)
     {
         foreach ($this->dirs as $prefix => $dir) {
