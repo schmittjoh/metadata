@@ -26,7 +26,8 @@ namespace Metadata;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class PropertyMetadata implements \Serializable {
+class PropertyMetadata implements \Serializable
+{
     public $class;
     public $name;
     public $reflection;
