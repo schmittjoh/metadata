@@ -2,7 +2,7 @@ Metadata is a library for class/method/property metadata management in PHP
 ==========================================================================
 
 Overview
---------
+---------
 
 This library provides some commonly needed base classes for managing metadata
 for classes, methods and properties. The metadata can come from many different
