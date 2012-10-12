@@ -42,7 +42,7 @@ class MethodMetadata implements \Serializable
     }
 
     /**
-     * @param Tests\Fixtures\TestObject $obj
+     * @param object $obj
      */
     public function invoke($obj, array $args = array())
     {
