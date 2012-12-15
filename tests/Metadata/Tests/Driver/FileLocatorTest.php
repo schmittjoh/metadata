@@ -48,4 +48,22 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $ref = new \ReflectionClass('D');
         $this->assertEquals(realpath(__DIR__.'/Fixture/D/D.yml'), realpath($locator->findFileForClass($ref, 'yml')));
     }
+
+    public function testFindAllFiles()
+    {
+        $locator = new FileLocator(array(
+            'Metadata\Tests\Driver\Fixture\A' => __DIR__.'/Fixture/A',
+            'Metadata\Tests\Driver\Fixture\B' => __DIR__.'/Fixture/B',
+            'Metadata\Tests\Driver\Fixture\C' => __DIR__.'/Fixture/C',
+            'Metadata\Tests\Driver\Fixture\D' => __DIR__.'/Fixture/D'
+        ));
+
+        $this->assertCount(1, $xmlFiles = $locator->findAllClasses('xml'));
+        $this->assertSame('Metadata\Tests\Driver\Fixture\A\A', $xmlFiles[0]);
+
+        $this->assertCount(3, $ymlFiles = $locator->findAllClasses('yml'));
+        $this->assertSame('Metadata\Tests\Driver\Fixture\B\B', $ymlFiles[0]);
+        $this->assertSame('Metadata\Tests\Driver\Fixture\C\SubDir\C', $ymlFiles[1]);
+        $this->assertSame('Metadata\Tests\Driver\Fixture\D\D', $ymlFiles[2]);
+    }
 }
