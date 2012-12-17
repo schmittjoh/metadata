@@ -18,10 +18,11 @@
 
 namespace Metadata;
 
+use Metadata\Driver\AdvancedDriverInterface;
 use Metadata\Driver\DriverInterface;
 use Metadata\Cache\CacheInterface;
 
-final class MetadataFactory implements MetadataFactoryInterface
+final class MetadataFactory implements AdvancedMetadataFactoryInterface
 {
     private $driver;
     private $cache;
@@ -96,6 +97,20 @@ final class MetadataFactory implements MetadataFactoryInterface
         }
 
         return $this->loadedMetadata[$className] = $metadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAllClassNames()
+    {
+        if (!$this->driver instanceof AdvancedDriverInterface) {
+            throw new \RuntimeException(
+                sprintf('Driver "%s" must be an instance of "AdvancedDriverInterface".', get_class($this->driver))
+            );
+        }
+
+        return $this->driver->getAllClassNames();
     }
 
     /**
