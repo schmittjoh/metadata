@@ -2,7 +2,7 @@
 
 namespace Metadata\Driver;
 
-class FileLocator implements FileLocatorInterface
+class FileLocator implements AdvancedFileLocatorInterface
 {
     private $dirs;
 
@@ -34,5 +34,29 @@ class FileLocator implements FileLocatorInterface
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function findAllClasses($extension)
+    {
+        $classes = array();
+        foreach ($this->dirs as $prefix => $dir) {
+            /** @var $iterator \RecursiveIteratorIterator|\SplFileInfo[] */
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($dir),
+                \RecursiveIteratorIterator::LEAVES_ONLY
+            );
+            foreach ($iterator as $file) {
+                if (($fileName = $file->getBasename('.'.$extension)) == $file->getBasename()) {
+                    continue;
+                }
+
+                $classes[] = ($prefix !== '' ? $prefix.'\\' : '').str_replace('.', '\\', $fileName);
+            }
+        }
+
+        return $classes;
     }
 }
