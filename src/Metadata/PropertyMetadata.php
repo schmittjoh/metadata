@@ -43,6 +43,8 @@ class PropertyMetadata implements \Serializable
 
     /**
      * @param object $obj
+     *
+     * @return mixed
      */
     public function getValue($obj)
     {

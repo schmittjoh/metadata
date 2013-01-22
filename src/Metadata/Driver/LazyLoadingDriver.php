@@ -15,6 +15,9 @@ class LazyLoadingDriver implements DriverInterface
         $this->realDriverId = $realDriverId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
         return $this->container->get($this->realDriverId)->loadMetadataForClass($class);

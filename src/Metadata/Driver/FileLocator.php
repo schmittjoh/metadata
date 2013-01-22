@@ -17,7 +17,10 @@ class FileLocator implements AdvancedFileLocatorInterface
     }
 
     /**
-     * @param string $extension
+     * @param \ReflectionClass $class
+     * @param string           $extension
+     *
+     * @return string|null
      */
     public function findFileForClass(\ReflectionClass $class, $extension)
     {
@@ -48,12 +51,13 @@ class FileLocator implements AdvancedFileLocatorInterface
                 new \RecursiveDirectoryIterator($dir),
                 \RecursiveIteratorIterator::LEAVES_ONLY
             );
+            $nsPrefix = $prefix !== '' ? $prefix.'\\' : '';
             foreach ($iterator as $file) {
                 if (($fileName = $file->getBasename('.'.$extension)) == $file->getBasename()) {
                     continue;
                 }
 
-                $classes[] = ($prefix !== '' ? $prefix.'\\' : '').str_replace('.', '\\', $fileName);
+                $classes[] = $nsPrefix.str_replace('.', '\\', $fileName);
             }
         }
 
