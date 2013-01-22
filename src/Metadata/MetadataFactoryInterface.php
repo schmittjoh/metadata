@@ -34,6 +34,8 @@ interface MetadataFactoryInterface
      *
      * If no metadata is available, null is returned.
      *
+     * @param string $className
+     *
      * @return ClassHierarchyMetadata|MergeableClassMetadata|null
      */
     public function getMetadataForClass($className);

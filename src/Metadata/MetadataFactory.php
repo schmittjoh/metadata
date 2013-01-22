@@ -33,21 +33,23 @@ final class MetadataFactory implements AdvancedMetadataFactoryInterface
     private $debug;
 
     /**
-     * @param boolean $debug
+     * @param DriverInterface $driver
+     * @param string          $hierarchyMetadataClass
+     * @param boolean         $debug
      */
     public function __construct(DriverInterface $driver, $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', $debug = false)
     {
         $this->driver = $driver;
         $this->hierarchyMetadataClass = $hierarchyMetadataClass;
-        $this->debug = $debug;
+        $this->debug = (Boolean) $debug;
     }
 
     /**
      * @param boolean $bool
      */
-    public function setIncludeInterfaces($bool)
+    public function setIncludeInterfaces($include)
     {
-        $this->includeInterfaces = (Boolean) $bool;
+        $this->includeInterfaces = (Boolean) $include;
     }
 
     public function setCache(CacheInterface $cache)
@@ -57,6 +59,8 @@ final class MetadataFactory implements AdvancedMetadataFactoryInterface
 
     /**
      * @param string $className
+     *
+     * @return ClassMetaData
      */
     public function getMetadataForClass($className)
     {
@@ -114,7 +118,8 @@ final class MetadataFactory implements AdvancedMetadataFactoryInterface
     }
 
     /**
-     * @param ClassMetadata $toAdd
+     * @param ClassMetadata|null $metadata
+     * @param ClassMetadata      $toAdd
      */
     private function addClassMetadata(&$metadata, $toAdd)
     {
@@ -140,7 +145,8 @@ final class MetadataFactory implements AdvancedMetadataFactoryInterface
 
         do {
             $classes[] = $refl;
-        } while (false !== $refl = $refl->getParentClass());
+            $refl = $refl->getParentClass();
+        } while (false !== $refl);
 
         $classes = array_reverse($classes, false);
 
