@@ -43,6 +43,9 @@ class MethodMetadata implements \Serializable
 
     /**
      * @param object $obj
+     * @param array  $args
+     *
+     * @return mixed
      */
     public function invoke($obj, array $args = array())
     {

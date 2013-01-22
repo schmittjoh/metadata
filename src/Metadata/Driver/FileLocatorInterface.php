@@ -5,7 +5,8 @@ namespace Metadata\Driver;
 interface FileLocatorInterface
 {
     /**
-     * @param string $extension
+     * @param \ReflectionClass $class
+     * @param string           $extension
      *
      * @return string|null
      */

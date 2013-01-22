@@ -31,7 +31,7 @@ class DoctrineCacheAdapter implements CacheInterface
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     public function loadClassMetadataFromCache(\ReflectionClass $class)
     {
@@ -40,7 +40,7 @@ class DoctrineCacheAdapter implements CacheInterface
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     public function putClassMetadataInCache(ClassMetadata $metadata)
     {
@@ -48,7 +48,7 @@ class DoctrineCacheAdapter implements CacheInterface
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     public function evictClassMetadataFromCache(\ReflectionClass $class)
     {
