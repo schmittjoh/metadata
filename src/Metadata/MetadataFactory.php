@@ -52,9 +52,20 @@ final class MetadataFactory implements AdvancedMetadataFactoryInterface
         $this->includeInterfaces = (Boolean) $include;
     }
 
+    /**
+     * @param CacheInterface $cache
+     */
     public function setCache(CacheInterface $cache)
     {
         $this->cache = $cache;
+    }
+    
+    /**
+     * @return CacheInterface
+     */
+    public function getCache()
+    {
+        return $this->cache;
     }
 
     /**
