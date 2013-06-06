@@ -134,6 +134,40 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($metadata, reset($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject')->classMetadata));
     }
+    
+    /**
+	 * Test for a race condition that occurs when a cache file exists but does not contain
+	 * a valid instance of ClassMetadata
+	 */
+	public function testGetMetadataWithBrokenCacheFile()
+ 	{
+		 $driver = $this->getMock('Metadata\Driver\DriverInterface');
+		 $driver
+			 ->expects($this->once())
+			 ->method('loadMetadataForClass')
+			 ->will($this->returnValue($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject')))
+		 ;
+
+		 //this bug only occurs when $debug is set to true so we have to provide the optional params
+		 $factory = new MetadataFactory($driver, 'Metadata\ClassHierarchyMetadata', true);
+
+		 $cache = $this->getMock('Metadata\Cache\CacheInterface');
+		 $cache
+			 ->expects($this->once())
+			 ->method('loadClassMetadataFromCache')
+			 ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+			 ->will($this->returnValue('blah'))//return a non-null, non-class value so it would fatal if blindly treat as an object
+		 ;
+		 $cache
+			 ->expects($this->once())
+			 ->method('putClassMetadataInCache')
+			 ->with($this->equalTo($metadata))
+		 ;
+		 $factory->setCache($cache);
+
+		 $this->assertSame($metadata, reset($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject')->classMetadata));
+ 	}
+
 
     public function testGetMetadataReturnsNullIfNoMetadataIsFound()
     {
