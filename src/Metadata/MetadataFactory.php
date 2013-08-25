@@ -76,8 +76,11 @@ final class MetadataFactory implements AdvancedMetadataFactoryInterface
             }
 
             // check the cache
-            if (null !== $this->cache
-                && (null !== $classMetadata = $this->cache->loadClassMetadataFromCache($class))) {
+            if (null !== $this->cache && (null !== $classMetadata = $this->cache->loadClassMetadataFromCache($class))) {
+                if ( ! $classMetadata instanceof ClassMetadata) {
+                    throw new \LogicException(sprintf('The cache must return instances of ClassMetadata, but got %s.', var_export($classMetadata, true)));
+                }
+
                 if ($this->debug && !$classMetadata->isFresh()) {
                     $this->cache->evictClassMetadataFromCache($classMetadata->reflection);
                 } else {

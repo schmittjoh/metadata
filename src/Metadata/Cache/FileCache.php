@@ -39,7 +39,13 @@ class FileCache implements CacheInterface
     public function putClassMetadataInCache(ClassMetadata $metadata)
     {
         $path = $this->dir.'/'.strtr($metadata->name, '\\', '-').'.cache.php';
-        file_put_contents($path, '<?php return unserialize('.var_export(serialize($metadata), true).');');
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'metadata-cache');
+        file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
+
+        if (false === @rename($tmpFile, $path)) {
+            throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $path));
+        }
     }
 
     /**
