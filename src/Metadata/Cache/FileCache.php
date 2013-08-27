@@ -40,7 +40,7 @@ class FileCache implements CacheInterface
     {
         $path = $this->dir.'/'.strtr($metadata->name, '\\', '-').'.cache.php';
 
-        $tmpFile = tempnam(sys_get_temp_dir(), 'metadata-cache');
+        $tmpFile = tempnam($this->dir, 'metadata-cache');
         file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
 
         if (false === @rename($tmpFile, $path)) {
