@@ -6,7 +6,13 @@ This changelog references all relevant changes:
 To get the diff between the two last versions, go to 
 https://github.com/schmittjoh/metadata/compare/1.0.0...1.1.0
 
-* 1.3.0 (???)
+* 1.4.1 (2013-08-26)
+ * fixes a possible permission issue when using filesystem ACLs
+
+* 1.4.0 (2013-08-25)
+ * fixes a race condition when writing cache files
+
+* 1.3.0 (2013-01-22)
  * added ability to retrieve all managed classes from the metadata factory 
 
 * 1.2.0 (2012-08-21)
