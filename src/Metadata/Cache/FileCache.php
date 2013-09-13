@@ -42,6 +42,7 @@ class FileCache implements CacheInterface
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
+        chmod($tmpFile, 0666 & ~umask());
 
         if (false === @rename($tmpFile, $path)) {
             throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $path));
