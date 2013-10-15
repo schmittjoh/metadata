@@ -22,9 +22,14 @@ final class DriverChain implements AdvancedDriverInterface
 {
     private $drivers;
 
-    public function __construct(array $drivers)
+    public function __construct(array $drivers = array())
     {
         $this->drivers = $drivers;
+    }
+    
+    public function addDriver(DriverInterface $driver)
+    {
+        $this->drivers[] = $driver;
     }
 
     public function loadMetadataForClass(\ReflectionClass $class)
