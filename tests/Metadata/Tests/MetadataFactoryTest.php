@@ -132,6 +132,9 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
         ;
         $factory->setCache($cache);
 
+
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
         $this->assertSame($metadata, reset($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject')->classMetadata));
     }
 
@@ -197,5 +200,80 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('RuntimeException');
         $factory = new MetadataFactory($this->getMock('Metadata\Driver\DriverInterface'));
         $factory->getAllClassNames();
+    }
+
+    public function testNotFoundMetadataIsCached()
+    {
+        $driver = $this->getMock('Metadata\Driver\DriverInterface');
+        $driver
+            ->expects($this->once()) // This is the important part of this test
+            ->method('loadMetadataForClass')
+            ->will($this->returnValue(null))
+        ;
+
+        $cachedMetadata = null;
+        $cache = $this->getMock('Metadata\Cache\CacheInterface');
+        $cache
+            ->expects($this->any())
+            ->method('loadClassMetadataFromCache')
+            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->will($this->returnCallback(function () use (&$cachedMetadata) {
+                return $cachedMetadata;
+            }))
+        ;
+        $cache
+            ->expects($this->once())
+            ->method('putClassMetadataInCache')
+            ->will($this->returnCallback(function ($metadata) use (&$cachedMetadata) {
+                $cachedMetadata = $metadata;
+            }))
+        ;
+
+        $factory = new MetadataFactory($driver);
+        $factory->setCache($cache);
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+
+        // We use another factory with the same cache, to simulate another request and skip the in memory
+        $factory = new MetadataFactory($driver);
+        $factory->setCache($cache);
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+    }
+
+    public function testNotFoundMetadataIsNotCachedInDebug()
+    {
+        $driver = $this->getMock('Metadata\Driver\DriverInterface');
+        $driver
+            ->expects($this->exactly(2))
+            ->method('loadMetadataForClass')
+            ->will($this->returnValue(null))
+        ;
+
+        $cachedMetadata = null;
+        $cache = $this->getMock('Metadata\Cache\CacheInterface');
+        $cache
+            ->expects($this->any())
+            ->method('loadClassMetadataFromCache')
+            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->will($this->returnValue(null))
+        ;
+        $cache
+            ->expects($this->never())
+            ->method('putClassMetadataInCache')
+        ;
+
+        $factory = new MetadataFactory($driver, 'Metadata\ClassHierarchyMetadata', true);
+        $factory->setCache($cache);
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+
+        // We use another factory with the same cache, to simulate another request and skip the in memory
+        $factory = new MetadataFactory($driver, 'Metadata\ClassHierarchyMetadata', true);
+        $factory->setCache($cache);
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
     }
 }
