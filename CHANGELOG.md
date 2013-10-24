@@ -8,6 +8,7 @@ https://github.com/schmittjoh/metadata/compare/1.0.0...1.1.0
 
 * 1.5.0 (???)
  * adds ability to inject new drivers into the DriverChain after it has been constructed
+ * improves performance by removing some superfluous filesystem calls
 
 * 1.4.1 (2013-08-26)
  * fixes a possible permission issue when using filesystem ACLs
