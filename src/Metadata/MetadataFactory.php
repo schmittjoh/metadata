@@ -22,7 +22,7 @@ use Metadata\Driver\AdvancedDriverInterface;
 use Metadata\Driver\DriverInterface;
 use Metadata\Cache\CacheInterface;
 
-final class MetadataFactory implements AdvancedMetadataFactoryInterface
+class MetadataFactory implements AdvancedMetadataFactoryInterface
 {
     private $driver;
     private $cache;
