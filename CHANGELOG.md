@@ -6,7 +6,7 @@ This changelog references all relevant changes:
 To get the diff between the two last versions, go to 
 https://github.com/schmittjoh/metadata/compare/1.0.0...1.1.0
 
-* 1.5.0 (???)
+* 1.5.0 (2013-11-06)
  * adds ability to inject new drivers into the DriverChain after it has been constructed
  * improves performance by removing some superfluous filesystem calls
  * made MetadataFactory implementation non-final
