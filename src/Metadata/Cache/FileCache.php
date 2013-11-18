@@ -44,8 +44,27 @@ class FileCache implements CacheInterface
         file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
         chmod($tmpFile, 0666 & ~umask());
 
-        if (false === @rename($tmpFile, $path)) {
-            throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $path));
+        $this->renameFile($tmpFile, $path);
+    }
+
+    /**
+     * Renames a file with fallback for windows
+     *
+     * @param string $oldname
+     * @param string $newname
+     */
+    private function renameFile($oldname, $newname) {
+        if (false === @rename($oldname, $newname)) {
+            if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+                if (false === unlink($newname)) {
+                    throw new \RuntimeException(sprintf('(WIN) Could not delete temp cache file to %s.', $newname));
+                }
+                if (false === copy($oldname, $newname)) {
+                    throw new \RuntimeException(sprintf('(WIN) Could not write new cache file to %s.', $newname));
+                }
+            } else {
+                throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $newname));
+            }
         }
     }
 
