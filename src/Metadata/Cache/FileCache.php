@@ -45,7 +45,16 @@ class FileCache implements CacheInterface
         chmod($tmpFile, 0666 & ~umask());
 
         if (false === @rename($tmpFile, $path)) {
-            throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $path));
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                if (false === unlink($path)) {
+                    throw new \RuntimeException(sprintf('(WIN) Could not delete temp cache file to %s.', $path));
+                }
+                if (false === copy($tmpFile, $path)) {
+                    throw new \RuntimeException(sprintf('(WIN) Could not write new cache file to %s.', $path));
+                }
+            } else {
+                throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $path));
+            }
         }
     }
 
