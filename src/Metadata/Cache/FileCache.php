@@ -50,20 +50,20 @@ class FileCache implements CacheInterface
     /**
      * Renames a file with fallback for windows
      *
-     * @param string $oldname
-     * @param string $newname
+     * @param string $source
+     * @param string $target
      */
-    private function renameFile($oldname, $newname) {
-        if (false === @rename($oldname, $newname)) {
+    private function renameFile($source, $target) {
+        if (false === @rename($source, $target)) {
             if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-                if (false === unlink($newname)) {
-                    throw new \RuntimeException(sprintf('(WIN) Could not delete temp cache file to %s.', $newname));
+                if (false === copy($source, $target)) {
+                    throw new \RuntimeException(sprintf('(WIN) Could not write new cache file to %s.', $target));
                 }
-                if (false === copy($oldname, $newname)) {
-                    throw new \RuntimeException(sprintf('(WIN) Could not write new cache file to %s.', $newname));
+                if (false === unlink($source)) {
+                    throw new \RuntimeException(sprintf('(WIN) Could not delete temp cache file to %s.', $source));
                 }
             } else {
-                throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $newname));
+                throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $target));
             }
         }
     }
