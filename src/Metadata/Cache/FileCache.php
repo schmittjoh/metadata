@@ -56,11 +56,11 @@ class FileCache implements CacheInterface
     private function renameFile($oldname, $newname) {
         if (false === @rename($oldname, $newname)) {
             if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-                if (false === unlink($newname)) {
-                    throw new \RuntimeException(sprintf('(WIN) Could not delete temp cache file to %s.', $newname));
-                }
                 if (false === copy($oldname, $newname)) {
                     throw new \RuntimeException(sprintf('(WIN) Could not write new cache file to %s.', $newname));
+                }
+                if (false === unlink($oldname)) {
+                    throw new \RuntimeException(sprintf('(WIN) Could not delete temp cache file to %s.', $oldname));
                 }
             } else {
                 throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $newname));
