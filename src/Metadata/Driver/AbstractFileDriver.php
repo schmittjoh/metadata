@@ -46,7 +46,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
      * @param \ReflectionClass $class
      * @param string           $file
      *
-     * @return \MetaData\ClassMetadata|null
+     * @return \Metadata\ClassMetadata|null
      */
     abstract protected function loadMetadataFromFile(\ReflectionClass $class, $file);
 

@@ -3,7 +3,6 @@
 namespace Metadata\Tests;
 
 use Metadata\Tests\Fixtures\TestObject;
-
 use Metadata\MethodMetadata;
 
 class MethodMetadataTest extends \PHPUnit_Framework_TestCase

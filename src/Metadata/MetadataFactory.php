@@ -45,7 +45,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     }
 
     /**
-     * @param boolean $bool
+     * @param boolean $include
      */
     public function setIncludeInterfaces($include)
     {
@@ -60,7 +60,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     /**
      * @param string $className
      *
-     * @return ClassMetaData
+     * @return ClassHierarchyMetadata|MergeableClassMetadata|null
      */
     public function getMetadataForClass($className)
     {
@@ -158,6 +158,9 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
         }
     }
 
+    /**
+     * @param string $class
+     */
     private function getClassHierarchy($class)
     {
         $classes = array();
@@ -193,6 +196,11 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
         return $newHierarchy;
     }
 
+    /**
+     * @param NullMetadata|null $metadata
+     *
+     * @return ClassMetadata|null
+     */
     private function filterNullMetadata($metadata = null)
     {
         return !$metadata instanceof NullMetadata ? $metadata : null;

@@ -3,7 +3,6 @@
 namespace Metadata\Tests;
 
 use Metadata\Tests\Fixtures\TestObject;
-
 use Metadata\PropertyMetadata;
 
 class PropertyMetadataTest extends \PHPUnit_Framework_TestCase

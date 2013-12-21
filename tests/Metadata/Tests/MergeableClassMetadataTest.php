@@ -3,7 +3,6 @@
 namespace Metadata\Tests;
 
 use Metadata\MergeableClassMetadata;
-use Metadata\ClassMetadata;
 
 class MergeableClassMetadataTest extends \PHPUnit_Framework_TestCase
 {
