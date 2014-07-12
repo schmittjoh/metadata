@@ -112,12 +112,12 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
             }
 
             if (null !== $this->cache && !$this->debug) {
-                $this->cache->putClassMetadataInCache(new NullMetadata());
+                $this->cache->putClassMetadataInCache(new NullMetadata($class->getName()));
             }
         }
 
         if (null === $metadata) {
-            $metadata = new NullMetadata();
+            $metadata = new NullMetadata($className);
         }
 
         return $this->filterNullMetadata($this->loadedMetadata[$className] = $metadata);

@@ -9,18 +9,5 @@ namespace Metadata;
  */
 class NullMetadata extends ClassMetadata
 {
-    public function __construct()
-    {
 
-    }
-
-    public function serialize()
-    {
-        return '';
-    }
-
-    public function unserialize($str)
-    {
-
-    }
 }
