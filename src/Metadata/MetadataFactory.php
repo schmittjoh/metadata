@@ -30,6 +30,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     private $loadedClassMetadata = array();
     private $hierarchyMetadataClass;
     private $includeInterfaces = false;
+    private $includeTraits = true;
     private $debug;
 
     /**
@@ -50,6 +51,14 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     public function setIncludeInterfaces($include)
     {
         $this->includeInterfaces = (Boolean) $include;
+    }
+
+    /**
+     * @param boolean $include
+     */
+    public function setIncludeTraits($include)
+    {
+        $this->includeTraits = (Boolean) $include;
     }
 
     public function setCache(CacheInterface $cache)
@@ -173,21 +182,35 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
         $classes = array_reverse($classes, false);
 
-        if (!$this->includeInterfaces) {
+        if (!$this->includeInterfaces && !$this->includeTraits) {
             return $classes;
         }
 
         $addedInterfaces = array();
+        $addedTraits = array();
         $newHierarchy = array();
 
         foreach ($classes as $class) {
-            foreach ($class->getInterfaces() as $interface) {
-                if (isset($addedInterfaces[$interface->getName()])) {
-                    continue;
-                }
-                $addedInterfaces[$interface->getName()] = true;
+            if ($this->includeInterfaces) {
+                foreach ($class->getInterfaces() as $interface) {
+                    if (isset($addedInterfaces[$interface->getName()])) {
+                        continue;
+                    }
+                    $addedInterfaces[$interface->getName()] = true;
 
-                $newHierarchy[] = $interface;
+                    $newHierarchy[] = $interface;
+                }
+            }
+
+            if ($this->includeTraits) {
+                foreach ($class->getTraits() as $trait) {
+                    if (isset($addedTraits[$trait->getName()])) {
+                        continue;
+                    }
+                    $addedTraits[$trait->getName()] = true;
+
+                    $newHierarchy[] = $trait;
+                }
             }
 
             $newHierarchy[] = $class;
