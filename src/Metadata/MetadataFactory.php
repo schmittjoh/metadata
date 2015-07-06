@@ -24,12 +24,13 @@ use Metadata\Cache\CacheInterface;
 
 class MetadataFactory implements AdvancedMetadataFactoryInterface
 {
+    protected $includeInterfaces = false;
+
     private $driver;
     private $cache;
     private $loadedMetadata = array();
     private $loadedClassMetadata = array();
     private $hierarchyMetadataClass;
-    private $includeInterfaces = false;
     private $debug;
 
     /**
@@ -160,8 +161,9 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
     /**
      * @param string $class
+     * @return array<string>
      */
-    private function getClassHierarchy($class)
+    protected function getClassHierarchy($class)
     {
         $classes = array();
         $refl = new \ReflectionClass($class);
