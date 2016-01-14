@@ -79,9 +79,14 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
             // check the cache
             if (null !== $this->cache) {
-                if (($classMetadata = $this->cache->loadClassMetadataFromCache($class)) instanceof NullMetadata) {
-                    $this->loadedClassMetadata[$name] = $classMetadata;
-                    continue;
+                try {
+                    if (($classMetadata = $this->cache->loadClassMetadataFromCache($class)) instanceof NullMetadata) {
+                        $this->loadedClassMetadata[$name] = $classMetadata;
+                        continue;
+                    }
+                } catch (\ReflectionException $e) {
+                    // error during unserialze
+                    $classMetadata = null;
                 }
 
                 if (null !== $classMetadata) {
