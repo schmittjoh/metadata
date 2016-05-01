@@ -60,7 +60,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     /**
      * @param string $className
      *
-     * @return ClassHierarchyMetadata|MergeableClassMetadata|null
+     * @return ClassMetadata|null
      */
     public function getMetadataForClass($className)
     {
