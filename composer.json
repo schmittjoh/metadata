@@ -15,7 +15,7 @@
     },
     "require-dev" : {
         "doctrine/cache" : "~1.0",
-        "phpunit/phpunit" : "4.*",
+        "phpunit/phpunit" : "4.*|3.*",
         "mikey179/vfsStream" : "~1.6"
     },
     "autoload": {
