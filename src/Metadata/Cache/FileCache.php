@@ -21,9 +21,6 @@ class FileCache implements CacheInterface
         if (!is_dir($dir)) {
             throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir));
         }
-        if (!is_writable($dir)) {
-            throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable.', $dir));
-        }
 
         $this->dir = rtrim($dir, '\\/');
     }
@@ -47,10 +44,13 @@ class FileCache implements CacheInterface
     public function putClassMetadataInCache(ClassMetadata $metadata)
     {
         $path = $this->getFileName($metadata);
+        if (file_exists($path) && !is_writable($path)) {
+            throw new \RuntimeException("Cache file {$path} is not writable.");
+        }
 
-        if (false === file_put_contents($path,
+        if (false === (@file_put_contents($path,
                 '<?php return unserialize(' . var_export(serialize($metadata), true) . ');')
-        ) {
+        )) {
             throw new \RuntimeException("Can't not write new cache file to {$path}");
         };
 
