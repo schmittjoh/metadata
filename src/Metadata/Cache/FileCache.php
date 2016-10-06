@@ -6,8 +6,16 @@ use Metadata\ClassMetadata;
 
 class FileCache implements CacheInterface
 {
+    /**
+     * @var string
+     */
     private $dir;
 
+    /**
+     * FileCache constructor.
+     *
+     * @param string $dir
+     */
     public function __construct($dir)
     {
         if (!is_dir($dir)) {
@@ -38,36 +46,16 @@ class FileCache implements CacheInterface
      */
     public function putClassMetadataInCache(ClassMetadata $metadata)
     {
-        $path = $this->dir.'/'.strtr($metadata->name, '\\', '-').'.cache.php';
+        $path = $this->getFileName($metadata);
 
-        $tmpFile = tempnam($this->dir, 'metadata-cache');
-        file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
-        
+        if (false === file_put_contents($path,
+                '<?php return unserialize(' . var_export(serialize($metadata), true) . ');')
+        ) {
+            throw new \RuntimeException("Can't not write new cache file to {$path}");
+        };
+
         // Let's not break filesystems which do not support chmod.
-        @chmod($tmpFile, 0666 & ~umask());
-
-        $this->renameFile($tmpFile, $path);
-    }
-
-    /**
-     * Renames a file with fallback for windows
-     *
-     * @param string $source
-     * @param string $target
-     */
-    private function renameFile($source, $target) {
-        if (false === @rename($source, $target)) {
-            if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-                if (false === copy($source, $target)) {
-                    throw new \RuntimeException(sprintf('(WIN) Could not write new cache file to %s.', $target));
-                }
-                if (false === unlink($source)) {
-                    throw new \RuntimeException(sprintf('(WIN) Could not delete temp cache file to %s.', $source));
-                }
-            } else {
-                throw new \RuntimeException(sprintf('Could not write new cache file to %s.', $target));
-            }
-        }
+        @chmod($path, 0666 & ~umask());
     }
 
     /**
@@ -79,5 +67,15 @@ class FileCache implements CacheInterface
         if (file_exists($path)) {
             unlink($path);
         }
+    }
+
+    /**
+     * @param ClassMetadata $metadata
+     *
+     * @return string
+     */
+    private function getFileName(ClassMetadata $metadata)
+    {
+        return $this->dir . '/' . strtr($metadata->name, '\\', '-') . '.cache.php';
     }
 }
