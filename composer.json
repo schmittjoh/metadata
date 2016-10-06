@@ -15,7 +15,8 @@
     },
     "require-dev" : {
         "doctrine/cache" : "~1.0",
-        "phpunit/phpunit" : "^4.8.27"
+        "phpunit/phpunit" : "^4.8.27",
+        "mikey179/vfsStream" : "^1.6.4"
     },
     "autoload": {
         "psr-0": { "Metadata\\": "src/" }
