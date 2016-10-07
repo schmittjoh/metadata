@@ -6,6 +6,7 @@ use Metadata\ClassMetadata;
 use Metadata\Cache\FileCache;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
 
 class FileCacheTest extends \PHPUnit_Framework_TestCase
 {
@@ -40,5 +41,36 @@ class FileCacheTest extends \PHPUnit_Framework_TestCase
         $cache = new FileCache($this->root->url());
 
         $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestParent'));
+    }
+
+    public function testPutCacheFileInNotExistingDirectory()
+    {
+        $cache = new FileCache($this->root->url() . '/someDir/away');
+
+        $reflectionClass = new \ReflectionClass('Metadata\Tests\Fixtures\TestObject');
+        $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject'));
+        $this->assertEquals($metadata, $cache->loadClassMetadataFromCache($reflectionClass));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testThrowExceptionIfCantCreateDirectory()
+    {
+        $this->root->chmod(0555);
+        $cache = new FileCache($this->root->url() . '/someDir/away');
+
+        $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject'));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testFileExistsAndCantReplace()
+    {
+        $cache = new FileCache($this->root->url());
+        $this->root->addChild(new vfsStreamFile('Metadata-Tests-Fixtures-TestObject.cache.php', 0555));
+
+        $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject'));
     }
 }
