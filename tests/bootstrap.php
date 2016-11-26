@@ -33,4 +33,4 @@ spl_autoload_register(function($class) {
     }
 });
 
-@include __DIR__ . '/../vendor/.composer/autoload.php';
+@include __DIR__ . '/../vendor/autoload.php';

@@ -10,10 +10,12 @@ class MethodMetadataTest extends \PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $metadata = new MethodMetadata('Metadata\Tests\Fixtures\TestObject', 'setFoo');
+        $expectedReflector = new \ReflectionMethod('Metadata\Tests\Fixtures\TestObject', 'setFoo');
+        $expectedReflector->setAccessible(true);
 
         $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->class);
         $this->assertEquals('setFoo', $metadata->name);
-        $this->assertEquals(new \ReflectionMethod('Metadata\Tests\Fixtures\TestObject', 'setFoo'), $metadata->reflection);
+        $this->assertEquals($expectedReflector, $metadata->reflection);
     }
 
     public function testSerializeUnserialize()
