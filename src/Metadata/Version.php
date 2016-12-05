@@ -20,5 +20,6 @@ namespace Metadata;
 
 final class Version
 {
+    // test
     const VERSION = '1.4-DEV';
 }
