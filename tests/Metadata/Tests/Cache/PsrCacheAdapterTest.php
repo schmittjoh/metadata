@@ -3,24 +3,24 @@
 namespace Metadata\Tests\Cache;
 
 use Metadata\ClassMetadata;
-use Metadata\Cache\DoctrineCacheAdapter;
-use Doctrine\Common\Cache\ArrayCache;
+use Metadata\Cache\PsrCacheAdapter;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
- * @requires PHP 5.4
+ * @requires PHP 5.5
  */
-class DoctrineCacheAdapterTest extends \PHPUnit_Framework_TestCase
+class PsrCacheAdapterTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!interface_exists('Doctrine\Common\Cache\Cache')) {
-            $this->markTestSkipped('Doctrine\Common is not installed.');
+        if (!class_exists('Symfony\Component\Cache\CacheItem')) {
+            $this->markTestSkipped('symfony/cache is not installed.');
         }
     }
 
     public function testLoadEvictPutClassMetadataFromInCache()
     {
-        $cache = new DoctrineCacheAdapter('metadata-test', new ArrayCache());
+        $cache = new PsrCacheAdapter('metadata-test', new ArrayAdapter());
 
         $this->assertNull($cache->loadClassMetadataFromCache($refl = new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')));
         $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject'));
