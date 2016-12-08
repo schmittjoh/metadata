@@ -276,4 +276,28 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
         $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
         $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
     }
+
+    public function testLoadingCorruptMetadataFromCacheLoadsUsingDriver()
+    {
+        $driver = $this->getMock('Metadata\Driver\DriverInterface');
+        $driver
+            ->expects($this->exactly(1))
+            ->method('loadMetadataForClass')
+            ->will($this->returnValue(null))
+        ;
+
+        $cachedMetadata = null;
+        $cache = $this->getMock('Metadata\Cache\CacheInterface');
+        $cache
+            ->expects($this->once())
+            ->method('loadClassMetadataFromCache')
+            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->will($this->throwException(new \ReflectionException()))
+        ;
+
+        $factory = new MetadataFactory($driver, 'Metadata\ClassHierarchyMetadata', true);
+        $factory->setCache($cache);
+        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
+        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+    }
 }
