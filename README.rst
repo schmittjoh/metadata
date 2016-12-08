@@ -1,6 +1,11 @@
 Metadata is a library for class/method/property metadata management in PHP
 ==========================================================================
 
+.. |stable| image:: https://poser.pugx.org/jms/metadata/v/stable.png
+.. |total| image:: https://poser.pugx.org/jms/metadata/downloads.png
+
+|stable| - |total|
+
 Overview
 --------
 
