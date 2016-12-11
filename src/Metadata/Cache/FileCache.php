@@ -11,10 +11,10 @@ class FileCache implements CacheInterface
     public function __construct($dir)
     {
         if (!is_dir($dir)) {
-            throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir));
+            throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir), 1);
         }
         if (!is_writable($dir)) {
-            throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable.', $dir));
+            throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable.', $dir), 1);
         }
 
         $this->dir = rtrim($dir, '\\/');
