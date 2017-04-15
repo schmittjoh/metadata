@@ -1,0 +1,27 @@
+{
+    "name": "jms/metadata",
+    "description": "Class/method/property metadata management in PHP",
+    "keywords": ["annotations","metadata","yaml","xml"],
+    "type": "library",
+    "license": "Apache",
+    "authors": [
+        {
+            "name": "Johannes M. Schmitt",
+            "email": "schmittjoh@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev" : {
+        "doctrine/common" : ">=2.0,<2.4-dev"
+    },
+    "autoload": {
+        "psr-0": { "Metadata\\": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2.x-dev"
+        }
+    }
+}

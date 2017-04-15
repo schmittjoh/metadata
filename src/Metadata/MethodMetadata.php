@@ -41,6 +41,9 @@ class MethodMetadata implements \Serializable
         $this->reflection->setAccessible(true);
     }
 
+    /**
+     * @param Tests\Fixtures\TestObject $obj
+     */
     public function invoke($obj, array $args = array())
     {
         return $this->reflection->invokeArgs($obj, $args);

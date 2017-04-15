@@ -23,4 +23,29 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $ref = new \ReflectionClass('Metadata\Tests\Driver\Fixture\C\SubDir\C');
         $this->assertEquals(realpath(__DIR__.'/Fixture/C/SubDir.C.yml'), realpath($locator->findFileForClass($ref, 'yml')));
     }
+
+    public function testTraits()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('No traits available');
+        }
+
+        $locator = new FileLocator(array(
+            'Metadata\Tests\Driver\Fixture\T' => __DIR__.'/Fixture/T',
+        ));
+
+        $ref = new \ReflectionClass('Metadata\Tests\Driver\Fixture\T\T');
+        $this->assertEquals(realpath(__DIR__.'/Fixture/T/T.xml'), realpath($locator->findFileForClass($ref, 'xml')));
+    }
+
+    public function testFindFileForGlobalNamespacedClass()
+    {
+        $locator = new FileLocator(array(
+            '' => __DIR__.'/Fixture/D',
+        ));
+
+        require_once __DIR__.'/Fixture/D/D.php';
+        $ref = new \ReflectionClass('D');
+        $this->assertEquals(realpath(__DIR__.'/Fixture/D/D.yml'), realpath($locator->findFileForClass($ref, 'yml')));
+    }
 }

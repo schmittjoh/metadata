@@ -41,11 +41,18 @@ class PropertyMetadata implements \Serializable
         $this->reflection->setAccessible(true);
     }
 
+    /**
+     * @param Tests\Fixtures\TestObject $obj
+     */
     public function getValue($obj)
     {
         return $this->reflection->getValue($obj);
     }
 
+    /**
+     * @param Tests\Fixtures\TestObject $obj
+     * @param string                    $value
+     */
     public function setValue($obj, $value)
     {
         $this->reflection->setValue($obj, $value);
