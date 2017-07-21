@@ -34,7 +34,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
     public function getAllClassNames()
     {
         if (!$this->locator instanceof AdvancedFileLocatorInterface) {
-            throw new \RuntimeException('Locator "%s" must be an instance of "AdvancedFileLocatorInterface".');
+            throw new \RuntimeException(sprintf('Locator "%s" must be an instance of "AdvancedFileLocatorInterface".', get_class($this->locator)));
         }
 
         return $this->locator->findAllClasses($this->getExtension());
