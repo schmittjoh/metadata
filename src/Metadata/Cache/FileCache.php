@@ -25,8 +25,8 @@ class FileCache implements CacheInterface
      */
     public function loadClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
-        if (!file_exists($path)) {
+        $path = $this->dir.'/'.$this->escapeFileName($class->name).'.cache.php';
+        if (!@file_exists($path)) {
             return null;
         }
 
@@ -38,7 +38,7 @@ class FileCache implements CacheInterface
      */
     public function putClassMetadataInCache(ClassMetadata $metadata)
     {
-        $path = $this->dir.'/'.strtr($metadata->name, '\\', '-').'.cache.php';
+        $path = $this->dir.'/'.$this->escapeFileName($metadata->name).'.cache.php';
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
@@ -75,9 +75,23 @@ class FileCache implements CacheInterface
      */
     public function evictClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
+        $path = $this->dir.'/'.$this->escapeFileName($class->name).'.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }
+    }
+
+    /**
+     * @param string $fileName
+     * @return string
+     */
+    private function escapeFileName($fileName)
+    {
+        $match = [];
+        // Support anonymous classes
+        if (preg_match('/([\w\d]+?\.php.*)$/', $fileName, $match)) {
+            $fileName = $match[1];
+        }
+        return strtr($fileName, '\\', '-');
     }
 }
