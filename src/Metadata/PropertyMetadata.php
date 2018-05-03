@@ -30,7 +30,6 @@ class PropertyMetadata implements \Serializable
 {
     public $class;
     public $name;
-    public $reflection;
 
     public function __construct($class, $name)
     {

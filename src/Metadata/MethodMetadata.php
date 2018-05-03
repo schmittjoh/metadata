@@ -36,6 +36,20 @@ class MethodMetadata implements \Serializable
     {
         $this->class = $class;
         $this->name = $name;
+
+        $this->reflection = new \ReflectionMethod($class, $name);
+        $this->reflection->setAccessible(true);
+    }
+
+    /**
+     * @param object $obj
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function invoke($obj, array $args = array())
+    {
+        return $this->reflection->invokeArgs($obj, $args);
     }
 
     public function serialize()
@@ -46,5 +60,8 @@ class MethodMetadata implements \Serializable
     public function unserialize($str)
     {
         list($this->class, $this->name) = unserialize($str);
+
+        $this->reflection = new \ReflectionMethod($this->class, $this->name);
+        $this->reflection->setAccessible(true);
     }
 }
