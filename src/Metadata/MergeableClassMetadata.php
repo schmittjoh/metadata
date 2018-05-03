@@ -11,7 +11,6 @@ class MergeableClassMetadata extends ClassMetadata implements MergeableInterface
         }
 
         $this->name = $object->name;
-        $this->reflection = $object->reflection;
         $this->methodMetadata = array_merge($this->methodMetadata, $object->methodMetadata);
         $this->propertyMetadata = array_merge($this->propertyMetadata, $object->propertyMetadata);
         $this->fileResources = array_merge($this->fileResources, $object->fileResources);

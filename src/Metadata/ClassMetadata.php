@@ -29,7 +29,6 @@ namespace Metadata;
 class ClassMetadata implements \Serializable
 {
     public $name;
-    public $reflection;
     public $methodMetadata = array();
     public $propertyMetadata = array();
     public $fileResources = array();
@@ -38,8 +37,6 @@ class ClassMetadata implements \Serializable
     public function __construct($name)
     {
         $this->name = $name;
-
-        $this->reflection = new \ReflectionClass($name);
         $this->createdAt = time();
     }
 
@@ -91,8 +88,6 @@ class ClassMetadata implements \Serializable
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt
-        ) = unserialize($str);
-
-        $this->reflection = new \ReflectionClass($this->name);
+            ) = unserialize($str);
     }
 }
