@@ -2,21 +2,34 @@
 
 namespace Metadata\Tests\Cache;
 
-use Metadata\ClassMetadata;
 use Metadata\Cache\FileCache;
+use Metadata\ClassMetadata;
+use Metadata\Tests\Fixtures\TestObject;
 
 class FileCacheTest extends \PHPUnit_Framework_TestCase
 {
+    private $dir;
+
+    public function setUp()
+    {
+        $this->dir = sys_get_temp_dir() . "/jms-" . md5(__CLASS__);
+        if (is_dir($this->dir)) {
+            array_map('unlink', glob("$this->dir/*"));
+        } else {
+            mkdir($this->dir);
+        }
+    }
+
     public function testLoadEvictPutClassMetadataFromInCache()
     {
-        $cache = new FileCache(sys_get_temp_dir());
+        $cache = new FileCache($this->dir);
 
-        $this->assertNull($cache->loadClassMetadataFromCache($refl = new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')));
-        $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject'));
+        $this->assertNull($cache->load(TestObject::class));
+        $cache->put($metadata = new ClassMetadata(TestObject::class));
 
-        $this->assertEquals($metadata, $cache->loadClassMetadataFromCache($refl));
+        $this->assertEquals($metadata, $cache->load(TestObject::class));
 
-        $cache->evictClassMetadataFromCache($refl);
-        $this->assertNull($cache->loadClassMetadataFromCache($refl));
+        $cache->evict(TestObject::class);
+        $this->assertNull($cache->load(TestObject::class));
     }
 }

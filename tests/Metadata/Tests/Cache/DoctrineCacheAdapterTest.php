@@ -5,6 +5,7 @@ namespace Metadata\Tests\Cache;
 use Metadata\ClassMetadata;
 use Metadata\Cache\DoctrineCacheAdapter;
 use Doctrine\Common\Cache\ArrayCache;
+use Metadata\Tests\Fixtures\TestObject;
 
 /**
  * @requires PHP 5.4
@@ -22,12 +23,12 @@ class DoctrineCacheAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $cache = new DoctrineCacheAdapter('metadata-test', new ArrayCache());
 
-        $this->assertNull($cache->loadClassMetadataFromCache($refl = new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')));
-        $cache->putClassMetadataInCache($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject'));
+        $this->assertNull($cache->load(TestObject::class));
+        $cache->put($metadata = new ClassMetadata(TestObject::class));
 
-        $this->assertEquals($metadata, $cache->loadClassMetadataFromCache($refl));
+        $this->assertEquals($metadata, $cache->load(TestObject::class));
 
-        $cache->evictClassMetadataFromCache($refl);
-        $this->assertNull($cache->loadClassMetadataFromCache($refl));
+        $cache->evict(TestObject::class);
+        $this->assertNull($cache->load(TestObject::class));
     }
 }

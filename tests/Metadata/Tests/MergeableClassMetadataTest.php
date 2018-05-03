@@ -23,7 +23,6 @@ class MergeableClassMetadataTest extends \PHPUnit_Framework_TestCase
 
         $parentMetadata->merge($childMetadata);
         $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $parentMetadata->name);
-        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $parentMetadata->reflection->name);
         $this->assertEquals(array('foo' => 'baz', 'baz' => 'baz',), $parentMetadata->propertyMetadata);
         $this->assertEquals(array('foo' => 'baz',), $parentMetadata->methodMetadata);
         $this->assertEquals(1, $parentMetadata->createdAt);
