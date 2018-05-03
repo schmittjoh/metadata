@@ -79,7 +79,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
             // check the cache
             if (null !== $this->cache) {
-                if (($classMetadata = $this->cache->loadClassMetadataFromCache($class)) instanceof NullMetadata) {
+                if (($classMetadata = $this->cache->load($class)) instanceof NullMetadata) {
                     $this->loadedClassMetadata[$name] = $classMetadata;
                     continue;
                 }
@@ -90,7 +90,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
                     }
 
                     if ($this->debug && !$classMetadata->isFresh()) {
-                        $this->cache->evictClassMetadataFromCache($classMetadata->reflection);
+                        $this->cache->evict($classMetadata->name);
                     } else {
                         $this->loadedClassMetadata[$name] = $classMetadata;
                         $this->addClassMetadata($metadata, $classMetadata);
@@ -105,14 +105,14 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
                 $this->addClassMetadata($metadata, $classMetadata);
 
                 if (null !== $this->cache) {
-                    $this->cache->putClassMetadataInCache($classMetadata);
+                    $this->cache->put($classMetadata);
                 }
 
                 continue;
             }
 
             if (null !== $this->cache && !$this->debug) {
-                $this->cache->putClassMetadataInCache(new NullMetadata($class->getName()));
+                $this->cache->put(new NullMetadata($class->getName()));
             }
         }
 

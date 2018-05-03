@@ -23,9 +23,9 @@ class FileCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function loadClassMetadataFromCache(\ReflectionClass $class)
+    public function load(string $class):?ClassMetadata
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
+        $path = $this->dir.'/'.strtr($class, '\\', '-').'.cache.php';
         if (!file_exists($path)) {
             return null;
         }
@@ -36,7 +36,7 @@ class FileCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function putClassMetadataInCache(ClassMetadata $metadata)
+    public function put(ClassMetadata $metadata):void
     {
         $path = $this->dir.'/'.strtr($metadata->name, '\\', '-').'.cache.php';
 
@@ -73,9 +73,9 @@ class FileCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function evictClassMetadataFromCache(\ReflectionClass $class)
+    public function evict(string $class):void
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
+        $path = $this->dir.'/'.strtr($class, '\\', '-').'.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }
