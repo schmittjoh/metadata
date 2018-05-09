@@ -3,8 +3,9 @@
 namespace Metadata\Tests\Driver;
 
 use Metadata\Driver\FileLocator;
+use PHPUnit\Framework\TestCase;
 
-class FileLocatorTest extends \PHPUnit_Framework_TestCase
+class FileLocatorTest extends TestCase
 {
     public function testFindFileForClass()
     {

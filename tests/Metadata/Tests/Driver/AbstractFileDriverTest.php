@@ -3,11 +3,11 @@
 namespace Metadata\Tests\Driver;
 
 use Metadata\ClassMetadata;
-
+use PHPUnit\Framework\TestCase;
 /**
  * @author Jordan Stout <j@jrdn.org>
  */
-class AbstractFileDriverTest extends \PHPUnit_Framework_TestCase
+class AbstractFileDriverTest extends TestCase
 {
     private static $extension = 'jms_metadata.yml';
 

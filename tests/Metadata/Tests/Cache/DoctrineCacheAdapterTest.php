@@ -6,11 +6,12 @@ use Metadata\ClassMetadata;
 use Metadata\Cache\DoctrineCacheAdapter;
 use Doctrine\Common\Cache\ArrayCache;
 use Metadata\Tests\Fixtures\TestObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @requires PHP 5.4
  */
-class DoctrineCacheAdapterTest extends \PHPUnit_Framework_TestCase
+class DoctrineCacheAdapterTest extends TestCase
 {
     public function setUp()
     {

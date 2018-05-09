@@ -6,8 +6,9 @@ use Metadata\PropertyMetadata;
 use Metadata\MergeableClassMetadata;
 use Metadata\ClassMetadata;
 use Metadata\MetadataFactory;
+use PHPUnit\Framework\TestCase;
 
-class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
+class MetadataFactoryTest extends TestCase
 {
     public function testGetMetadataForClass()
     {
@@ -197,7 +198,7 @@ class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllClassNamesThrowsException()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
         $factory = new MetadataFactory($this->createMock('Metadata\Driver\DriverInterface'));
         $factory->getAllClassNames();
     }

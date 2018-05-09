@@ -3,8 +3,9 @@
 namespace Metadata\Tests;
 
 use Metadata\MergeableClassMetadata;
+use PHPUnit\Framework\TestCase;
 
-class MergeableClassMetadataTest extends \PHPUnit_Framework_TestCase
+class MergeableClassMetadataTest extends TestCase
 {
     public function testMerge()
     {

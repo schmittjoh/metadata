@@ -4,8 +4,9 @@ namespace Metadata\Tests\Driver;
 
 use Metadata\ClassMetadata;
 use Metadata\Driver\DriverChain;
+use PHPUnit\Framework\TestCase;
 
-class DriverChainTest extends \PHPUnit_Framework_TestCase
+class DriverChainTest extends TestCase
 {
     public function testLoadMetadataForClass()
     {

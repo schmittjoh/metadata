@@ -4,8 +4,9 @@ namespace Metadata\Tests;
 
 use Metadata\Tests\Fixtures\TestObject;
 use Metadata\PropertyMetadata;
+use PHPUnit\Framework\TestCase;
 
-class PropertyMetadataTest extends \PHPUnit_Framework_TestCase
+class PropertyMetadataTest extends TestCase
 {
     public function testConstructor()
     {

@@ -5,8 +5,9 @@ namespace Metadata\Tests\Cache;
 use Metadata\Cache\FileCache;
 use Metadata\ClassMetadata;
 use Metadata\Tests\Fixtures\TestObject;
+use PHPUnit\Framework\TestCase;
 
-class FileCacheTest extends \PHPUnit_Framework_TestCase
+class FileCacheTest extends TestCase
 {
     private $dir;
 

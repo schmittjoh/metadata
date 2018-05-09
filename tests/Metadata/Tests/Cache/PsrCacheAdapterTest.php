@@ -6,11 +6,12 @@ use Metadata\ClassMetadata;
 use Metadata\Cache\PsrCacheAdapter;
 use Metadata\Tests\Fixtures\TestObject;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @requires PHP 5.5
  */
-class PsrCacheAdapterTest extends \PHPUnit_Framework_TestCase
+class PsrCacheAdapterTest extends TestCase
 {
     public function setUp()
     {
