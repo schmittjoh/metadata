@@ -22,7 +22,7 @@ interface CacheInterface
      *
      * @return void
      */
-    function put(ClassMetadata $metadata):void;
+    function put(ClassMetadata $metadata): void;
 
     /**
      * Evicts the class metadata for the given class from the cache.
@@ -31,5 +31,5 @@ interface CacheInterface
      *
      * @return void
      */
-    function evict(string $class):void;
+    function evict(string $class): void;
 }

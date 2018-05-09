@@ -4,7 +4,7 @@ namespace Metadata;
 
 class MergeableClassMetadata extends ClassMetadata implements MergeableInterface
 {
-    public function merge(MergeableInterface $object)
+    public function merge(MergeableInterface $object): void
     {
         if (!$object instanceof MergeableClassMetadata) {
             throw new \InvalidArgumentException('$object must be an instance of MergeableClassMetadata.');

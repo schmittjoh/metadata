@@ -34,23 +34,23 @@ class ClassMetadata implements \Serializable
     public $fileResources = array();
     public $createdAt;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
         $this->createdAt = time();
     }
 
-    public function addMethodMetadata(MethodMetadata $metadata)
+    public function addMethodMetadata(MethodMetadata $metadata):void
     {
         $this->methodMetadata[$metadata->name] = $metadata;
     }
 
-    public function addPropertyMetadata(PropertyMetadata $metadata)
+    public function addPropertyMetadata(PropertyMetadata $metadata):void
     {
         $this->propertyMetadata[$metadata->name] = $metadata;
     }
 
-    public function isFresh($timestamp = null)
+    public function isFresh(?int $timestamp = null):bool
     {
         if (null === $timestamp) {
             $timestamp = $this->createdAt;

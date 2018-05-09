@@ -38,5 +38,5 @@ interface MetadataFactoryInterface
      *
      * @return ClassHierarchyMetadata|MergeableClassMetadata|null
      */
-    public function getMetadataForClass($className);
+    public function getMetadataForClass(string $className);
 }

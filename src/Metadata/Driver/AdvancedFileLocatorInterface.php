@@ -32,5 +32,5 @@ interface AdvancedFileLocatorInterface extends FileLocatorInterface
      *
      * @return array
      */
-    public function findAllClasses($extension);
+    public function findAllClasses(string $extension): array;
 }

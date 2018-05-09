@@ -31,7 +31,7 @@ class PropertyMetadata implements \Serializable
     public $class;
     public $name;
 
-    public function __construct($class, $name)
+    public function __construct(string $class, string $name)
     {
         $this->class = $class;
         $this->name = $name;

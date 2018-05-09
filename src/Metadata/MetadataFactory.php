@@ -18,9 +18,9 @@
 
 namespace Metadata;
 
+use Metadata\Cache\CacheInterface;
 use Metadata\Driver\AdvancedDriverInterface;
 use Metadata\Driver\DriverInterface;
-use Metadata\Cache\CacheInterface;
 
 class MetadataFactory implements AdvancedMetadataFactoryInterface
 {
@@ -34,25 +34,25 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
     /**
      * @param DriverInterface $driver
-     * @param string          $hierarchyMetadataClass
-     * @param boolean         $debug
+     * @param string $hierarchyMetadataClass
+     * @param boolean $debug
      */
-    public function __construct(DriverInterface $driver, $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', $debug = false)
+    public function __construct(DriverInterface $driver, ?string $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', bool $debug = false)
     {
         $this->driver = $driver;
         $this->hierarchyMetadataClass = $hierarchyMetadataClass;
-        $this->debug = (Boolean) $debug;
+        $this->debug =$debug;
     }
 
     /**
      * @param boolean $include
      */
-    public function setIncludeInterfaces($include)
+    public function setIncludeInterfaces(bool $include):void
     {
-        $this->includeInterfaces = (Boolean) $include;
+        $this->includeInterfaces = $include;
     }
 
-    public function setCache(CacheInterface $cache)
+    public function setCache(CacheInterface $cache):void
     {
         $this->cache = $cache;
     }
@@ -62,7 +62,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
      *
      * @return ClassHierarchyMetadata|MergeableClassMetadata|null
      */
-    public function getMetadataForClass($className)
+    public function getMetadataForClass(string $className)
     {
         if (isset($this->loadedMetadata[$className])) {
             return $this->filterNullMetadata($this->loadedMetadata[$className]);
@@ -85,7 +85,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
                 }
 
                 if (null !== $classMetadata) {
-                    if ( ! $classMetadata instanceof ClassMetadata) {
+                    if (!$classMetadata instanceof ClassMetadata) {
                         throw new \LogicException(sprintf('The cache must return instances of ClassMetadata, but got %s.', var_export($classMetadata, true)));
                     }
 
@@ -126,7 +126,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getAllClassNames()
+    public function getAllClassNames():array
     {
         if (!$this->driver instanceof AdvancedDriverInterface) {
             throw new \RuntimeException(
@@ -139,7 +139,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
     /**
      * @param ClassMetadata|null $metadata
-     * @param ClassMetadata      $toAdd
+     * @param ClassMetadata $toAdd
      */
     private function addClassMetadata(&$metadata, $toAdd)
     {

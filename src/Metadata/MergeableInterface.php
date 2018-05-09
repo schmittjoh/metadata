@@ -9,5 +9,5 @@ interface MergeableInterface
      *
      * @return void
      */
-    public function merge(MergeableInterface $object);
+    public function merge(MergeableInterface $object): void;
 }

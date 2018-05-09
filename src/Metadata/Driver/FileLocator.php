@@ -11,18 +11,13 @@ class FileLocator implements AdvancedFileLocatorInterface
         $this->dirs = $dirs;
     }
 
-    public function getDirs()
-    {
-        return $this->dirs;
-    }
-
     /**
      * @param \ReflectionClass $class
-     * @param string           $extension
+     * @param string $extension
      *
      * @return string|null
      */
-    public function findFileForClass(\ReflectionClass $class, $extension)
+    public function findFileForClass(\ReflectionClass $class, string $extension): ?string
     {
         foreach ($this->dirs as $prefix => $dir) {
             if ('' !== $prefix && 0 !== strpos($class->getNamespaceName(), $prefix)) {
@@ -30,7 +25,7 @@ class FileLocator implements AdvancedFileLocatorInterface
             }
 
             $len = '' === $prefix ? 0 : strlen($prefix) + 1;
-            $path = $dir.'/'.str_replace('\\', '.', substr($class->name, $len)).'.'.$extension;
+            $path = $dir . '/' . str_replace('\\', '.', substr($class->name, $len)) . '.' . $extension;
             if (file_exists($path)) {
                 return $path;
             }
@@ -42,7 +37,7 @@ class FileLocator implements AdvancedFileLocatorInterface
     /**
      * {@inheritDoc}
      */
-    public function findAllClasses($extension)
+    public function findAllClasses(string $extension): array
     {
         $classes = array();
         foreach ($this->dirs as $prefix => $dir) {
@@ -51,13 +46,13 @@ class FileLocator implements AdvancedFileLocatorInterface
                 new \RecursiveDirectoryIterator($dir),
                 \RecursiveIteratorIterator::LEAVES_ONLY
             );
-            $nsPrefix = $prefix !== '' ? $prefix.'\\' : '';
+            $nsPrefix = $prefix !== '' ? $prefix . '\\' : '';
             foreach ($iterator as $file) {
-                if (($fileName = $file->getBasename('.'.$extension)) == $file->getBasename()) {
+                if (($fileName = $file->getBasename('.' . $extension)) == $file->getBasename()) {
                     continue;
                 }
 
-                $classes[] = $nsPrefix.str_replace('.', '\\', $fileName);
+                $classes[] = $nsPrefix . str_replace('.', '\\', $fileName);
             }
         }
 

@@ -27,22 +27,22 @@ class ClassHierarchyMetadata
 {
     public $classMetadata = array();
 
-    public function addClassMetadata(ClassMetadata $metadata)
+    public function addClassMetadata(ClassMetadata $metadata): void
     {
         $this->classMetadata[$metadata->name] = $metadata;
     }
 
-    public function getRootClassMetadata()
+    public function getRootClassMetadata(): ?ClassMetadata
     {
         return reset($this->classMetadata);
     }
 
-    public function getOutsideClassMetadata()
+    public function getOutsideClassMetadata(): ?ClassMetadata
     {
         return end($this->classMetadata);
     }
 
-    public function isFresh($timestamp)
+    public function isFresh($timestamp): bool
     {
         foreach ($this->classMetadata as $metadata) {
             if (!$metadata->isFresh($timestamp)) {

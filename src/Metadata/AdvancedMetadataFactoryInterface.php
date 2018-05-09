@@ -32,5 +32,5 @@ interface AdvancedMetadataFactoryInterface extends MetadataFactoryInterface
      * @throws \RuntimeException if driver does not an advanced driver.
      * @return array
      */
-    public function getAllClassNames();
+    public function getAllClassNames(): array;
 }

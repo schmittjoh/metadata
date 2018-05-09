@@ -11,7 +11,7 @@ class PsrCacheAdapter implements CacheInterface
     private $pool;
     private $lastItem;
 
-    public function __construct($prefix, CacheItemPoolInterface $pool)
+    public function __construct(string $prefix, CacheItemPoolInterface $pool)
     {
         $this->prefix = $prefix;
         $this->pool = $pool;
@@ -20,7 +20,7 @@ class PsrCacheAdapter implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function load(string $class):?ClassMetadata
+    public function load(string $class): ?ClassMetadata
     {
         $this->lastItem = $this->pool->getItem(strtr($this->prefix . $class, '\\', '.'));
 
@@ -30,7 +30,7 @@ class PsrCacheAdapter implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function put(ClassMetadata $metadata):void
+    public function put(ClassMetadata $metadata): void
     {
         $key = strtr($this->prefix . $metadata->name, '\\', '.');
 
@@ -44,7 +44,7 @@ class PsrCacheAdapter implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function evict(string $class):void
+    public function evict(string $class): void
     {
         $this->pool->deleteItem(strtr($this->prefix . $class, '\\', '.'));
     }
