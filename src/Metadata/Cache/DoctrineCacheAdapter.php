@@ -14,7 +14,6 @@ class DoctrineCacheAdapter implements CacheInterface
      * @param string $prefix
      */
     private $prefix;
-
     /**
      * @var Cache $cache
      */
@@ -24,7 +23,7 @@ class DoctrineCacheAdapter implements CacheInterface
      * @param string $prefix
      * @param Cache $cache
      */
-    public function __construct($prefix, Cache $cache)
+    public function __construct(string $prefix, Cache $cache)
     {
         $this->prefix = $prefix;
         $this->cache = $cache;
@@ -33,16 +32,16 @@ class DoctrineCacheAdapter implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function loadClassMetadataFromCache(\ReflectionClass $class)
+    public function load(string $class): ?ClassMetadata
     {
-        $cache = $this->cache->fetch($this->prefix . $class->name);
+        $cache = $this->cache->fetch($this->prefix . $class);
         return false === $cache ? null : $cache;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function putClassMetadataInCache(ClassMetadata $metadata)
+    public function put(ClassMetadata $metadata): void
     {
         $this->cache->save($this->prefix . $metadata->name, $metadata);
     }
@@ -50,8 +49,8 @@ class DoctrineCacheAdapter implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function evictClassMetadataFromCache(\ReflectionClass $class)
+    public function evict(string $class): void
     {
-        $this->cache->delete($this->prefix . $class->name);
+        $this->cache->delete($this->prefix . $class);
     }
 }

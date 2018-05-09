@@ -29,31 +29,28 @@ namespace Metadata;
 class ClassMetadata implements \Serializable
 {
     public $name;
-    public $reflection;
     public $methodMetadata = array();
     public $propertyMetadata = array();
     public $fileResources = array();
     public $createdAt;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
-
-        $this->reflection = new \ReflectionClass($name);
         $this->createdAt = time();
     }
 
-    public function addMethodMetadata(MethodMetadata $metadata)
+    public function addMethodMetadata(MethodMetadata $metadata):void
     {
         $this->methodMetadata[$metadata->name] = $metadata;
     }
 
-    public function addPropertyMetadata(PropertyMetadata $metadata)
+    public function addPropertyMetadata(PropertyMetadata $metadata):void
     {
         $this->propertyMetadata[$metadata->name] = $metadata;
     }
 
-    public function isFresh($timestamp = null)
+    public function isFresh(?int $timestamp = null):bool
     {
         if (null === $timestamp) {
             $timestamp = $this->createdAt;
@@ -91,8 +88,6 @@ class ClassMetadata implements \Serializable
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt
-        ) = unserialize($str);
-
-        $this->reflection = new \ReflectionClass($this->name);
+            ) = unserialize($str);
     }
 }

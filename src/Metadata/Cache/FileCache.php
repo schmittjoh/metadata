@@ -8,7 +8,7 @@ class FileCache implements CacheInterface
 {
     private $dir;
 
-    public function __construct($dir)
+    public function __construct(string $dir)
     {
         if (!is_dir($dir)) {
             throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir));
@@ -23,9 +23,9 @@ class FileCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function loadClassMetadataFromCache(\ReflectionClass $class)
+    public function load(string $class): ?ClassMetadata
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
+        $path = $this->dir . '/' . strtr($class, '\\', '-') . '.cache.php';
         if (!file_exists($path)) {
             return null;
         }
@@ -36,13 +36,13 @@ class FileCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function putClassMetadataInCache(ClassMetadata $metadata)
+    public function put(ClassMetadata $metadata): void
     {
-        $path = $this->dir.'/'.strtr($metadata->name, '\\', '-').'.cache.php';
+        $path = $this->dir . '/' . strtr($metadata->name, '\\', '-') . '.cache.php';
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
-        file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
-        
+        file_put_contents($tmpFile, '<?php return unserialize(' . var_export(serialize($metadata), true) . ');');
+
         // Let's not break filesystems which do not support chmod.
         @chmod($tmpFile, 0666 & ~umask());
 
@@ -55,7 +55,8 @@ class FileCache implements CacheInterface
      * @param string $source
      * @param string $target
      */
-    private function renameFile($source, $target) {
+    private function renameFile($source, $target)
+    {
         if (false === @rename($source, $target)) {
             if (defined('PHP_WINDOWS_VERSION_BUILD')) {
                 if (false === copy($source, $target)) {
@@ -73,9 +74,9 @@ class FileCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function evictClassMetadataFromCache(\ReflectionClass $class)
+    public function evict(string $class): void
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
+        $path = $this->dir . '/' . strtr($class, '\\', '-') . '.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }

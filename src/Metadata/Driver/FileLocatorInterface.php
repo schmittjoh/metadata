@@ -6,9 +6,9 @@ interface FileLocatorInterface
 {
     /**
      * @param \ReflectionClass $class
-     * @param string           $extension
+     * @param string $extension
      *
      * @return string|null
      */
-    public function findFileForClass(\ReflectionClass $class, $extension);
+    public function findFileForClass(\ReflectionClass $class, string $extension): ?string;
 }

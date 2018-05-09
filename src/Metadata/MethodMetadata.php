@@ -43,7 +43,7 @@ class MethodMetadata implements \Serializable
 
     /**
      * @param object $obj
-     * @param array  $args
+     * @param array $args
      *
      * @return mixed
      */

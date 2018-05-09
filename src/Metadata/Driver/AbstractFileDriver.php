@@ -2,6 +2,8 @@
 
 namespace Metadata\Driver;
 
+use Metadata\ClassMetadata;
+
 /**
  * Base file driver implementation.
  *
@@ -19,7 +21,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
         $this->locator = $locator;
     }
 
-    public function loadMetadataForClass(\ReflectionClass $class)
+    public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata
     {
         if (null === $path = $this->locator->findFileForClass($class, $this->getExtension())) {
             return null;
@@ -31,7 +33,7 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
     /**
      * {@inheritDoc}
      */
-    public function getAllClassNames()
+    public function getAllClassNames(): array
     {
         if (!$this->locator instanceof AdvancedFileLocatorInterface) {
             throw new \RuntimeException('Locator "%s" must be an instance of "AdvancedFileLocatorInterface".');
@@ -44,16 +46,16 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
      * Parses the content of the file, and converts it to the desired metadata.
      *
      * @param \ReflectionClass $class
-     * @param string           $file
+     * @param string $file
      *
      * @return \Metadata\ClassMetadata|null
      */
-    abstract protected function loadMetadataFromFile(\ReflectionClass $class, $file);
+    abstract protected function loadMetadataFromFile(\ReflectionClass $class, string $file): ?ClassMetadata;
 
     /**
      * Returns the extension of the file.
      *
      * @return string
      */
-    abstract protected function getExtension();
+    abstract protected function getExtension(): string;
 }

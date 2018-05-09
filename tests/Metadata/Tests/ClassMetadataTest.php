@@ -3,15 +3,15 @@
 namespace Metadata\Tests;
 
 use Metadata\ClassMetadata;
+use PHPUnit\Framework\TestCase;
 
-class ClassMetadataTest extends \PHPUnit_Framework_TestCase
+class ClassMetadataTest extends TestCase
 {
     public function testConstructor()
     {
         $metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject');
 
         $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->name);
-        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->reflection->name);
     }
 
     public function testSerializeUnserialize()

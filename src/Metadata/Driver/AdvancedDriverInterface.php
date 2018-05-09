@@ -30,5 +30,5 @@ interface AdvancedDriverInterface extends DriverInterface
      *
      * @return array
      */
-    public function getAllClassNames();
+    public function getAllClassNames(): array;
 }

@@ -9,5 +9,4 @@ namespace Metadata;
  */
 class NullMetadata extends ClassMetadata
 {
-
 }
