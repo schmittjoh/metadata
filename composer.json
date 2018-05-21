@@ -3,7 +3,7 @@
     "description": "Class/method/property metadata management in PHP",
     "keywords": ["annotations","metadata","yaml","xml"],
     "type": "library",
-    "license": "Apache-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Johannes M. Schmitt",
