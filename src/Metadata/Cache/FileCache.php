@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Cache;
 
 use Metadata\ClassMetadata;
 
 class FileCache implements CacheInterface
 {
+    /**
+     * @var string
+     */
     private $dir;
 
     public function __construct(string $dir)
@@ -52,10 +57,8 @@ class FileCache implements CacheInterface
     /**
      * Renames a file with fallback for windows
      *
-     * @param string $source
-     * @param string $target
      */
-    private function renameFile($source, $target)
+    private function renameFile(string $source, string $target): void
     {
         if (false === @rename($source, $target)) {
             if (defined('PHP_WINDOWS_VERSION_BUILD')) {

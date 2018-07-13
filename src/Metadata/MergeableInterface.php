@@ -1,13 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 interface MergeableInterface
 {
-    /**
-     * @param MergeableInterface $object
-     *
-     * @return void
-     */
     public function merge(MergeableInterface $object): void;
 }

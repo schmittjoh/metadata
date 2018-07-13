@@ -1,3 +1,7 @@
 <?php
 
-class D { }
+declare(strict_types=1);
+
+class D
+{
+}

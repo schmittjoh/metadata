@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Driver;
 
 use Metadata\ClassMetadata;
@@ -44,18 +46,11 @@ abstract class AbstractFileDriver implements AdvancedDriverInterface
 
     /**
      * Parses the content of the file, and converts it to the desired metadata.
-     *
-     * @param \ReflectionClass $class
-     * @param string $file
-     *
-     * @return \Metadata\ClassMetadata|null
      */
     abstract protected function loadMetadataFromFile(\ReflectionClass $class, string $file): ?ClassMetadata;
 
     /**
      * Returns the extension of the file.
-     *
-     * @return string
      */
     abstract protected function getExtension(): string;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests\Cache;
 
 use Metadata\Cache\FileCache;
@@ -13,9 +15,9 @@ class FileCacheTest extends TestCase
 
     public function setUp()
     {
-        $this->dir = sys_get_temp_dir() . "/jms-" . md5(__CLASS__);
+        $this->dir = sys_get_temp_dir() . '/jms-' . md5(__CLASS__);
         if (is_dir($this->dir)) {
-            array_map('unlink', glob("$this->dir/*"));
+            array_map('unlink', glob($this->dir . '/*'));
         } else {
             mkdir($this->dir);
         }

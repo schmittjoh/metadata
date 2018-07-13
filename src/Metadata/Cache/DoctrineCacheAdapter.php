@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Cache;
 
 use Doctrine\Common\Cache\Cache;
@@ -11,18 +13,14 @@ use Metadata\ClassMetadata;
 class DoctrineCacheAdapter implements CacheInterface
 {
     /**
-     * @param string $prefix
+     * @var string
      */
     private $prefix;
     /**
-     * @var Cache $cache
+     * @var Cache
      */
     private $cache;
 
-    /**
-     * @param string $prefix
-     * @param Cache $cache
-     */
     public function __construct(string $prefix, Cache $cache)
     {
         $this->prefix = $prefix;

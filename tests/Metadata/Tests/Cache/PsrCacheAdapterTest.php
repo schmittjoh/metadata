@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests\Cache;
 
-use Metadata\ClassMetadata;
 use Metadata\Cache\PsrCacheAdapter;
+use Metadata\ClassMetadata;
 use Metadata\Tests\Fixtures\TestObject;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * @requires PHP 5.5

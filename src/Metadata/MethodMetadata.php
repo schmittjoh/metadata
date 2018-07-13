@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 /**
@@ -12,11 +14,22 @@ namespace Metadata;
  */
 class MethodMetadata implements \Serializable
 {
+    /**
+     * @var string
+     */
     public $class;
+
+    /**
+     * @var string
+     */
     public $name;
+
+    /**
+     * @var \ReflectionMethod
+     */
     public $reflection;
 
-    public function __construct($class, $name)
+    public function __construct(string $class, string $name)
     {
         $this->class = $class;
         $this->name = $name;
@@ -26,21 +39,35 @@ class MethodMetadata implements \Serializable
     }
 
     /**
-     * @param object $obj
-     * @param array $args
+     * @param mixed[] $args
      *
      * @return mixed
      */
-    public function invoke($obj, array $args = array())
+    public function invoke(object $obj, array $args = [])
     {
         return $this->reflection->invokeArgs($obj, $args);
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
+     *
+     * @return string
+     */
     public function serialize()
     {
-        return serialize(array($this->class, $this->name));
+        return serialize([$this->class, $this->name]);
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
+     *
+     * @param string $str
+     * @return void
+     */
     public function unserialize($str)
     {
         list($this->class, $this->name) = unserialize($str);

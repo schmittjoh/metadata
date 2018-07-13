@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Cache;
 
 use Metadata\ClassMetadata;
@@ -7,8 +9,19 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class PsrCacheAdapter implements CacheInterface
 {
+    /**
+     * @var string
+     */
     private $prefix;
+
+    /**
+     * @var CacheItemPoolInterface
+     */
     private $pool;
+
+    /**
+     * @var ClassMetadata
+     */
     private $lastItem;
 
     public function __construct(string $prefix, CacheItemPoolInterface $pool)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests\Driver;
 
 use Metadata\ClassMetadata;
@@ -16,7 +18,7 @@ class DriverChainTest extends TestCase
             ->method('loadMetadataForClass')
             ->will($this->returnValue($metadata = new ClassMetadata('\stdClass')))
         ;
-        $chain = new DriverChain(array($driver));
+        $chain = new DriverChain([$driver]);
 
         $this->assertSame($metadata, $chain->loadMetadataForClass(new \ReflectionClass('\stdClass')));
     }
@@ -27,22 +29,22 @@ class DriverChainTest extends TestCase
         $driver1
             ->expects($this->once())
             ->method('getAllClassNames')
-            ->will($this->returnValue(array('Foo')));
+            ->will($this->returnValue(['Foo']));
 
         $driver2 = $this->createMock('Metadata\\Driver\\AdvancedDriverInterface');
         $driver2
             ->expects($this->once())
             ->method('getAllClassNames')
-            ->will($this->returnValue(array('Bar')));
+            ->will($this->returnValue(['Bar']));
 
-        $chain = new DriverChain(array($driver1, $driver2));
+        $chain = new DriverChain([$driver1, $driver2]);
 
-        $this->assertSame(array('Foo', 'Bar'), $chain->getAllClassNames());
+        $this->assertSame(['Foo', 'Bar'], $chain->getAllClassNames());
     }
 
     public function testLoadMetadataForClassReturnsNullWhenNoMetadataIsFound()
     {
-        $driver = new DriverChain(array());
+        $driver = new DriverChain([]);
         $this->assertNull($driver->loadMetadataForClass(new \ReflectionClass('\stdClass')));
 
         $driver = $this->createMock('Metadata\\Driver\\DriverInterface');
@@ -51,7 +53,7 @@ class DriverChainTest extends TestCase
             ->method('loadMetadataForClass')
             ->will($this->returnValue(null))
         ;
-        $driverChain = new DriverChain(array($driver));
+        $driverChain = new DriverChain([$driver]);
         $this->assertNull($driver->loadMetadataForClass(new \ReflectionClass('\stdClass')));
     }
 
@@ -59,7 +61,7 @@ class DriverChainTest extends TestCase
     {
         $this->expectException('RuntimeException');
         $driver = $this->createMock('Metadata\\Driver\\DriverInterface');
-        $chain = new DriverChain(array($driver));
+        $chain = new DriverChain([$driver]);
         $chain->getAllClassNames();
     }
 }

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests;
 
-use Metadata\PropertyMetadata;
-use Metadata\MergeableClassMetadata;
 use Metadata\ClassMetadata;
+use Metadata\MergeableClassMetadata;
 use Metadata\MetadataFactory;
+use Metadata\PropertyMetadata;
 use PHPUnit\Framework\TestCase;
 
 class MetadataFactoryTest extends TestCase
@@ -18,7 +20,7 @@ class MetadataFactoryTest extends TestCase
             ->expects($this->at(0))
             ->method('loadMetadataForClass')
             ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
-            ->will($this->returnCallback(function($class) {
+            ->will($this->returnCallback(function ($class) {
                 return new ClassMetadata($class->getName());
             }))
         ;
@@ -26,7 +28,7 @@ class MetadataFactoryTest extends TestCase
             ->expects($this->at(1))
             ->method('loadMetadataForClass')
             ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestParent')))
-            ->will($this->returnCallback(function($class) {
+            ->will($this->returnCallback(function ($class) {
                 return new ClassMetadata($class->getName());
             }))
         ;
@@ -46,7 +48,7 @@ class MetadataFactoryTest extends TestCase
             ->expects($this->at(0))
             ->method('loadMetadataForClass')
             ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
-            ->will($this->returnCallback(function($class) {
+            ->will($this->returnCallback(function ($class) {
                 return new MergeableClassMetadata($class->getName());
             }))
         ;
@@ -54,7 +56,7 @@ class MetadataFactoryTest extends TestCase
             ->expects($this->at(1))
             ->method('loadMetadataForClass')
             ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestParent')))
-            ->will($this->returnCallback(function($class) {
+            ->will($this->returnCallback(function ($class) {
                 return new MergeableClassMetadata($class->getName());
             }))
         ;
@@ -73,7 +75,7 @@ class MetadataFactoryTest extends TestCase
         $driver
             ->expects($this->any())
             ->method('loadMetadataForClass')
-            ->will($this->returnCallback(function($class) {
+            ->will($this->returnCallback(function ($class) {
                 $metadata = new MergeableClassMetadata($class->name);
 
                 switch ($class->name) {
@@ -101,11 +103,11 @@ class MetadataFactoryTest extends TestCase
 
         $subClassA = $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA');
         $this->assertInstanceOf('Metadata\MergeableClassMetadata', $subClassA);
-        $this->assertEquals(array('foo', 'bar'), array_keys($subClassA->propertyMetadata));
+        $this->assertEquals(['foo', 'bar'], array_keys($subClassA->propertyMetadata));
 
         $subClassB = $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassB');
         $this->assertInstanceOf('Metadata\MergeableClassMetadata', $subClassB);
-        $this->assertEquals(array('foo', 'baz'), array_keys($subClassB->propertyMetadata));
+        $this->assertEquals(['foo', 'baz'], array_keys($subClassB->propertyMetadata));
     }
 
     public function testGetMetadataWithCache()
@@ -132,7 +134,6 @@ class MetadataFactoryTest extends TestCase
             ->with($this->equalTo($metadata))
         ;
         $factory->setCache($cache);
-
 
         $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
         $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
@@ -190,10 +191,10 @@ class MetadataFactoryTest extends TestCase
         $driver
             ->expects($this->once())
             ->method('getAllClassNames')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $factory = new MetadataFactory($driver);
-        $this->assertSame(array(), $factory->getAllClassNames());
+        $this->assertSame([], $factory->getAllClassNames());
     }
 
     public function testGetAllClassNamesThrowsException()

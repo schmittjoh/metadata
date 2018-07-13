@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 use Metadata\Cache\CacheInterface;
@@ -8,43 +10,61 @@ use Metadata\Driver\DriverInterface;
 
 class MetadataFactory implements AdvancedMetadataFactoryInterface
 {
+    /**
+     * @var DriverInterface
+     */
     private $driver;
-    private $cache;
-    private $loadedMetadata = array();
-    private $loadedClassMetadata = array();
-    private $hierarchyMetadataClass;
-    private $includeInterfaces = false;
-    private $debug;
 
     /**
-     * @param DriverInterface $driver
-     * @param string $hierarchyMetadataClass
-     * @param boolean $debug
+     * @var CacheInterface
      */
+    private $cache;
+
+    /**
+     * @var ClassMetadata[]
+     */
+    private $loadedMetadata = [];
+
+    /**
+     * @var ClassMetadata[]
+     */
+    private $loadedClassMetadata = [];
+
+    /**
+     * @var null|string
+     */
+    private $hierarchyMetadataClass;
+
+    /**
+     * @var bool
+     */
+    private $includeInterfaces = false;
+
+    /**
+     * @var bool
+     */
+    private $debug = false;
+
     public function __construct(DriverInterface $driver, ?string $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', bool $debug = false)
     {
         $this->driver = $driver;
         $this->hierarchyMetadataClass = $hierarchyMetadataClass;
-        $this->debug =$debug;
+        $this->debug = $debug;
     }
 
-    /**
-     * @param boolean $include
-     */
-    public function setIncludeInterfaces(bool $include):void
+    public function setIncludeInterfaces(bool $include): void
     {
         $this->includeInterfaces = $include;
     }
 
-    public function setCache(CacheInterface $cache):void
+    public function setCache(CacheInterface $cache): void
     {
         $this->cache = $cache;
     }
 
+
     /**
-     * @param string $className
-     *
-     * @return ClassHierarchyMetadata|MergeableClassMetadata|null
+     * {@inheritDoc}
      */
     public function getMetadataForClass(string $className)
     {
@@ -110,7 +130,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getAllClassNames():array
+    public function getAllClassNames(): array
     {
         if (!$this->driver instanceof AdvancedDriverInterface) {
             throw new \RuntimeException(
@@ -121,11 +141,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
         return $this->driver->getAllClassNames();
     }
 
-    /**
-     * @param ClassMetadata|null $metadata
-     * @param ClassMetadata $toAdd
-     */
-    private function addClassMetadata(&$metadata, $toAdd)
+    private function addClassMetadata(?ClassMetadata &$metadata, ClassMetadata $toAdd): void
     {
         if ($toAdd instanceof MergeableInterface) {
             if (null === $metadata) {
@@ -135,7 +151,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
             }
         } else {
             if (null === $metadata) {
-                $metadata = new $this->hierarchyMetadataClass;
+                $metadata = new $this->hierarchyMetadataClass();
             }
 
             $metadata->addClassMetadata($toAdd);
@@ -143,11 +159,11 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
     }
 
     /**
-     * @param string $class
+     * @return \ReflectionClass[]
      */
-    private function getClassHierarchy($class)
+    private function getClassHierarchy(string $class): array
     {
-        $classes = array();
+        $classes = [];
         $refl = new \ReflectionClass($class);
 
         do {
@@ -161,8 +177,8 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
             return $classes;
         }
 
-        $addedInterfaces = array();
-        $newHierarchy = array();
+        $addedInterfaces = [];
+        $newHierarchy = [];
 
         foreach ($classes as $class) {
             foreach ($class->getInterfaces() as $interface) {
@@ -180,12 +196,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
         return $newHierarchy;
     }
 
-    /**
-     * @param NullMetadata|null $metadata
-     *
-     * @return ClassMetadata|null
-     */
-    private function filterNullMetadata($metadata = null)
+    private function filterNullMetadata(?NullMetadata $metadata = null): ?ClassMetadata
     {
         return !$metadata instanceof NullMetadata ? $metadata : null;
     }
