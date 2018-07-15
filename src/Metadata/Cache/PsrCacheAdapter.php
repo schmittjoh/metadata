@@ -20,7 +20,7 @@ class PsrCacheAdapter implements CacheInterface
     private $pool;
 
     /**
-     * @var ClassMetadata
+     * @var CacheItemPoolInterface
      */
     private $lastItem;
 
