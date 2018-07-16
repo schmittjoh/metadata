@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests\Cache;
 
-use Metadata\ClassMetadata;
-use Metadata\Cache\DoctrineCacheAdapter;
 use Doctrine\Common\Cache\ArrayCache;
+use Metadata\Cache\DoctrineCacheAdapter;
+use Metadata\ClassMetadata;
 use Metadata\Tests\Fixtures\TestObject;
 use PHPUnit\Framework\TestCase;
 

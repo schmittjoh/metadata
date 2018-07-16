@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Driver;
 
 /**
@@ -10,11 +12,8 @@ namespace Metadata\Driver;
 interface AdvancedFileLocatorInterface extends FileLocatorInterface
 {
     /**
-     * Finds all possible metadata files.
-     *
-     * @param string $extension
-     *
-     * @return array
+     * Finds all possible metadata files.*
+     * @return string[]
      */
     public function findAllClasses(string $extension): array;
 }

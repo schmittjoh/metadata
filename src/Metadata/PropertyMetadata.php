@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 /**
@@ -12,7 +14,14 @@ namespace Metadata;
  */
 class PropertyMetadata implements \Serializable
 {
+    /**
+     * @var string
+     */
     public $class;
+
+    /**
+     * @var string
+     */
     public $name;
 
     public function __construct(string $class, string $name)
@@ -21,15 +30,30 @@ class PropertyMetadata implements \Serializable
         $this->name = $name;
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
+     *
+     * @return string
+     */
     public function serialize()
     {
-        return serialize(array(
+        return serialize([
             $this->class,
             $this->name,
-        ));
+        ]);
     }
 
-    public function unserialize($str)
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
+     *
+     * @param string $str
+     * @return void
+     */
+    public function unserialize($str): void
     {
         list($this->class, $this->name) = unserialize($str);
     }

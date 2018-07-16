@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests;
 
-use Metadata\Tests\Fixtures\TestObject;
 use Metadata\MethodMetadata;
+use Metadata\Tests\Fixtures\TestObject;
 use PHPUnit\Framework\TestCase;
 
 class MethodMetadataTest extends TestCase
@@ -32,7 +34,7 @@ class MethodMetadataTest extends TestCase
         $metadata = new MethodMetadata('Metadata\Tests\Fixtures\TestObject', 'setFoo');
 
         $this->assertNull($obj->getFoo());
-        $metadata->invoke($obj, array('foo'));
+        $metadata->invoke($obj, ['foo']);
         $this->assertEquals('foo', $obj->getFoo());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests;
 
 use Metadata\MergeableClassMetadata;
@@ -24,9 +26,9 @@ class MergeableClassMetadataTest extends TestCase
 
         $parentMetadata->merge($childMetadata);
         $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $parentMetadata->name);
-        $this->assertEquals(array('foo' => 'baz', 'baz' => 'baz',), $parentMetadata->propertyMetadata);
-        $this->assertEquals(array('foo' => 'baz',), $parentMetadata->methodMetadata);
+        $this->assertEquals(['foo' => 'baz', 'baz' => 'baz'], $parentMetadata->propertyMetadata);
+        $this->assertEquals(['foo' => 'baz'], $parentMetadata->methodMetadata);
         $this->assertEquals(1, $parentMetadata->createdAt);
-        $this->assertEquals(array('foo', 'bar'), $parentMetadata->fileResources);
+        $this->assertEquals(['foo', 'bar'], $parentMetadata->fileResources);
     }
 }

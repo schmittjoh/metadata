@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 /**
@@ -13,8 +15,8 @@ interface AdvancedMetadataFactoryInterface extends MetadataFactoryInterface
     /**
      * Gets all the possible classes.
      *
-     * @throws \RuntimeException if driver does not an advanced driver.
-     * @return array
+     * @throws \RuntimeException When driver does not an advanced driver.
+     * @return string[]
      */
     public function getAllClassNames(): array;
 }

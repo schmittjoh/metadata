@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Driver;
 
 /**
@@ -12,7 +14,7 @@ interface AdvancedDriverInterface extends DriverInterface
     /**
      * Gets all the metadata class names known to this driver.
      *
-     * @return array
+     * @return string[]
      */
     public function getAllClassNames(): array;
 }

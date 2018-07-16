@@ -1,14 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Driver;
 
 use Metadata\ClassMetadata;
 
 final class DriverChain implements AdvancedDriverInterface
 {
+    /**
+     * @var DriverInterface[]
+     */
     private $drivers;
 
-    public function __construct(array $drivers = array())
+    /**
+     * @param DriverInterface[] $drivers
+     */
+    public function __construct(array $drivers = [])
     {
         $this->drivers = $drivers;
     }
@@ -34,7 +42,7 @@ final class DriverChain implements AdvancedDriverInterface
      */
     public function getAllClassNames(): array
     {
-        $classes = array();
+        $classes = [];
         foreach ($this->drivers as $driver) {
             if (!$driver instanceof AdvancedDriverInterface) {
                 throw new \RuntimeException(

@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Driver;
 
 class FileLocator implements AdvancedFileLocatorInterface
 {
+    /**
+     * @var string[]
+     */
     private $dirs;
 
+    /**
+     * @param string[] $dirs
+     */
     public function __construct(array $dirs)
     {
         $this->dirs = $dirs;
     }
 
-    /**
-     * @param \ReflectionClass $class
-     * @param string $extension
-     *
-     * @return string|null
-     */
     public function findFileForClass(\ReflectionClass $class, string $extension): ?string
     {
         foreach ($this->dirs as $prefix => $dir) {
@@ -39,16 +41,16 @@ class FileLocator implements AdvancedFileLocatorInterface
      */
     public function findAllClasses(string $extension): array
     {
-        $classes = array();
+        $classes = [];
         foreach ($this->dirs as $prefix => $dir) {
-            /** @var $iterator \RecursiveIteratorIterator|\SplFileInfo[] */
+            /** @var \RecursiveIteratorIterator|\SplFileInfo[] $iterator */
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($dir),
                 \RecursiveIteratorIterator::LEAVES_ONLY
             );
-            $nsPrefix = $prefix !== '' ? $prefix . '\\' : '';
+            $nsPrefix = '' !== $prefix ? $prefix . '\\' : '';
             foreach ($iterator as $file) {
-                if (($fileName = $file->getBasename('.' . $extension)) == $file->getBasename()) {
+                if (($fileName = $file->getBasename('.' . $extension)) === $file->getBasename()) {
                     continue;
                 }
 

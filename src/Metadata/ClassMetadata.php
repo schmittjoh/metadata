@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 /**
@@ -12,10 +14,29 @@ namespace Metadata;
  */
 class ClassMetadata implements \Serializable
 {
+    /**
+     * @var string
+     */
     public $name;
-    public $methodMetadata = array();
-    public $propertyMetadata = array();
-    public $fileResources = array();
+
+    /**
+     * @var MethodMetadata[]
+     */
+    public $methodMetadata = [];
+
+    /**
+     * @var PropertyMetadata[]
+     */
+    public $propertyMetadata = [];
+
+    /**
+     * @var string[]
+     */
+    public $fileResources = [];
+
+    /**
+     * @var int
+     */
     public $createdAt;
 
     public function __construct(string $name)
@@ -24,17 +45,17 @@ class ClassMetadata implements \Serializable
         $this->createdAt = time();
     }
 
-    public function addMethodMetadata(MethodMetadata $metadata):void
+    public function addMethodMetadata(MethodMetadata $metadata): void
     {
         $this->methodMetadata[$metadata->name] = $metadata;
     }
 
-    public function addPropertyMetadata(PropertyMetadata $metadata):void
+    public function addPropertyMetadata(PropertyMetadata $metadata): void
     {
         $this->propertyMetadata[$metadata->name] = $metadata;
     }
 
-    public function isFresh(?int $timestamp = null):bool
+    public function isFresh(?int $timestamp = null): bool
     {
         if (null === $timestamp) {
             $timestamp = $this->createdAt;
@@ -53,17 +74,32 @@ class ClassMetadata implements \Serializable
         return true;
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
+     *
+     * @return string
+     */
     public function serialize()
     {
-        return serialize(array(
+        return serialize([
             $this->name,
             $this->methodMetadata,
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt,
-        ));
+        ]);
     }
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
+     *
+     * @param string $str
+     * @return void
+     */
     public function unserialize($str)
     {
         list(

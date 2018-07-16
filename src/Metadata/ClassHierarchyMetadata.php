@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 /**
@@ -9,7 +11,10 @@ namespace Metadata;
  */
 class ClassHierarchyMetadata
 {
-    public $classMetadata = array();
+    /**
+     * @var ClassMetadata[]
+     */
+    public $classMetadata = [];
 
     public function addClassMetadata(ClassMetadata $metadata): void
     {
@@ -26,7 +31,7 @@ class ClassHierarchyMetadata
         return end($this->classMetadata);
     }
 
-    public function isFresh($timestamp): bool
+    public function isFresh(int $timestamp): bool
     {
         foreach ($this->classMetadata as $metadata) {
             if (!$metadata->isFresh($timestamp)) {

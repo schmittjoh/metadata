@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata;
 
 /**
@@ -18,7 +20,8 @@ interface MetadataFactoryInterface
      *
      * If no metadata is available, null is returned.
      *
-     * @param string $className
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
      *
      * @return ClassHierarchyMetadata|MergeableClassMetadata|null
      */

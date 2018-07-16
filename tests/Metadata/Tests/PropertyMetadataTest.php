@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Metadata\Tests;
 
-use Metadata\Tests\Fixtures\TestObject;
 use Metadata\PropertyMetadata;
 use PHPUnit\Framework\TestCase;
 
