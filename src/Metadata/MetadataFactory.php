@@ -83,7 +83,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
             // check the cache
             if (null !== $this->cache) {
-                if (($classMetadata = $this->cache->load($class)) instanceof NullMetadata) {
+                if (($classMetadata = $this->cache->load($class->getName())) instanceof NullMetadata) {
                     $this->loadedClassMetadata[$name] = $classMetadata;
                     continue;
                 }
@@ -141,7 +141,10 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
         return $this->driver->getAllClassNames();
     }
 
-    private function addClassMetadata(?ClassMetadata &$metadata, ClassMetadata $toAdd): void
+    /**
+     * @param MergeableInterface|ClassHierarchyMetadata $metadata
+     */
+    private function addClassMetadata(&$metadata, ClassMetadata $toAdd): void
     {
         if ($toAdd instanceof MergeableInterface) {
             if (null === $metadata) {
@@ -196,7 +199,11 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
         return $newHierarchy;
     }
 
-    private function filterNullMetadata(?NullMetadata $metadata = null): ?ClassMetadata
+    /**
+     * @param ClassMetadata|ClassHierarchyMetadata|MergeableInterface $metadata
+     * @return ClassMetadata|ClassHierarchyMetadata|MergeableInterface
+     */
+    private function filterNullMetadata($metadata = null)
     {
         return !$metadata instanceof NullMetadata ? $metadata : null;
     }

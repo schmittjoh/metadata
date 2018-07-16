@@ -125,7 +125,7 @@ class MetadataFactoryTest extends TestCase
         $cache
             ->expects($this->once())
             ->method('load')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->with($this->equalTo('Metadata\Tests\Fixtures\TestObject'))
             ->will($this->returnValue(null))
         ;
         $cache
@@ -218,7 +218,7 @@ class MetadataFactoryTest extends TestCase
         $cache
             ->expects($this->any())
             ->method('load')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->with($this->equalTo('Metadata\Tests\Fixtures\TestObject'))
             ->will($this->returnCallback(function () use (&$cachedMetadata) {
                 return $cachedMetadata;
             }))
@@ -259,7 +259,7 @@ class MetadataFactoryTest extends TestCase
         $cache
             ->expects($this->any())
             ->method('load')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->with($this->equalTo('Metadata\Tests\Fixtures\TestObject'))
             ->will($this->returnValue(null))
         ;
         $cache

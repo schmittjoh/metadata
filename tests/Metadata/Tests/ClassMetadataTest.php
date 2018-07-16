@@ -34,7 +34,7 @@ class ClassMetadataTest extends TestCase
         $this->assertTrue($metadata->isFresh());
 
         sleep(2);
-        clearstatcache($ref->getFilename());
+        clearstatcache(!!$ref->getFilename());
         touch($ref->getFilename());
         $this->assertFalse($metadata->isFresh());
     }
