@@ -53,7 +53,7 @@ class PropertyMetadata implements \Serializable
      * @param string $str
      * @return void
      */
-    public function unserialize($str): void
+    public function unserialize($str)
     {
         list($this->class, $this->name) = unserialize($str);
     }
