@@ -13,9 +13,6 @@ class FileCache implements CacheInterface
         if (!is_dir($dir)) {
             throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir));
         }
-        if (!is_writable($dir)) {
-            throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable.', $dir));
-        }
 
         $this->dir = rtrim($dir, '\\/');
     }
@@ -38,11 +35,15 @@ class FileCache implements CacheInterface
      */
     public function putClassMetadataInCache(ClassMetadata $metadata)
     {
+        if (!is_writable($this->dir)) {
+            throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable.', $this->dir));
+        }
+
         $path = $this->dir.'/'.strtr($metadata->name, '\\', '-').'.cache.php';
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
-        
+
         // Let's not break filesystems which do not support chmod.
         @chmod($tmpFile, 0666 & ~umask());
 
