@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased](https://github.com/schmittjoh/metadata/tree/HEAD)
+## [2.0.0-beta1](https://github.com/schmittjoh/metadata/tree/2.0.0-beta1) (2018-09-12)
 
 **Closed issues:**
 
@@ -12,6 +12,7 @@
 
 **Merged pull requests:**
 
+- Allow Read-only Cache [\#72](https://github.com/schmittjoh/metadata/pull/72) ([pdugas](https://github.com/pdugas))
 - Change license to MIT [\#69](https://github.com/schmittjoh/metadata/pull/69) ([goetas](https://github.com/goetas))
 - \[2.0\] simplified class metadata  [\#67](https://github.com/schmittjoh/metadata/pull/67) ([goetas](https://github.com/goetas))
 - Fix an exception message [\#65](https://github.com/schmittjoh/metadata/pull/65) ([hason](https://github.com/hason))
