@@ -8,17 +8,17 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="tests/bootstrap.php"
+         bootstrap="./vendor/autoload.php"
 >
     <testsuites>
         <testsuite name="Metadata Test Suite">
-            <directory>./tests/Metadata/</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
-    
+
     <groups>
         <exclude>
             <group>performance</group>
         </exclude>
-    </groups>    
+    </groups>
 </phpunit>
