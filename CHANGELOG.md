@@ -1,5 +1,9 @@
 # Change Log
 
+## [2.0.0](https://github.com/schmittjoh/metadata/tree/2.0.0) (2018-11-09)
+
+No changes from **2.0.0-RC1**
+
 ## [1.7.0](https://github.com/schmittjoh/metadata/tree/1.7.0) (2018-10-26)
 **Merged pull requests:**
 
