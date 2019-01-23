@@ -4,10 +4,18 @@ namespace Metadata\Cache;
 
 use Metadata\ClassMetadata;
 
+/**
+ * Class FileCache
+ */
 class FileCache implements CacheInterface
 {
+    /** @var string Cache directory */
     private $dir;
 
+    /**
+     * FileCache constructor.
+     * @param $dir
+     */
     public function __construct($dir)
     {
         if (!is_dir($dir)) {
@@ -25,7 +33,7 @@ class FileCache implements CacheInterface
      */
     public function loadClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.$this->escapeFileName($class->name).'.cache.php';
+        $path = $this->dir . '/' . $this->escapeFileName($class->name) . '.cache.php';
         if (!@file_exists($path)) {
             return null;
         }
@@ -38,11 +46,11 @@ class FileCache implements CacheInterface
      */
     public function putClassMetadataInCache(ClassMetadata $metadata)
     {
-        $path = $this->dir.'/'.$this->escapeFileName($metadata->name).'.cache.php';
+        $path = $this->dir . '/' . $this->escapeFileName($metadata->name) . '.cache.php';
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         file_put_contents($tmpFile, '<?php return unserialize('.var_export(serialize($metadata), true).');');
-        
+
         // Let's not break filesystems which do not support chmod.
         @chmod($tmpFile, 0666 & ~umask());
 
@@ -52,8 +60,8 @@ class FileCache implements CacheInterface
     /**
      * Renames a file with fallback for windows
      *
-     * @param string $source
-     * @param string $target
+     * @param string $source Path of source for renaming
+     * @param string $target Path of target to rename
      */
     private function renameFile($source, $target) {
         if (false === @rename($source, $target)) {
@@ -75,14 +83,14 @@ class FileCache implements CacheInterface
      */
     public function evictClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.$this->escapeFileName($class->name).'.cache.php';
+        $path = $this->dir . '/' . $this->escapeFileName($class->name) . '.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }
     }
 
     /**
-     * @param string $fileName
+     * @param string $fileName Filename to escape
      * @return string
      */
     private function escapeFileName($fileName)
