@@ -11,6 +11,8 @@ namespace Metadata;
  * properties, and flags.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ *
+ * @property $reflection
  */
 class MethodMetadata implements \Serializable
 {
@@ -27,15 +29,12 @@ class MethodMetadata implements \Serializable
     /**
      * @var \ReflectionMethod
      */
-    public $reflection;
+    private $reflection;
 
     public function __construct(string $class, string $name)
     {
         $this->class = $class;
         $this->name = $name;
-
-        $this->reflection = new \ReflectionMethod($class, $name);
-        $this->reflection->setAccessible(true);
     }
 
     /**
@@ -45,7 +44,7 @@ class MethodMetadata implements \Serializable
      */
     public function invoke(object $obj, array $args = [])
     {
-        return $this->reflection->invokeArgs($obj, $args);
+        return $this->getReflection()->invokeArgs($obj, $args);
     }
 
     /**
@@ -71,8 +70,35 @@ class MethodMetadata implements \Serializable
     public function unserialize($str)
     {
         list($this->class, $this->name) = unserialize($str);
+    }
 
-        $this->reflection = new \ReflectionMethod($this->class, $this->name);
-        $this->reflection->setAccessible(true);
+    /**
+     * @return mixed
+     */
+    public function __get(string $propertyName)
+    {
+        if ('reflection' === $propertyName) {
+            return $this->getReflection();
+        }
+
+        return $this->$propertyName;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function __set(string $propertyName, $value): void
+    {
+        $this->$propertyName = $value;
+    }
+
+    private function getReflection(): \ReflectionMethod
+    {
+        if (null === $this->reflection) {
+            $this->reflection = new \ReflectionMethod($this->class, $this->name);
+            $this->reflection->setAccessible(true);
+        }
+
+        return $this->reflection;
     }
 }
