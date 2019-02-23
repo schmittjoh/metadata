@@ -75,7 +75,7 @@ class MethodMetadataTest extends TestCase
     {
         $metadata = new MethodMetadata(TestObject::class, 'setFoo');
 
-        $otherValue = 'test';
+        $otherValue = new \ReflectionMethod(TestObject::class, 'getFoo');
         $metadata->reflection = $otherValue;
 
         $this->assertSame($otherValue, $metadata->reflection);
