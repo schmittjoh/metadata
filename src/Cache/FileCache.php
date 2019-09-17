@@ -48,6 +48,8 @@ class FileCache implements CacheInterface
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         if (false === $tmpFile) {
+            $this->evict($metadata->name);
+
             return;
         }
         $data = '<?php return unserialize(' . var_export(serialize($metadata), true) . ');';
