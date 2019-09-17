@@ -32,7 +32,17 @@ class FileCache implements CacheInterface
             return null;
         }
 
-        return include $path;
+        try {
+            $metadata = include $path;
+            if ($metadata instanceof ClassMetadata) {
+                return $metadata;
+            }
+            // if the file does not return anything, the return value is integer `1`.
+        } catch (\ParseError $e) {
+            // ignore corrupted cache
+        }
+
+        return null;
     }
 
     /**

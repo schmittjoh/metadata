@@ -35,4 +35,22 @@ class FileCacheTest extends TestCase
         $cache->evict(TestObject::class);
         $this->assertNull($cache->load(TestObject::class));
     }
+
+    public function provideCorruptedCache()
+    {
+        yield 'No return statement' => ['<?php $a = "foo";'];
+        yield 'Syntax error' => ['<?php syntax error'];
+    }
+
+    /**
+     * @dataProvider provideCorruptedCache
+     */
+    public function testNonReturningCache(string $fileContents)
+    {
+        $cache = new FileCache($this->dir);
+
+        file_put_contents($this->dir.'/Metadata-Tests-Fixtures-TestObject.cache.php', $fileContents);
+
+        $this->assertNull($cache->load(TestObject::class));
+    }
 }
