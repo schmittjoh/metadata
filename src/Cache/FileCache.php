@@ -57,7 +57,20 @@ class FileCache implements CacheInterface
         $path = $this->dir . '/' . strtr($metadata->name, '\\', '-') . '.cache.php';
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
-        file_put_contents($tmpFile, '<?php return unserialize(' . var_export(serialize($metadata), true) . ');');
+        if (false === $tmpFile) {
+            $this->evict($metadata->name);
+
+            return;
+        }
+        $data = '<?php return unserialize(' . var_export(serialize($metadata), true) . ');';
+        $bytesWritten = file_put_contents($tmpFile, $data);
+        // use strlen and not mb_strlen. if there is utf8 in the code, it also writes more bytes.
+        if ($bytesWritten !== strlen($data)) {
+            @unlink($tmpFile);
+            $this->evict($metadata->name); // also evict the cache to not use an outdated version.
+
+            return;
+        }
 
         // Let's not break filesystems which do not support chmod.
         @chmod($tmpFile, 0666 & ~umask());
