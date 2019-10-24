@@ -154,7 +154,8 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
             }
         } else {
             if (null === $metadata) {
-                $metadata = new $this->hierarchyMetadataClass();
+                $class = $this->hierarchyMetadataClass;
+                $metadata = new $class();
             }
 
             $metadata->addClassMetadata($toAdd);

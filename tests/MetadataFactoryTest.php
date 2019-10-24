@@ -4,22 +4,32 @@ declare(strict_types=1);
 
 namespace Metadata\Tests;
 
+use Metadata\Cache\CacheInterface;
+use Metadata\ClassHierarchyMetadata;
 use Metadata\ClassMetadata;
+use Metadata\Driver\AdvancedDriverInterface;
+use Metadata\Driver\DriverInterface;
 use Metadata\MergeableClassMetadata;
 use Metadata\MetadataFactory;
 use Metadata\PropertyMetadata;
+use Metadata\Tests\Fixtures\ComplexHierarchy\BaseClass;
+use Metadata\Tests\Fixtures\ComplexHierarchy\InterfaceA;
+use Metadata\Tests\Fixtures\ComplexHierarchy\InterfaceB;
+use Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA;
+use Metadata\Tests\Fixtures\TestObject;
+use Metadata\Tests\Fixtures\TestParent;
 use PHPUnit\Framework\TestCase;
 
 class MetadataFactoryTest extends TestCase
 {
     public function testGetMetadataForClass()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
 
         $driver
             ->expects($this->at(0))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->with($this->equalTo(new \ReflectionClass(TestObject::class)))
             ->will($this->returnCallback(function ($class) {
                 return new ClassMetadata($class->getName());
             }))
@@ -27,27 +37,27 @@ class MetadataFactoryTest extends TestCase
         $driver
             ->expects($this->at(1))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestParent')))
+            ->with($this->equalTo(new \ReflectionClass(TestParent::class)))
             ->will($this->returnCallback(function ($class) {
                 return new ClassMetadata($class->getName());
             }))
         ;
 
         $factory = new MetadataFactory($driver);
-        $metadata = $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestParent');
+        $metadata = $factory->getMetadataForClass(TestParent::class);
 
-        $this->assertInstanceOf('Metadata\ClassHierarchyMetadata', $metadata);
-        $this->assertEquals(2, count($metadata->classMetadata));
+        $this->assertInstanceOf(ClassHierarchyMetadata::class, $metadata);
+        $this->assertCount(2, $metadata->classMetadata);
     }
 
     public function testGetMetadataForClassWhenMergeable()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
 
         $driver
             ->expects($this->at(0))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestObject')))
+            ->with($this->equalTo(new \ReflectionClass(TestObject::class)))
             ->will($this->returnCallback(function ($class) {
                 return new MergeableClassMetadata($class->getName());
             }))
@@ -55,22 +65,22 @@ class MetadataFactoryTest extends TestCase
         $driver
             ->expects($this->at(1))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\TestParent')))
+            ->with($this->equalTo(new \ReflectionClass(TestParent::class)))
             ->will($this->returnCallback(function ($class) {
                 return new MergeableClassMetadata($class->getName());
             }))
         ;
 
         $factory = new MetadataFactory($driver);
-        $metadata = $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestParent');
+        $metadata = $factory->getMetadataForClass(TestParent::class);
 
-        $this->assertInstanceOf('Metadata\MergeableClassMetadata', $metadata);
+        $this->assertInstanceOf(MergeableClassMetadata::class, $metadata);
         $this->assertEquals('Metadata\Tests\Fixtures\TestParent', $metadata->name);
     }
 
     public function testGetMetadataWithComplexHierarchy()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
 
         $driver
             ->expects($this->any())
@@ -101,31 +111,31 @@ class MetadataFactoryTest extends TestCase
 
         $factory = new MetadataFactory($driver);
 
-        $subClassA = $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA');
-        $this->assertInstanceOf('Metadata\MergeableClassMetadata', $subClassA);
+        $subClassA = $factory->getMetadataForClass(SubClassA::class);
+        $this->assertInstanceOf(MergeableClassMetadata::class, $subClassA);
         $this->assertEquals(['foo', 'bar'], array_keys($subClassA->propertyMetadata));
 
         $subClassB = $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassB');
-        $this->assertInstanceOf('Metadata\MergeableClassMetadata', $subClassB);
+        $this->assertInstanceOf(MergeableClassMetadata::class, $subClassB);
         $this->assertEquals(['foo', 'baz'], array_keys($subClassB->propertyMetadata));
     }
 
     public function testGetMetadataWithCache()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
         $driver
             ->expects($this->once())
             ->method('loadMetadataForClass')
-            ->will($this->returnValue($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestObject')))
+            ->will($this->returnValue($metadata = new ClassMetadata(TestObject::class)))
         ;
 
         $factory = new MetadataFactory($driver);
 
-        $cache = $this->createMock('Metadata\Cache\CacheInterface');
+        $cache = $this->createMock(CacheInterface::class);
         $cache
             ->expects($this->once())
             ->method('load')
-            ->with($this->equalTo('Metadata\Tests\Fixtures\TestObject'))
+            ->with($this->equalTo(TestObject::class))
             ->will($this->returnValue(null))
         ;
         $cache
@@ -135,14 +145,14 @@ class MetadataFactoryTest extends TestCase
         ;
         $factory->setCache($cache);
 
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $this->assertSame($metadata, reset($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject')->classMetadata));
+        $factory->getMetadataForClass(TestObject::class);
+        $factory->getMetadataForClass(TestObject::class);
+        $this->assertSame($metadata, reset($factory->getMetadataForClass(TestObject::class)->classMetadata));
     }
 
     public function testGetMetadataReturnsNullIfNoMetadataIsFound()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
         $driver
             ->expects($this->once())
             ->method('loadMetadataForClass')
@@ -151,43 +161,43 @@ class MetadataFactoryTest extends TestCase
 
         $factory = new MetadataFactory($driver);
 
-        $this->assertNull($factory->getMetadataForClass('stdClass'));
+        $this->assertNull($factory->getMetadataForClass(\stdClass::class));
     }
 
     public function testGetMetadataWithInterfaces()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
 
         $driver
             ->expects($this->at(3))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA')))
+            ->with($this->equalTo(new \ReflectionClass(SubClassA::class)))
         ;
         $driver
             ->expects($this->at(2))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\InterfaceB')))
+            ->with($this->equalTo(new \ReflectionClass(InterfaceB::class)))
         ;
         $driver
             ->expects($this->at(1))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\BaseClass')))
+            ->with($this->equalTo(new \ReflectionClass(BaseClass::class)))
         ;
         $driver
             ->expects($this->at(0))
             ->method('loadMetadataForClass')
-            ->with($this->equalTo(new \ReflectionClass('Metadata\Tests\Fixtures\ComplexHierarchy\InterfaceA')))
+            ->with($this->equalTo(new \ReflectionClass(InterfaceA::class)))
         ;
 
         $factory = new MetadataFactory($driver);
         $factory->setIncludeInterfaces(true);
 
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\ComplexHierarchy\SubClassA');
+        $factory->getMetadataForClass(SubClassA::class);
     }
 
     public function testGetAllClassNames()
     {
-        $driver = $this->createMock('Metadata\Driver\AdvancedDriverInterface');
+        $driver = $this->createMock(AdvancedDriverInterface::class);
         $driver
             ->expects($this->once())
             ->method('getAllClassNames')
@@ -199,14 +209,14 @@ class MetadataFactoryTest extends TestCase
 
     public function testGetAllClassNamesThrowsException()
     {
-        $this->expectException('RuntimeException');
-        $factory = new MetadataFactory($this->createMock('Metadata\Driver\DriverInterface'));
+        $this->expectException(\RuntimeException::class);
+        $factory = new MetadataFactory($this->createMock(DriverInterface::class));
         $factory->getAllClassNames();
     }
 
     public function testNotFoundMetadataIsCached()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
         $driver
             ->expects($this->once()) // This is the important part of this test
             ->method('loadMetadataForClass')
@@ -214,11 +224,11 @@ class MetadataFactoryTest extends TestCase
         ;
 
         $cachedMetadata = null;
-        $cache = $this->createMock('Metadata\Cache\CacheInterface');
+        $cache = $this->createMock(CacheInterface::class);
         $cache
             ->expects($this->any())
             ->method('load')
-            ->with($this->equalTo('Metadata\Tests\Fixtures\TestObject'))
+            ->with($this->equalTo(TestObject::class))
             ->will($this->returnCallback(function () use (&$cachedMetadata) {
                 return $cachedMetadata;
             }))
@@ -233,33 +243,32 @@ class MetadataFactoryTest extends TestCase
 
         $factory = new MetadataFactory($driver);
         $factory->setCache($cache);
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+        $factory->getMetadataForClass(TestObject::class);
+        $factory->getMetadataForClass(TestObject::class);
+        $this->assertNull($factory->getMetadataForClass(TestObject::class));
 
         // We use another factory with the same cache, to simulate another request and skip the in memory
         $factory = new MetadataFactory($driver);
         $factory->setCache($cache);
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+        $factory->getMetadataForClass(TestObject::class);
+        $factory->getMetadataForClass(TestObject::class);
+        $this->assertNull($factory->getMetadataForClass(TestObject::class));
     }
 
     public function testNotFoundMetadataIsNotCachedInDebug()
     {
-        $driver = $this->createMock('Metadata\Driver\DriverInterface');
+        $driver = $this->createMock(DriverInterface::class);
         $driver
             ->expects($this->exactly(2))
             ->method('loadMetadataForClass')
             ->will($this->returnValue(null))
         ;
 
-        $cachedMetadata = null;
-        $cache = $this->createMock('Metadata\Cache\CacheInterface');
+        $cache = $this->createMock(CacheInterface::class);
         $cache
             ->expects($this->any())
             ->method('load')
-            ->with($this->equalTo('Metadata\Tests\Fixtures\TestObject'))
+            ->with($this->equalTo(TestObject::class))
             ->will($this->returnValue(null))
         ;
         $cache
@@ -267,15 +276,15 @@ class MetadataFactoryTest extends TestCase
             ->method('put')
         ;
 
-        $factory = new MetadataFactory($driver, 'Metadata\ClassHierarchyMetadata', true);
+        $factory = new MetadataFactory($driver, ClassHierarchyMetadata::class, true);
         $factory->setCache($cache);
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+        $factory->getMetadataForClass(TestObject::class);
+        $this->assertNull($factory->getMetadataForClass(TestObject::class));
 
         // We use another factory with the same cache, to simulate another request and skip the in memory
-        $factory = new MetadataFactory($driver, 'Metadata\ClassHierarchyMetadata', true);
+        $factory = new MetadataFactory($driver, ClassHierarchyMetadata::class, true);
         $factory->setCache($cache);
-        $factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject');
-        $this->assertNull($factory->getMetadataForClass('Metadata\Tests\Fixtures\TestObject'));
+        $factory->getMetadataForClass(TestObject::class);
+        $this->assertNull($factory->getMetadataForClass(TestObject::class));
     }
 }
