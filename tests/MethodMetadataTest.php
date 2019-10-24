@@ -13,18 +13,18 @@ class MethodMetadataTest extends TestCase
 {
     public function testConstructor()
     {
-        $metadata = new MethodMetadata('Metadata\Tests\Fixtures\TestObject', 'setFoo');
-        $expectedReflector = new \ReflectionMethod('Metadata\Tests\Fixtures\TestObject', 'setFoo');
+        $metadata = new MethodMetadata(TestObject::class, 'setFoo');
+        $expectedReflector = new \ReflectionMethod(TestObject::class, 'setFoo');
         $expectedReflector->setAccessible(true);
 
-        $this->assertEquals('Metadata\Tests\Fixtures\TestObject', $metadata->class);
+        $this->assertEquals(TestObject::class, $metadata->class);
         $this->assertEquals('setFoo', $metadata->name);
         $this->assertEquals($expectedReflector, $metadata->reflection);
     }
 
     public function testSerializeUnserialize()
     {
-        $metadata = new MethodMetadata('Metadata\Tests\Fixtures\TestObject', 'setFoo');
+        $metadata = new MethodMetadata(TestObject::class, 'setFoo');
 
         $this->assertEquals($metadata, unserialize(serialize($metadata)));
     }
@@ -32,7 +32,7 @@ class MethodMetadataTest extends TestCase
     public function testInvoke()
     {
         $obj = new TestObject();
-        $metadata = new MethodMetadata('Metadata\Tests\Fixtures\TestObject', 'setFoo');
+        $metadata = new MethodMetadata(TestObject::class, 'setFoo');
 
         $this->assertNull($obj->getFoo());
         $metadata->invoke($obj, ['foo']);
@@ -52,7 +52,7 @@ class MethodMetadataTest extends TestCase
     public function testLazyReflectionCreationOnUnserialize()
     {
         $metadata = new MethodMetadata(TestObject::class, 'setFoo');
-        $metadataUnserialized = unserialize(serialize($metadata));
+        unserialize(serialize($metadata));
 
         $reflectionProperty = new \ReflectionProperty(MethodMetadata::class, 'reflection');
         $reflectionProperty->setAccessible(true);

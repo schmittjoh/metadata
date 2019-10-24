@@ -9,15 +9,16 @@ use Metadata\ClassMetadata;
 use Metadata\Tests\Fixtures\TestObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\CacheItem;
 
 /**
  * @requires PHP 5.5
  */
 class PsrCacheAdapterTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        if (!class_exists('Symfony\Component\Cache\CacheItem')) {
+        if (!class_exists(CacheItem::class)) {
             $this->markTestSkipped('symfony/cache is not installed.');
         }
     }

@@ -13,7 +13,7 @@ class FileCacheTest extends TestCase
 {
     private $dir;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->dir = sys_get_temp_dir() . '/jms-' . md5(__CLASS__);
         if (is_dir($this->dir)) {
@@ -49,7 +49,7 @@ class FileCacheTest extends TestCase
     {
         $cache = new FileCache($this->dir);
 
-        file_put_contents($this->dir.'/Metadata-Tests-Fixtures-TestObject.cache.php', $fileContents);
+        file_put_contents($this->dir . '/Metadata-Tests-Fixtures-TestObject.cache.php', $fileContents);
 
         $this->assertNull($cache->load(TestObject::class));
     }

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Metadata\Tests\Driver;
 
 use Metadata\Driver\FileLocator;
+use Metadata\Tests\Driver\Fixture\A\A;
+use Metadata\Tests\Driver\Fixture\B\B;
+use Metadata\Tests\Driver\Fixture\C\SubDir\C;
+use Metadata\Tests\Driver\Fixture\T\T;
 use PHPUnit\Framework\TestCase;
 
 class FileLocatorTest extends TestCase
@@ -17,27 +21,23 @@ class FileLocatorTest extends TestCase
             'Metadata\Tests\Driver\Fixture\C' => __DIR__ . '/Fixture/C',
         ]);
 
-        $ref = new \ReflectionClass('Metadata\Tests\Driver\Fixture\A\A');
+        $ref = new \ReflectionClass(A::class);
         $this->assertEquals(realpath(__DIR__ . '/Fixture/A/A.xml'), realpath($locator->findFileForClass($ref, 'xml')));
 
-        $ref = new \ReflectionClass('Metadata\Tests\Driver\Fixture\B\B');
+        $ref = new \ReflectionClass(B::class);
         $this->assertNull($locator->findFileForClass($ref, 'xml'));
 
-        $ref = new \ReflectionClass('Metadata\Tests\Driver\Fixture\C\SubDir\C');
+        $ref = new \ReflectionClass(C::class);
         $this->assertEquals(realpath(__DIR__ . '/Fixture/C/SubDir.C.yml'), realpath($locator->findFileForClass($ref, 'yml')));
     }
 
     public function testTraits()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('No traits available');
-        }
-
         $locator = new FileLocator([
             'Metadata\Tests\Driver\Fixture\T' => __DIR__ . '/Fixture/T',
         ]);
 
-        $ref = new \ReflectionClass('Metadata\Tests\Driver\Fixture\T\T');
+        $ref = new \ReflectionClass(T::class);
         $this->assertEquals(realpath(__DIR__ . '/Fixture/T/T.xml'), realpath($locator->findFileForClass($ref, 'xml')));
     }
 
