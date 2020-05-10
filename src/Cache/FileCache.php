@@ -27,7 +27,7 @@ class FileCache implements CacheInterface
      */
     public function load(string $class): ?ClassMetadata
     {
-        $path = $this->dir . '/' . strtr($class, '\\', '-') . '.cache.php';
+        $path = $this->dir . '/' . $this->sanitizeCacheKey($class) . '.cache.php';
         if (!file_exists($path)) {
             return null;
         }
@@ -54,7 +54,7 @@ class FileCache implements CacheInterface
             throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable.', $this->dir));
         }
 
-        $path = $this->dir . '/' . strtr($metadata->name, '\\', '-') . '.cache.php';
+        $path = $this->dir . '/' . $this->sanitizeCacheKey($metadata->name) . '.cache.php';
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         if (false === $tmpFile) {
@@ -103,9 +103,21 @@ class FileCache implements CacheInterface
      */
     public function evict(string $class): void
     {
-        $path = $this->dir . '/' . strtr($class, '\\', '-') . '.cache.php';
+        $path = $this->dir . '/' . $this->sanitizeCacheKey($class) . '.cache.php';
         if (file_exists($path)) {
             @unlink($path);
         }
+    }
+
+    /**
+     * If anonymous class is to be cached, it contains invalid path characters that need to be removed/replaced
+     * Example of anonymous class name: class@anonymous\x00/app/src/Controller/DefaultController.php0x7f82a7e026ec
+     *
+     * @param string $key
+     * @return string
+     */
+    private function sanitizeCacheKey(string $key): string
+    {
+        return strtr($key, ['\\' => '-', "\0" => '', '@' => '-', '/' => '-', '.' => '-']);
     }
 }
