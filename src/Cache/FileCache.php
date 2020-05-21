@@ -28,8 +28,12 @@ class FileCache implements CacheInterface
     public function load(string $class): ?ClassMetadata
     {
         $path = $this->dir . '/' . strtr($class, '\\', '-') . '.cache.php';
-        if (!file_exists($path)) {
-            return null;
+        try {
+            if (!file_exists($path)) {
+                return null;
+            }
+        } catch (\TypeError $e) {
+            throw new \InvalidArgumentException(sprintf('Invalid path provided %s.', $path));
         }
 
         try {
@@ -84,7 +88,13 @@ class FileCache implements CacheInterface
      */
     private function renameFile(string $source, string $target): void
     {
-        if (false === @rename($source, $target)) {
+        try {
+            $renamed = @rename($source, $target);
+        } catch (\TypeError $e) {
+            throw new \InvalidArgumentException(sprintf('Could not write new cache file to %s.', $target));
+        }
+
+        if (false === $renamed) {
             if (defined('PHP_WINDOWS_VERSION_BUILD')) {
                 if (false === copy($source, $target)) {
                     throw new \RuntimeException(sprintf('(WIN) Could not write new cache file to %s.', $target));
@@ -104,8 +114,12 @@ class FileCache implements CacheInterface
     public function evict(string $class): void
     {
         $path = $this->dir . '/' . strtr($class, '\\', '-') . '.cache.php';
-        if (file_exists($path)) {
-            unlink($path);
+        try {
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        } catch (\TypeError $e) {
+            throw new \InvalidArgumentException(sprintf('Invalid path provided %s.', $path));
         }
     }
 }

@@ -53,4 +53,34 @@ class FileCacheTest extends TestCase
 
         $this->assertNull($cache->load(TestObject::class));
     }
+
+    public function testLoadAnonymousClassMetadataFromCacheThrowsException()
+    {
+        $cache = new FileCache($this->dir);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid path provided');
+
+        $cache->load(get_class(new class {}));
+    }
+
+    public function testPutAnonymousClassMetadataInCacheThrowsException()
+    {
+        $cache = new FileCache($this->dir);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Could not write new cache file to');
+
+        $cache->put(new ClassMetadata(get_class(new class {})));
+    }
+
+    public function testEvictAnonymousClassMetadataFromCacheThrowsException()
+    {
+        $cache = new FileCache($this->dir);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid path provided');
+
+        $cache->evict(get_class(new class {}));
+    }
 }
