@@ -7,11 +7,9 @@ namespace Metadata\Tests\Driver;
 use Metadata\Driver\FileLocator;
 use Metadata\Tests\Driver\Fixture\A\A;
 use Metadata\Tests\Driver\Fixture\B\B;
-use Metadata\Tests\Driver\Fixture\B\SubDir\BB;
 use Metadata\Tests\Driver\Fixture\C\SubDir\C;
 use Metadata\Tests\Driver\Fixture\T\T;
 use PHPUnit\Framework\TestCase;
-use function realpath;
 
 class FileLocatorTest extends TestCase
 {
@@ -28,9 +26,6 @@ class FileLocatorTest extends TestCase
 
         $ref = new \ReflectionClass(B::class);
         $this->assertNull($locator->findFileForClass($ref, 'xml'));
-
-        $ref = new \ReflectionClass(BB::class);
-        $this->assertEquals(realpath(__DIR__ . '/Fixture/B/SubDir.yml'), realpath($locator->findFileForClass($ref, 'yml')));
 
         $ref = new \ReflectionClass(C::class);
         $this->assertEquals(realpath(__DIR__ . '/Fixture/C/SubDir.C.yml'), realpath($locator->findFileForClass($ref, 'yml')));
@@ -69,10 +64,9 @@ class FileLocatorTest extends TestCase
         $this->assertCount(1, $xmlFiles = $locator->findAllClasses('xml'));
         $this->assertSame('Metadata\Tests\Driver\Fixture\A\A', $xmlFiles[0]);
 
-        $this->assertCount(4, $ymlFiles = $locator->findAllClasses('yml'));
+        $this->assertCount(3, $ymlFiles = $locator->findAllClasses('yml'));
         $this->assertSame('Metadata\Tests\Driver\Fixture\B\B', $ymlFiles[0]);
-        $this->assertSame('Metadata\Tests\Driver\Fixture\B\SubDir', $ymlFiles[1]);
-        $this->assertSame('Metadata\Tests\Driver\Fixture\C\SubDir\C', $ymlFiles[2]);
-        $this->assertSame('Metadata\Tests\Driver\Fixture\D\D', $ymlFiles[3]);
+        $this->assertSame('Metadata\Tests\Driver\Fixture\C\SubDir\C', $ymlFiles[1]);
+        $this->assertSame('Metadata\Tests\Driver\Fixture\D\D', $ymlFiles[2]);
     }
 }
