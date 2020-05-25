@@ -105,7 +105,7 @@ class FileCache implements CacheInterface
     {
         $path = $this->dir . '/' . strtr($class, '\\', '-') . '.cache.php';
         if (file_exists($path)) {
-            unlink($path);
+            @unlink($path);
         }
     }
 }
