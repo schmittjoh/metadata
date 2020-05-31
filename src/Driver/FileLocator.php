@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Metadata\Driver;
 
-use function file_exists;
-use function str_replace;
-use function strpos;
-use function substr;
-
 class FileLocator implements AdvancedFileLocatorInterface
 {
     /**
@@ -32,19 +27,9 @@ class FileLocator implements AdvancedFileLocatorInterface
             }
 
             $len = '' === $prefix ? 0 : strlen($prefix) + 1;
-            $fqcn = str_replace('\\', '.', substr($class->name, $len));
-
-            while (true) {
-                $path = $dir . '/' . $fqcn . '.' . $extension;
-                if (file_exists($path)) {
-                    return $path;
-                }
-
-                if (false === strpos($fqcn, '.')) {
-                    break;
-                }
-
-                $fqcn = substr($fqcn, 0, strrpos($fqcn, '.'));
+            $path = $dir . '/' . str_replace('\\', '.', substr($class->name, $len)) . '.' . $extension;
+            if (file_exists($path)) {
+                return $path;
             }
         }
 
