@@ -113,11 +113,9 @@ class FileCache implements CacheInterface
      * If anonymous class is to be cached, it contains invalid path characters that need to be removed/replaced
      * Example of anonymous class name: class@anonymous\x00/app/src/Controller/DefaultController.php0x7f82a7e026ec
      *
-     * @param string $key
-     * @return string
      */
     private function sanitizeCacheKey(string $key): string
     {
-        return strtr($key, ['\\' => '-', "\0" => '', '@' => '-', '/' => '-', '.' => '-']);
+        return str_replace(['\\', "\0", '@', '/', '$', '{', '}', ':'], '-', $key);
     }
 }
