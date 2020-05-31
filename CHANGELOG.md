@@ -1,4 +1,22 @@
-# Change Log
+# Changelog
+
+## [2.2.0](https://github.com/schmittjoh/metadata/tree/2.2.0) (2020-05-31)
+
+**Merged pull requests:**
+
+- Add cache support for anonymous classes \(\#79\) [\#90](https://github.com/schmittjoh/metadata/pull/90) ([goetas](https://github.com/goetas))
+- Merge 1.x [\#91](https://github.com/schmittjoh/metadata/pull/91) ([goetas](https://github.com/goetas))
+- add .gitattributes [\#86](https://github.com/schmittjoh/metadata/pull/86) ([Tobion](https://github.com/Tobion))
+- Test enhancement [\#84](https://github.com/schmittjoh/metadata/pull/84) ([peter279k](https://github.com/peter279k))
+- Improve cache error message [\#80](https://github.com/schmittjoh/metadata/pull/80) ([thePanz](https://github.com/thePanz))
+
+## [2.1.0](https://github.com/schmittjoh/metadata/tree/2.1.0) (2019-09-17)
+
+**Merged pull requests:**
+
+- make sure we only use the cache if write was successful [\#82](https://github.com/schmittjoh/metadata/pull/82) ([dbu](https://github.com/dbu))
+- Handle errors when restoring from cache [\#81](https://github.com/schmittjoh/metadata/pull/81) ([dbu](https://github.com/dbu))
+- Do not create MethodMetadata::$reflection on constructor/unserialize,… [\#78](https://github.com/schmittjoh/metadata/pull/78) ([ThomasNunninger](https://github.com/ThomasNunninger))
 
 ## [2.0.0](https://github.com/schmittjoh/metadata/tree/2.0.0) (2018-11-09)
 
