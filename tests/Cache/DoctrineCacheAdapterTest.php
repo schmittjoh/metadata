@@ -43,7 +43,10 @@ class DoctrineCacheAdapterTest extends TestCase
     {
         return [
             'TestObject' => [TestObject::class],
-            'anonymous class' => [get_class(new class {})]
+            'anonymous class' => [
+                get_class(new class {
+                }),
+            ],
         ];
     }
 }
