@@ -23,17 +23,32 @@ class FileCacheTest extends TestCase
         }
     }
 
-    public function testLoadEvictPutClassMetadataFromInCache()
+    /**
+     * @dataProvider classNameProvider
+     * @param string $className
+     */
+    public function testLoadEvictPutClassMetadataFromInCache(string $className)
     {
         $cache = new FileCache($this->dir);
 
-        $this->assertNull($cache->load(TestObject::class));
-        $cache->put($metadata = new ClassMetadata(TestObject::class));
+        $this->assertNull($cache->load($className));
+        $cache->put($metadata = new ClassMetadata($className));
 
-        $this->assertEquals($metadata, $cache->load(TestObject::class));
+        $this->assertEquals($metadata, $cache->load($className));
 
-        $cache->evict(TestObject::class);
-        $this->assertNull($cache->load(TestObject::class));
+        $cache->evict($className);
+        $this->assertNull($cache->load($className));
+    }
+
+    public function classNameProvider()
+    {
+        return [
+            'TestObject' => [TestObject::class],
+            'anonymous class' => [
+                get_class(new class {
+                }),
+            ],
+        ];
     }
 
     public function provideCorruptedCache()
