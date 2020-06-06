@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Metadata\Driver;
 
 use Metadata\ClassMetadata;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LazyLoadingDriver implements DriverInterface
 {
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|PsrContainerInterface
      */
     private $container;
 
@@ -19,8 +20,14 @@ class LazyLoadingDriver implements DriverInterface
      */
     private $realDriverId;
 
-    public function __construct(ContainerInterface $container, string $realDriverId)
+    /**
+     * @param ContainerInterface|PsrContainerInterface $container
+     */
+    public function __construct($container, string $realDriverId)
     {
+        if (!$container instanceof PsrContainerInterface && !$container instanceof ContainerInterface) {
+            throw new \InvalidArgumentException(sprintf('The container must be an instance of %s or %s (%s given).', PsrContainerInterface::class, ContainerInterface::class, \is_object($container) ? \get_class($container) : \gettype($container)));
+        }
         $this->container = $container;
         $this->realDriverId = $realDriverId;
     }
