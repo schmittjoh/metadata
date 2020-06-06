@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.3.0](https://github.com/schmittjoh/metadata/tree/2.3.0) (2020-06-06)
+
+**Merged pull requests:**
+
+- Allow PSR-11 container [\#92](https://github.com/schmittjoh/metadata/pull/92) ([goetas](https://github.com/goetas))
+
 ## [2.2.0](https://github.com/schmittjoh/metadata/tree/2.2.0) (2020-05-31)
 
 **Merged pull requests:**
