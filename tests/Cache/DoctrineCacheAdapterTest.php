@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DoctrineCacheAdapterTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!interface_exists('Doctrine\Common\Cache\Cache')) {
             $this->markTestSkipped('Doctrine\Common is not installed.');

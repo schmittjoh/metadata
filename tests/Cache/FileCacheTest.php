@@ -13,7 +13,7 @@ class FileCacheTest extends TestCase
 {
     private $dir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dir = sys_get_temp_dir() . '/jms-' . md5(__CLASS__);
         if (is_dir($this->dir)) {

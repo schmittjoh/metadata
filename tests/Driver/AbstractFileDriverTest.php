@@ -23,7 +23,7 @@ class AbstractFileDriverTest extends TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $driver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->locator = $this->createMock(FileLocator::class, [], [], '', false);
         $this->driver = $this->getMockBuilder(AbstractFileDriver::class)
