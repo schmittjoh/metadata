@@ -15,11 +15,13 @@ matrix:
         - php: 7.2
           env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable'
         - php: 7.3
+        - php: 7.4
+        - php: nightly
     fast_finish: true
 
 before_script:
     - if [[ $TRAVIS_PHP_VERSION  = '7.2' ]]; then PHPUNIT_FLAGS="--coverage-clover clover"; else PHPUNIT_FLAGS=""; fi
-    - if [[ $TRAVIS_PHP_VERSION != '7.2' ]]; then phpenv config-rm xdebug.ini; fi
+    - if [[ $TRAVIS_PHP_VERSION != '7.2' ]] && [[ $TRAVIS_PHP_VERSION != 'nightly' ]]; then phpenv config-rm xdebug.ini; fi
     - composer self-update
     - composer update $COMPOSER_FLAGS
 
