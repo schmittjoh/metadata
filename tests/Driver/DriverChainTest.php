@@ -18,8 +18,7 @@ class DriverChainTest extends TestCase
         $driver
             ->expects($this->once())
             ->method('loadMetadataForClass')
-            ->will($this->returnValue($metadata = new ClassMetadata(\stdClass::class)))
-        ;
+            ->will($this->returnValue($metadata = new ClassMetadata(\stdClass::class)));
         $chain = new DriverChain([$driver]);
 
         $this->assertSame($metadata, $chain->loadMetadataForClass(new \ReflectionClass(\stdClass::class)));
@@ -53,8 +52,7 @@ class DriverChainTest extends TestCase
         $driver
             ->expects($this->once())
             ->method('loadMetadataForClass')
-            ->will($this->returnValue(null))
-        ;
+            ->will($this->returnValue(null));
         new DriverChain([$driver]);
         $this->assertNull($driver->loadMetadataForClass(new \ReflectionClass(\stdClass::class)));
     }

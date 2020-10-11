@@ -13,10 +13,12 @@ use Metadata\ClassMetadata;
 class DoctrineCacheAdapter implements CacheInterface
 {
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     private $prefix;
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var Cache
      */
     private $cache;
@@ -27,26 +29,18 @@ class DoctrineCacheAdapter implements CacheInterface
         $this->cache = $cache;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(string $class): ?ClassMetadata
     {
         $cache = $this->cache->fetch($this->prefix . $class);
+
         return false === $cache ? null : $cache;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function put(ClassMetadata $metadata): void
     {
         $this->cache->save($this->prefix . $metadata->name, $metadata);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function evict(string $class): void
     {
         $this->cache->delete($this->prefix . $class);

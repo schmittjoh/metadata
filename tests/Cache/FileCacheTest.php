@@ -24,8 +24,9 @@ class FileCacheTest extends TestCase
     }
 
     /**
-     * @dataProvider classNameProvider
      * @param string $className
+     *
+     * @dataProvider classNameProvider
      */
     public function testLoadEvictPutClassMetadataFromInCache(string $className)
     {

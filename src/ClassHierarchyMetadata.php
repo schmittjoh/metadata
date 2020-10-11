@@ -12,6 +12,7 @@ namespace Metadata;
 class ClassHierarchyMetadata
 {
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var ClassMetadata[]
      */
     public $classMetadata = [];

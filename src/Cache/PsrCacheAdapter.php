@@ -10,16 +10,19 @@ use Psr\Cache\CacheItemPoolInterface;
 class PsrCacheAdapter implements CacheInterface
 {
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     private $prefix;
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var CacheItemPoolInterface
      */
     private $pool;
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var CacheItemPoolInterface
      */
     private $lastItem;
@@ -30,9 +33,6 @@ class PsrCacheAdapter implements CacheInterface
         $this->pool = $pool;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(string $class): ?ClassMetadata
     {
         $this->lastItem = $this->pool->getItem($this->sanitizeCacheKey($this->prefix . $class));
@@ -40,9 +40,6 @@ class PsrCacheAdapter implements CacheInterface
         return $this->lastItem->get();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function put(ClassMetadata $metadata): void
     {
         $key = $this->sanitizeCacheKey($this->prefix . $metadata->name);
@@ -54,9 +51,6 @@ class PsrCacheAdapter implements CacheInterface
         $this->pool->save($this->lastItem->set($metadata));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function evict(string $class): void
     {
         $this->pool->deleteItem($this->sanitizeCacheKey($this->prefix . $class));
@@ -65,7 +59,6 @@ class PsrCacheAdapter implements CacheInterface
     /**
      * If anonymous class is to be cached, it contains invalid path characters that need to be removed/replaced
      * Example of anonymous class name: class@anonymous\x00/app/src/Controller/DefaultController.php0x7f82a7e026ec
-     *
      */
     private function sanitizeCacheKey(string $key): string
     {

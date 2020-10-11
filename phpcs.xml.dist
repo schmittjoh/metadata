@@ -90,10 +90,19 @@
         <exclude-pattern>tests/*</exclude-pattern>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
         <exclude-pattern>tests/*</exclude-pattern>
     </rule>
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaMagicConstant">
         <exclude-pattern>tests/*</exclude-pattern>
     </rule>
 

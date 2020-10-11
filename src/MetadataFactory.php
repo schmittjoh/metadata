@@ -11,36 +11,43 @@ use Metadata\Driver\DriverInterface;
 class MetadataFactory implements AdvancedMetadataFactoryInterface
 {
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var DriverInterface
      */
     private $driver;
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var CacheInterface
      */
     private $cache;
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var ClassMetadata[]
      */
     private $loadedMetadata = [];
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var ClassMetadata[]
      */
     private $loadedClassMetadata = [];
 
     /**
-     * @var null|string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     * @var string|null
      */
     private $hierarchyMetadataClass;
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var bool
      */
     private $includeInterfaces = false;
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var bool
      */
     private $debug = false;
@@ -62,7 +69,6 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
         $this->cache = $cache;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -78,6 +84,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
                 if (null !== $classMetadata = $this->filterNullMetadata($this->loadedClassMetadata[$name])) {
                     $this->addClassMetadata($metadata, $classMetadata);
                 }
+
                 continue;
             }
 
@@ -193,6 +200,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
                 if (isset($addedInterfaces[$interface->getName()])) {
                     continue;
                 }
+
                 $addedInterfaces[$interface->getName()] = true;
 
                 $newHierarchy[] = $interface;
@@ -206,6 +214,7 @@ class MetadataFactory implements AdvancedMetadataFactoryInterface
 
     /**
      * @param ClassMetadata|ClassHierarchyMetadata|MergeableInterface $metadata
+     *
      * @return ClassMetadata|ClassHierarchyMetadata|MergeableInterface
      */
     private function filterNullMetadata($metadata = null)
