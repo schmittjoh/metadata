@@ -6,7 +6,6 @@ namespace Metadata\Tests;
 
 use Metadata\MethodMetadata;
 use Metadata\Tests\Fixtures\TestObject;
-use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 
 class MethodMetadataTest extends TestCase
@@ -85,7 +84,12 @@ class MethodMetadataTest extends TestCase
     {
         $metadata = new MethodMetadata(TestObject::class, 'setFoo');
 
-        $this->expectException(Notice::class);
+        if (version_compare(PHP_VERSION, '8.0.0-dev', '>=')) {
+            $this->expectWarning();
+        } else {
+            $this->expectNotice();
+        }
+
         $this->expectExceptionMessage('Undefined property: Metadata\MethodMetadata::$unknownProperty');
 
         $metadata->unknownProperty;
