@@ -16,7 +16,7 @@ use Symfony\Component\Cache\CacheItem;
  */
 class PsrCacheAdapterTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists(CacheItem::class)) {
             $this->markTestSkipped('symfony/cache is not installed.');
@@ -24,8 +24,9 @@ class PsrCacheAdapterTest extends TestCase
     }
 
     /**
-     * @dataProvider classNameProvider
      * @param string $className
+     *
+     * @dataProvider classNameProvider
      */
     public function testLoadEvictPutClassMetadataFromInCache(string $className)
     {

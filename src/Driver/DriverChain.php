@@ -53,6 +53,7 @@ final class DriverChain implements AdvancedDriverInterface
                     )
                 );
             }
+
             $driverClasses = $driver->getAllClassNames();
             if (!empty($driverClasses)) {
                 $classes = array_merge($classes, $driverClasses);

@@ -11,7 +11,6 @@ namespace Metadata;
  * properties, and flags.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
- *
  * @property $reflection
  */
 class MethodMetadata implements \Serializable
@@ -48,11 +47,11 @@ class MethodMetadata implements \Serializable
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     *
      * @return string
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
      */
     public function serialize()
     {
@@ -60,16 +59,17 @@ class MethodMetadata implements \Serializable
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     *
      * @param string $str
+     *
      * @return void
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
      */
     public function unserialize($str)
     {
-        list($this->class, $this->name) = unserialize($str);
+        [$this->class, $this->name] = unserialize($str);
     }
 
     /**

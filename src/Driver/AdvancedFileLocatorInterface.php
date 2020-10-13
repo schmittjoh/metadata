@@ -13,6 +13,7 @@ interface AdvancedFileLocatorInterface extends FileLocatorInterface
 {
     /**
      * Finds all possible metadata files.*
+     *
      * @return string[]
      */
     public function findAllClasses(string $extension): array;
