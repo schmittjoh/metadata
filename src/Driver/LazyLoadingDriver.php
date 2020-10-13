@@ -16,7 +16,6 @@ class LazyLoadingDriver implements DriverInterface
     private $container;
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     private $realDriverId;

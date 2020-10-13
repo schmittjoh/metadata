@@ -7,7 +7,6 @@ namespace Metadata\Driver;
 class FileLocator implements AdvancedFileLocatorInterface
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string[]
      */
     private $dirs;

@@ -16,19 +16,16 @@ namespace Metadata;
 class MethodMetadata implements \Serializable
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     public $class;
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     public $name;
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var \ReflectionMethod
      */
     private $reflection;

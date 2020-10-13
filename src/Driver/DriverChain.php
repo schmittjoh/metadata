@@ -9,7 +9,6 @@ use Metadata\ClassMetadata;
 final class DriverChain implements AdvancedDriverInterface
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var DriverInterface[]
      */
     private $drivers;

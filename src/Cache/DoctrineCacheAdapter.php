@@ -13,12 +13,10 @@ use Metadata\ClassMetadata;
 class DoctrineCacheAdapter implements CacheInterface
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     private $prefix;
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var Cache
      */
     private $cache;

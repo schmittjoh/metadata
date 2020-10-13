@@ -9,7 +9,6 @@ use Metadata\ClassMetadata;
 class FileCache implements CacheInterface
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     private $dir;
@@ -64,7 +63,8 @@ class FileCache implements CacheInterface
         // use strlen and not mb_strlen. if there is utf8 in the code, it also writes more bytes.
         if ($bytesWritten !== strlen($data)) {
             @unlink($tmpFile);
-            $this->evict($metadata->name); // also evict the cache to not use an outdated version.
+            // also evict the cache to not use an outdated version.
+            $this->evict($metadata->name);
 
             return;
         }

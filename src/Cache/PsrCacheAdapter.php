@@ -10,19 +10,16 @@ use Psr\Cache\CacheItemPoolInterface;
 class PsrCacheAdapter implements CacheInterface
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var string
      */
     private $prefix;
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var CacheItemPoolInterface
      */
     private $pool;
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var CacheItemPoolInterface
      */
     private $lastItem;
