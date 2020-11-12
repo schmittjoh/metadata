@@ -4,9 +4,9 @@ git:
     depth: 1
 
 cache:
-  directories:
-    - $HOME/.composer/cache
-    - $HOME/.cache/composer
+    directories:
+        - $HOME/.composer/cache
+        - $HOME/.cache/composer
 
 matrix:
     include:
