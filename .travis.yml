@@ -1,13 +1,12 @@
 language: php
 
-sudo: false
-
 git:
     depth: 1
 
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.cache/composer
 
 matrix:
     include:
@@ -16,13 +15,15 @@ matrix:
           env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable'
         - php: 7.3
         - php: 7.4
+        - php: 8.0snapshot
+          env: COMPOSER_FLAGS='--ignore-platform-req=php'
         - php: nightly
+          env: COMPOSER_FLAGS='--ignore-platform-req=php'
     fast_finish: true
 
 before_script:
     - if [[ $TRAVIS_PHP_VERSION  = '7.2' ]]; then PHPUNIT_FLAGS="--coverage-clover clover"; else PHPUNIT_FLAGS=""; fi
     - if [[ $TRAVIS_PHP_VERSION != '7.2' ]]; then phpenv config-rm xdebug.ini; fi
-    - composer self-update
     - composer update $COMPOSER_FLAGS
 
 script:
