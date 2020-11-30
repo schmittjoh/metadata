@@ -15,6 +15,7 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
     steps:
     - uses: actions/checkout@v2
     - name: Validate composer.json and composer.lock
@@ -31,7 +32,7 @@ jobs:
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer update --prefer-dist --no-progress --no-suggest
 
     - name: Run test suite
       run: vendor/bin/phpunit
@@ -62,7 +63,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --prefer-lowest --no-progress --no-suggest
+        run: composer update --prefer-dist --prefer-lowest --no-progress --no-suggest
 
       - name: Run test suite
         run: vendor/bin/phpunit
@@ -89,7 +90,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer update --prefer-dist --no-progress --no-suggest
 
       - name: Run test suite
         run: vendor/bin/phpunit --coverage-clover clover
@@ -129,7 +130,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer update --prefer-dist --no-progress --no-suggest
 
       - name: Run CS
         run: vendor/bin/phpcs --report=checkstyle -q | cs2pr
