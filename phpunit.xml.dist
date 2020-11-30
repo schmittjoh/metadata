@@ -16,6 +16,12 @@
         </testsuite>
     </testsuites>
 
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+        </whitelist>
+    </filter>
+
     <groups>
         <exclude>
             <group>performance</group>
