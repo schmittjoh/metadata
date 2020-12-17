@@ -15,8 +15,8 @@ class FileCache implements CacheInterface
 
     public function __construct(string $dir)
     {
-        if (!is_dir($dir)) {
-            throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir));
+        if (!is_dir($dir) && false === @mkdir($dir, 0777, true)) {
+            throw new \InvalidArgumentException(sprintf('Can\'t create directory for cache at "%s"', $dir));
         }
 
         $this->dir = rtrim($dir, '\\/');
@@ -50,6 +50,9 @@ class FileCache implements CacheInterface
         }
 
         $path = $this->getCachePath($metadata->name);
+        if (!is_writable(dirname($path))) {
+            throw new \RuntimeException(sprintf('Cache file "%s" is not writable.', $path));
+        }
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         if (false === $tmpFile) {
