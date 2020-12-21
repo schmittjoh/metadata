@@ -15,8 +15,8 @@ class FileCache implements CacheInterface
 
     public function __construct(string $dir)
     {
-        if (!is_dir($dir)) {
-            throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $dir));
+        if (!is_dir($dir) && false === @mkdir($dir, 0777, true)) {
+            throw new \InvalidArgumentException(sprintf('Can\'t create directory for cache at "%s"', $dir));
         }
 
         $this->dir = rtrim($dir, '\\/');
@@ -24,7 +24,7 @@ class FileCache implements CacheInterface
 
     public function load(string $class): ?ClassMetadata
     {
-        $path = $this->dir . '/' . $this->sanitizeCacheKey($class) . '.cache.php';
+        $path = $this->getCachePath($class);
         if (!file_exists($path)) {
             return null;
         }
@@ -49,7 +49,10 @@ class FileCache implements CacheInterface
             throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable.', $this->dir));
         }
 
-        $path = $this->dir . '/' . $this->sanitizeCacheKey($metadata->name) . '.cache.php';
+        $path = $this->getCachePath($metadata->name);
+        if (!is_writable(dirname($path))) {
+            throw new \RuntimeException(sprintf('Cache file "%s" is not writable.', $path));
+        }
 
         $tmpFile = tempnam($this->dir, 'metadata-cache');
         if (false === $tmpFile) {
@@ -97,18 +100,22 @@ class FileCache implements CacheInterface
 
     public function evict(string $class): void
     {
-        $path = $this->dir . '/' . $this->sanitizeCacheKey($class) . '.cache.php';
+        $path = $this->getCachePath($class);
         if (file_exists($path)) {
             @unlink($path);
         }
     }
 
     /**
+     * This function computes the cache file path.
+     *
      * If anonymous class is to be cached, it contains invalid path characters that need to be removed/replaced
      * Example of anonymous class name: class@anonymous\x00/app/src/Controller/DefaultController.php0x7f82a7e026ec
      */
-    private function sanitizeCacheKey(string $key): string
+    private function getCachePath(string $key): string
     {
-        return str_replace(['\\', "\0", '@', '/', '$', '{', '}', ':'], '-', $key);
+        $fileName = str_replace(['\\', "\0", '@', '/', '$', '{', '}', ':'], '-', $key);
+
+        return $this->dir . '/' . $fileName . '.cache.php';
     }
 }
