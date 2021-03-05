@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Metadata\Cache;
 
 use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\ClearableCache;
 use Metadata\ClassMetadata;
 
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class DoctrineCacheAdapter implements CacheInterface
+class DoctrineCacheAdapter implements CacheInterface, ClearableCacheInterface
 {
     /**
      * @var string
@@ -42,5 +43,14 @@ class DoctrineCacheAdapter implements CacheInterface
     public function evict(string $class): void
     {
         $this->cache->delete($this->prefix . $class);
+    }
+
+    public function clear(): bool
+    {
+        if ($this->cache instanceof ClearableCache) {
+            return $this->cache->deleteAll();
+        }
+
+        return false;
     }
 }

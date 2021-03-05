@@ -6,6 +6,8 @@ namespace Metadata\Tests\Cache;
 
 use Metadata\Cache\PsrCacheAdapter;
 use Metadata\ClassMetadata;
+use Metadata\Tests\Driver\Fixture\A\A;
+use Metadata\Tests\Driver\Fixture\B\B;
 use Metadata\Tests\Fixtures\TestObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -50,5 +52,18 @@ class PsrCacheAdapterTest extends TestCase
                 }),
             ],
         ];
+    }
+
+    public function testClear(): void
+    {
+        $pool = new ArrayAdapter();
+        $cacheAdapter = new PsrCacheAdapter('metadata-test', $pool);
+
+        $cacheAdapter->put(new ClassMetadata(A::class));
+        $cacheAdapter->put(new ClassMetadata(B::class));
+        self::assertCount(2, $pool->getValues());
+
+        self::assertTrue($cacheAdapter->clear());
+        self::assertCount(0, $pool->getValues());
     }
 }

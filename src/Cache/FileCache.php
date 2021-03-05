@@ -6,7 +6,7 @@ namespace Metadata\Cache;
 
 use Metadata\ClassMetadata;
 
-class FileCache implements CacheInterface
+class FileCache implements CacheInterface, ClearableCacheInterface
 {
     /**
      * @var string
@@ -34,7 +34,6 @@ class FileCache implements CacheInterface
             if ($metadata instanceof ClassMetadata) {
                 return $metadata;
             }
-
             // if the file does not return anything, the return value is integer `1`.
         } catch (\ParseError $e) {
             // ignore corrupted cache
@@ -104,6 +103,19 @@ class FileCache implements CacheInterface
         if (file_exists($path)) {
             @unlink($path);
         }
+    }
+
+    public function clear(): bool
+    {
+        $result = true;
+        $files = glob($this->dir . '/*.cache.php');
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                $result = $result && @unlink($file);
+            }
+        }
+
+        return $result;
     }
 
     /**

@@ -7,6 +7,8 @@ namespace Metadata\Tests\Cache;
 use Doctrine\Common\Cache\ArrayCache;
 use Metadata\Cache\DoctrineCacheAdapter;
 use Metadata\ClassMetadata;
+use Metadata\Tests\Driver\Fixture\A\A;
+use Metadata\Tests\Driver\Fixture\B\B;
 use Metadata\Tests\Fixtures\TestObject;
 use PHPUnit\Framework\TestCase;
 
@@ -49,5 +51,20 @@ class DoctrineCacheAdapterTest extends TestCase
                 }),
             ],
         ];
+    }
+
+    public function testClear(): void
+    {
+        $cache = new ArrayCache();
+        $cacheAdapter = new DoctrineCacheAdapter('', $cache);
+
+        $cacheAdapter->put(new ClassMetadata(A::class));
+        $cacheAdapter->put(new ClassMetadata(B::class));
+        self::assertTrue($cache->contains(A::class));
+        self::assertTrue($cache->contains(B::class));
+
+        self::assertTrue($cacheAdapter->clear());
+        self::assertFalse($cache->contains(A::class));
+        self::assertFalse($cache->contains(B::class));
     }
 }

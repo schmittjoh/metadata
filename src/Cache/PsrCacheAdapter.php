@@ -7,7 +7,7 @@ namespace Metadata\Cache;
 use Metadata\ClassMetadata;
 use Psr\Cache\CacheItemPoolInterface;
 
-class PsrCacheAdapter implements CacheInterface
+class PsrCacheAdapter implements CacheInterface, ClearableCacheInterface
 {
     /**
      * @var string
@@ -51,6 +51,11 @@ class PsrCacheAdapter implements CacheInterface
     public function evict(string $class): void
     {
         $this->pool->deleteItem($this->sanitizeCacheKey($this->prefix . $class));
+    }
+
+    public function clear(): bool
+    {
+        return $this->pool->clear();
     }
 
     /**
