@@ -61,9 +61,11 @@ class PsrCacheAdapterTest extends TestCase
 
         $cacheAdapter->put(new ClassMetadata(A::class));
         $cacheAdapter->put(new ClassMetadata(B::class));
-        self::assertCount(2, $pool->getValues());
+        self::assertTrue($pool->hasItem('metadata-testMetadata-Tests-Driver-Fixture-A-A'));
+        self::assertTrue($pool->hasItem('metadata-testMetadata-Tests-Driver-Fixture-B-B'));
 
         self::assertTrue($cacheAdapter->clear());
-        self::assertCount(0, $pool->getValues());
+        self::assertFalse($pool->hasItem('metadata-testMetadata-Tests-Driver-Fixture-A-A'));
+        self::assertFalse($pool->hasItem('metadata-testMetadata-Tests-Driver-Fixture-B-B'));
     }
 }

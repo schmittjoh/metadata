@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Metadata\Cache;
 
 use Doctrine\Common\Cache\Cache;
-use Doctrine\Common\Cache\ClearableCache;
 use Metadata\ClassMetadata;
 
 /**
@@ -47,8 +46,8 @@ class DoctrineCacheAdapter implements CacheInterface, ClearableCacheInterface
 
     public function clear(): bool
     {
-        if ($this->cache instanceof ClearableCache) {
-            return $this->cache->deleteAll();
+        if (method_exists($this->cache, 'deleteAll')) { // or $this->cache instanceof ClearableCache
+            return call_user_func([$this->cache, 'deleteAll']);
         }
 
         return false;
