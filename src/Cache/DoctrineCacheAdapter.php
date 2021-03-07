@@ -10,7 +10,7 @@ use Metadata\ClassMetadata;
 /**
  * @author Henrik Bjornskov <henrik@bjrnskov.dk>
  */
-class DoctrineCacheAdapter implements CacheInterface
+class DoctrineCacheAdapter implements CacheInterface, ClearableCacheInterface
 {
     /**
      * @var string
@@ -42,5 +42,14 @@ class DoctrineCacheAdapter implements CacheInterface
     public function evict(string $class): void
     {
         $this->cache->delete($this->prefix . $class);
+    }
+
+    public function clear(): bool
+    {
+        if (method_exists($this->cache, 'deleteAll')) { // or $this->cache instanceof ClearableCache
+            return call_user_func([$this->cache, 'deleteAll']);
+        }
+
+        return false;
     }
 }

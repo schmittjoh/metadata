@@ -6,6 +6,8 @@ namespace Metadata\Tests\Cache;
 
 use Metadata\Cache\FileCache;
 use Metadata\ClassMetadata;
+use Metadata\Tests\Driver\Fixture\A\A;
+use Metadata\Tests\Driver\Fixture\B\B;
 use Metadata\Tests\Fixtures\TestObject;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
@@ -52,7 +54,7 @@ class FileCacheTest extends TestCase
     public function classNameProvider()
     {
         return [
-            'TestObject' => [TestObject::class],
+            'TestObject'      => [TestObject::class],
             'anonymous class' => [
                 get_class(new class {
                 }),
@@ -105,5 +107,18 @@ class FileCacheTest extends TestCase
         $cache = new FileCache($root->url());
 
         $cache->put($metadata = new ClassMetadata('Metadata\Tests\Fixtures\TestParent'));
+    }
+
+    public function testClear(): void
+    {
+        self::assertCount(0, glob($this->dir . '/*'));
+        $cache = new FileCache($this->dir);
+
+        $cache->put(new ClassMetadata(A::class));
+        $cache->put(new ClassMetadata(B::class));
+        self::assertCount(2, glob($this->dir . '/*'));
+
+        self::assertTrue($cache->clear());
+        self::assertCount(0, glob($this->dir . '/*'));
     }
 }
