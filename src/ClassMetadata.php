@@ -82,13 +82,15 @@ class ClassMetadata implements \Serializable
      */
     public function serialize()
     {
-        return serialize([
+        $serialized = [
             $this->name,
             $this->methodMetadata,
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt,
-        ]);
+        ];
+
+        return $this->doSerialize($serialized, \func_num_args() ? \func_get_arg(0) : null);
     }
 
     /**
@@ -108,6 +110,18 @@ class ClassMetadata implements \Serializable
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt,
-        ] = unserialize($str);
+        ] = \is_array($str) ? $str : unserialize($str);
+    }
+
+    /**
+     * @internal
+     */
+    protected function doSerialize($serialized, $isCalledFromOverridingMethod)
+    {
+        if (null === $isCalledFromOverridingMethod) {
+            $isCalledFromOverridingMethod = isset($trace[2]['function'], $trace[2]['object']) && 'serialize' === $trace[2]['function'] && $this === $trace[2]['object'];
+        }
+
+        return $isCalledFromOverridingMethod ? $serialized : serialize($serialized);
     }
 }
