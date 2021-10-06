@@ -82,13 +82,7 @@ class ClassMetadata implements \Serializable
      */
     public function serialize()
     {
-        return serialize([
-            $this->name,
-            $this->methodMetadata,
-            $this->propertyMetadata,
-            $this->fileResources,
-            $this->createdAt,
-        ]);
+        return serialize($this->__serialize());
     }
 
     /**
@@ -102,12 +96,34 @@ class ClassMetadata implements \Serializable
      */
     public function unserialize($str)
     {
+        $this->__unserialize((array) unserialize((string) $str));
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function __serialize(): array
+    {
+        return [
+            $this->name,
+            $this->methodMetadata,
+            $this->propertyMetadata,
+            $this->fileResources,
+            $this->createdAt,
+        ];
+    }
+
+    /**
+     * @param array<mixed> $data
+     */
+    public function __unserialize(array $data): void
+    {
         [
             $this->name,
             $this->methodMetadata,
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt,
-        ] = unserialize($str);
+        ] = $data;
     }
 }
