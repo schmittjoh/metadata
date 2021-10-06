@@ -55,7 +55,7 @@ class MethodMetadata implements \Serializable
      */
     public function serialize()
     {
-        return serialize([$this->class, $this->name]);
+        return serialize($this->__serialize());
     }
 
     /**
@@ -69,7 +69,23 @@ class MethodMetadata implements \Serializable
      */
     public function unserialize($str)
     {
-        [$this->class, $this->name] = unserialize($str);
+        $this->__unserialize((array) unserialize((string) $str));
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function __serialize(): array
+    {
+        return [$this->class, $this->name];
+    }
+
+    /**
+     * @param array<string> $data
+     */
+    public function __unserialize(array $data): void
+    {
+        [$this->class, $this->name] = $data;
     }
 
     /**
