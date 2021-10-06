@@ -34,6 +34,7 @@ class FileCache implements CacheInterface, ClearableCacheInterface
             if ($metadata instanceof ClassMetadata) {
                 return $metadata;
             }
+
             // if the file does not return anything, the return value is integer `1`.
         } catch (\Error $e) {
             // ignore corrupted cache
