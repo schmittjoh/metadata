@@ -13,9 +13,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\CacheItem;
 
-/**
- * @requires PHP 5.5
- */
 class PsrCacheAdapterTest extends TestCase
 {
     protected function setUp(): void
@@ -26,8 +23,6 @@ class PsrCacheAdapterTest extends TestCase
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider classNameProvider
      */
     public function testLoadEvictPutClassMetadataFromInCache(string $className)

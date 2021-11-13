@@ -15,13 +15,9 @@ use PHPUnit\Framework\TestCase;
  */
 class AbstractFileDriverTest extends TestCase
 {
-    private static $extension = 'jms_metadata.yml';
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $locator;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $driver;
+    private static string $extension = 'jms_metadata.yml';
+    private \PHPUnit_Framework_MockObject_MockObject $locator;
+    private \PHPUnit_Framework_MockObject_MockObject $driver;
 
     protected function setUp(): void
     {

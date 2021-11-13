@@ -18,11 +18,7 @@ class LazyLoadingDriverTest extends TestCase
      * @var ClassMetadata|MockObject
      */
     private $metadata;
-
-    /**
-     * @var \ReflectionClass
-     */
-    private $ref;
+    private \ReflectionClass $ref;
 
     /**
      * @var DriverInterface|MockObject

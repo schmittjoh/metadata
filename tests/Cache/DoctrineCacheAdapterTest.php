@@ -12,9 +12,6 @@ use Metadata\Tests\Driver\Fixture\B\B;
 use Metadata\Tests\Fixtures\TestObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @requires PHP 5.4
- */
 class DoctrineCacheAdapterTest extends TestCase
 {
     protected function setUp(): void
@@ -25,8 +22,6 @@ class DoctrineCacheAdapterTest extends TestCase
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider classNameProvider
      */
     public function testLoadEvictPutClassMetadataFromInCache(string $className)

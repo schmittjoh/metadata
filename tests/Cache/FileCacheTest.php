@@ -14,8 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 class FileCacheTest extends TestCase
 {
-    private $dir;
-    private $nestedDir;
+    private string $dir;
+    private string $nestedDir;
 
     protected function setUp(): void
     {
@@ -34,8 +34,6 @@ class FileCacheTest extends TestCase
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider classNameProvider
      */
     public function testLoadEvictPutClassMetadataFromInCache(string $className)
