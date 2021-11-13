@@ -10,6 +10,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         php-version:
           - "7.4"
@@ -39,6 +40,7 @@ jobs:
   tests-lowest:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         php-version:
           - "7.4"
