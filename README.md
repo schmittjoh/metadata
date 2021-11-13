@@ -43,8 +43,8 @@ $factory = new MetadataFactory($driver);
 $metadata = $factory->getMetadataForClass('MyNamespace\MyObject');
 ```  
 
-  [Master image]: https://img.shields.io/travis/schmittjoh/metadata/master.svg?style=flat-square
-  [Master]: https://travis-ci.org/schmittjoh/metadata
+  [Master image]: https://github.com/schmittjoh/metadata/workflows/PHP%20Composer/badge.svg
+  [Master]: https://github.com/schmittjoh/metadata/actions/workflows/php.yml?query=branch%3Amaster+workflow%3A%22PHP+Composer%22++
   [Master coverage image]: https://img.shields.io/scrutinizer/coverage/g/schmittjoh/metadata/master.svg?style=flat-square
   [Master coverage]: https://scrutinizer-ci.com/g/schmittjoh/metadata/?branch=master
   
