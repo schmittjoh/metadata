@@ -25,10 +25,7 @@ class MethodMetadata
      */
     public $name;
 
-    /**
-     * @var \ReflectionMethod
-     */
-    private $reflection;
+    private ?\ReflectionMethod $reflection = null;
 
     public function __construct(string $class, string $name)
     {

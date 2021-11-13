@@ -11,7 +11,7 @@ final class DriverChain implements AdvancedDriverInterface
     /**
      * @var DriverInterface[]
      */
-    private $drivers;
+    private array $drivers;
 
     /**
      * @param DriverInterface[] $drivers

@@ -13,10 +13,7 @@ use Metadata\ClassMetadata;
  */
 abstract class AbstractFileDriver implements AdvancedDriverInterface
 {
-    /**
-     * @var FileLocatorInterface|FileLocator
-     */
-    private $locator;
+    private FileLocatorInterface $locator;
 
     public function __construct(FileLocatorInterface $locator)
     {

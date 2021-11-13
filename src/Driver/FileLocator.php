@@ -9,7 +9,7 @@ class FileLocator implements AdvancedFileLocatorInterface
     /**
      * @var string[]
      */
-    private $dirs;
+    private array $dirs;
 
     /**
      * @param string[] $dirs

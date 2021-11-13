@@ -8,10 +8,7 @@ use Metadata\ClassMetadata;
 
 class FileCache implements CacheInterface, ClearableCacheInterface
 {
-    /**
-     * @var string
-     */
-    private $dir;
+    private string $dir;
 
     public function __construct(string $dir)
     {

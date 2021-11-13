@@ -5,24 +5,14 @@ declare(strict_types=1);
 namespace Metadata\Cache;
 
 use Metadata\ClassMetadata;
+use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 class PsrCacheAdapter implements CacheInterface, ClearableCacheInterface
 {
-    /**
-     * @var string
-     */
-    private $prefix;
-
-    /**
-     * @var CacheItemPoolInterface
-     */
-    private $pool;
-
-    /**
-     * @var CacheItemPoolInterface
-     */
-    private $lastItem;
+    private string $prefix;
+    private CacheItemPoolInterface $pool;
+    private ?CacheItemInterface $lastItem;
 
     public function __construct(string $prefix, CacheItemPoolInterface $pool)
     {

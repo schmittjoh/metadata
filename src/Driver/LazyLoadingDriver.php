@@ -18,7 +18,7 @@ class LazyLoadingDriver implements DriverInterface
     /**
      * @var string
      */
-    private $realDriverId;
+    private string $realDriverId;
 
     /**
      * @param ContainerInterface|PsrContainerInterface $container

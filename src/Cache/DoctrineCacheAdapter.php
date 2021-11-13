@@ -12,14 +12,8 @@ use Metadata\ClassMetadata;
  */
 class DoctrineCacheAdapter implements CacheInterface, ClearableCacheInterface
 {
-    /**
-     * @var string
-     */
-    private $prefix;
-    /**
-     * @var Cache
-     */
-    private $cache;
+    private string $prefix;
+    private Cache $cache;
 
     public function __construct(string $prefix, Cache $cache)
     {

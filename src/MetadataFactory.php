@@ -10,40 +10,13 @@ use Metadata\Driver\DriverInterface;
 
 class MetadataFactory implements AdvancedMetadataFactoryInterface
 {
-    /**
-     * @var DriverInterface
-     */
-    private $driver;
-
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var ClassMetadata[]
-     */
-    private $loadedMetadata = [];
-
-    /**
-     * @var ClassMetadata[]
-     */
-    private $loadedClassMetadata = [];
-
-    /**
-     * @var string|null
-     */
-    private $hierarchyMetadataClass;
-
-    /**
-     * @var bool
-     */
-    private $includeInterfaces = false;
-
-    /**
-     * @var bool
-     */
-    private $debug = false;
+    private DriverInterface $driver;
+    private ?CacheInterface $cache;
+    private array $loadedMetadata = [];
+    private array $loadedClassMetadata = [];
+    private ?string $hierarchyMetadataClass;
+    private bool $includeInterfaces = false;
+    private bool $debug = false;
 
     public function __construct(DriverInterface $driver, ?string $hierarchyMetadataClass = 'Metadata\ClassHierarchyMetadata', bool $debug = false)
     {
