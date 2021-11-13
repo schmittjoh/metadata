@@ -12,7 +12,7 @@ namespace Metadata;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ClassMetadata implements \Serializable
+class ClassMetadata
 {
     /**
      * @var string
@@ -72,31 +72,6 @@ class ClassMetadata implements \Serializable
         }
 
         return true;
-    }
-
-    /**
-     * @return string
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function serialize()
-    {
-        return serialize($this->__serialize());
-    }
-
-    /**
-     * @param string $str
-     *
-     * @return void
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function unserialize($str)
-    {
-        $this->__unserialize((array) unserialize((string) $str));
     }
 
     /**

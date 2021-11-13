@@ -13,7 +13,7 @@ namespace Metadata;
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @property $reflection
  */
-class MethodMetadata implements \Serializable
+class MethodMetadata
 {
     /**
      * @var string
@@ -44,32 +44,6 @@ class MethodMetadata implements \Serializable
     public function invoke(object $obj, array $args = [])
     {
         return $this->getReflection()->invokeArgs($obj, $args);
-    }
-
-    /**
-     * @return string
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function serialize()
-    {
-        return serialize($this->__serialize());
-    }
-
-    /**
-     * @param string $str
-     *
-     * @return void
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function unserialize($str)
-    {
-        $this->__unserialize((array) unserialize((string) $str));
     }
 
     /**
