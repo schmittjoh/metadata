@@ -82,7 +82,13 @@ class ClassMetadata implements \Serializable
      */
     public function serialize()
     {
-        return serialize($this->__serialize());
+        return serialize([
+            $this->name,
+            $this->methodMetadata,
+            $this->propertyMetadata,
+            $this->fileResources,
+            $this->createdAt,
+        ]);
     }
 
     /**
@@ -96,34 +102,28 @@ class ClassMetadata implements \Serializable
      */
     public function unserialize($str)
     {
-        $this->__unserialize((array) unserialize((string) $str));
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function __serialize(): array
-    {
-        return [
-            $this->name,
-            $this->methodMetadata,
-            $this->propertyMetadata,
-            $this->fileResources,
-            $this->createdAt,
-        ];
-    }
-
-    /**
-     * @param array<mixed> $data
-     */
-    public function __unserialize(array $data): void
-    {
         [
             $this->name,
             $this->methodMetadata,
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt,
-        ] = $data;
+        ] = unserialize($str);
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     */
+    public function __serialize(): array
+    {
+        return [$this->serialize()];
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->unserialize($data[0]);
     }
 }

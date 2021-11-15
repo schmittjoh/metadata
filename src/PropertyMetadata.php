@@ -39,7 +39,10 @@ class PropertyMetadata implements \Serializable
      */
     public function serialize()
     {
-        return serialize($this->__serialize());
+        return serialize([
+            $this->class,
+            $this->name,
+        ]);
     }
 
     /**
@@ -53,25 +56,22 @@ class PropertyMetadata implements \Serializable
      */
     public function unserialize($str)
     {
-        $this->__unserialize((array) unserialize((string) $str));
+        [$this->class, $this->name] = unserialize($str);
     }
 
     /**
-     * @return array<string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function __serialize(): array
     {
-        return [
-            $this->class,
-            $this->name,
-        ];
+        return [$this->serialize()];
     }
 
     /**
-     * @param array<string> $data
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification
      */
     public function __unserialize(array $data): void
     {
-        [$this->class, $this->name] = $data;
+        $this->unserialize($data[0]);
     }
 }
