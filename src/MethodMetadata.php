@@ -71,13 +71,13 @@ class MethodMetadata implements \Serializable
     {
         [$this->class, $this->name] = unserialize($str);
     }
-
+    
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function __serialize(): array
     {
-        return [$this->serialize()];
+        return [$this->class, $this->name];
     }
 
     /**
@@ -85,7 +85,7 @@ class MethodMetadata implements \Serializable
      */
     public function __unserialize(array $data): void
     {
-        $this->unserialize($data[0]);
+        [$this->class, $this->name] = $data;
     }
 
     /**
