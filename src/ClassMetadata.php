@@ -116,7 +116,13 @@ class ClassMetadata implements \Serializable
      */
     public function __serialize(): array
     {
-        return [$this->serialize()];
+        return [
+            $this->name,
+            $this->methodMetadata,
+            $this->propertyMetadata,
+            $this->fileResources,
+            $this->createdAt,
+        ];
     }
 
     /**
@@ -124,6 +130,12 @@ class ClassMetadata implements \Serializable
      */
     public function __unserialize(array $data): void
     {
-        $this->unserialize($data[0]);
+        [
+            $this->name,
+            $this->methodMetadata,
+            $this->propertyMetadata,
+            $this->fileResources,
+            $this->createdAt,
+        ] = $data;
     }
 }
