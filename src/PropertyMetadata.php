@@ -14,6 +14,8 @@ namespace Metadata;
  */
 class PropertyMetadata implements \Serializable
 {
+    use SerializationHelper;
+
     /**
      * @var string
      */
@@ -30,48 +32,16 @@ class PropertyMetadata implements \Serializable
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function serialize()
+    protected function serializeToArray(): array
     {
-        return serialize([
+        return [
             $this->class,
             $this->name,
-        ]);
+        ];
     }
 
-    /**
-     * @param string $str
-     *
-     * @return void
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function unserialize($str)
+    protected function unserializeFromArray(array $data): void
     {
-        [$this->class, $this->name] = unserialize($str);
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
-     */
-    public function __serialize(): array
-    {
-        return [$this->serialize()];
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification
-     */
-    public function __unserialize(array $data): void
-    {
-        $this->unserialize($data[0]);
+        [$this->class, $this->name] = $data;
     }
 }

@@ -14,6 +14,8 @@ namespace Metadata;
  */
 class ClassMetadata implements \Serializable
 {
+    use SerializationHelper;
+
     /**
      * @var string
      */
@@ -74,33 +76,18 @@ class ClassMetadata implements \Serializable
         return true;
     }
 
-    /**
-     * @return string
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function serialize()
+    protected function serializeToArray(): array
     {
-        return serialize([
+        return [
             $this->name,
             $this->methodMetadata,
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt,
-        ]);
+        ];
     }
 
-    /**
-     * @param string $str
-     *
-     * @return void
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation
-     */
-    public function unserialize($str)
+    protected function unserializeFromArray(array $data): void
     {
         [
             $this->name,
@@ -108,22 +95,6 @@ class ClassMetadata implements \Serializable
             $this->propertyMetadata,
             $this->fileResources,
             $this->createdAt,
-        ] = unserialize($str);
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
-     */
-    public function __serialize(): array
-    {
-        return [$this->serialize()];
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification
-     */
-    public function __unserialize(array $data): void
-    {
-        $this->unserialize($data[0]);
+        ] = $data;
     }
 }

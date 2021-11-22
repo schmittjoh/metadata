@@ -31,6 +31,29 @@
 
     </rule>
 
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
+        <exclude-pattern>src/PropertyMetadata.php</exclude-pattern>
+        <exclude-pattern>src/MethodMetadata.php</exclude-pattern>
+        <exclude-pattern>src/ClassMetadata.php</exclude-pattern>
+        <exclude-pattern>src/SerializationHelper.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification">
+        <exclude-pattern>src/PropertyMetadata.php</exclude-pattern>
+        <exclude-pattern>src/MethodMetadata.php</exclude-pattern>
+        <exclude-pattern>src/ClassMetadata.php</exclude-pattern>
+        <exclude-pattern>src/SerializationHelper.php</exclude-pattern>
+    </rule>
+
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint">
+        <exclude-pattern>src/SerializationHelper.php</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
+        <exclude-pattern>src/SerializationHelper.php</exclude-pattern>
+    </rule>
+
+
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireYodaComparison"/>
 
      <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
