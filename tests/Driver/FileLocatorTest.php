@@ -31,6 +31,24 @@ class FileLocatorTest extends TestCase
         $this->assertEquals(realpath(__DIR__ . '/Fixture/C/SubDir.C.yml'), realpath($locator->findFileForClass($ref, 'yml')));
     }
 
+    public function testPossibleFilesForClass()
+    {
+        $locator = new FileLocator([
+            'Metadata\Tests\Driver\Fixture\A' => __DIR__ . '/Fixture/A',
+            'Metadata\Tests\Driver\Fixture\B' => __DIR__ . '/Fixture/B',
+            'Metadata\Tests\Driver\Fixture\C' => __DIR__ . '/Fixture/C',
+        ]);
+
+        $ref = new \ReflectionClass(A::class);
+        $this->assertEquals([__DIR__ . '/Fixture/A/A.xml' => true], $locator->getPossibleFilesForClass($ref, 'xml'));
+
+        $ref = new \ReflectionClass(B::class);
+        $this->assertEquals([__DIR__ . '/Fixture/B/B.xml' => false], $locator->getPossibleFilesForClass($ref, 'xml'));
+
+        $ref = new \ReflectionClass(C::class);
+        $this->assertEquals([__DIR__ . '/Fixture/C/SubDir.C.yml' => true], $locator->getPossibleFilesForClass($ref, 'yml'));
+    }
+
     public function testTraits()
     {
         $locator = new FileLocator([

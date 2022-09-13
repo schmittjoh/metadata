@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Metadata\Driver;
 
-class FileLocator implements AdvancedFileLocatorInterface
+class FileLocator implements AdvancedFileLocatorInterface, TraceableFileLocatorInterface
 {
     /**
      * @var string[]
@@ -19,8 +19,12 @@ class FileLocator implements AdvancedFileLocatorInterface
         $this->dirs = $dirs;
     }
 
-    public function findFileForClass(\ReflectionClass $class, string $extension): ?string
+    /**
+     * @return array<string, bool>
+     */
+    public function getPossibleFilesForClass(\ReflectionClass $class, string $extension): array
     {
+        $possibleFiles = [];
         foreach ($this->dirs as $prefix => $dir) {
             if ('' !== $prefix && 0 !== strpos($class->getNamespaceName(), $prefix)) {
                 continue;
@@ -28,7 +32,20 @@ class FileLocator implements AdvancedFileLocatorInterface
 
             $len = '' === $prefix ? 0 : strlen($prefix) + 1;
             $path = $dir . '/' . str_replace('\\', '.', substr($class->name, $len)) . '.' . $extension;
-            if (file_exists($path)) {
+            $existsPath = file_exists($path);
+            $possibleFiles[$path] = $existsPath;
+            if ($existsPath) {
+                return $possibleFiles;
+            }
+        }
+
+        return $possibleFiles;
+    }
+
+    public function findFileForClass(\ReflectionClass $class, string $extension): ?string
+    {
+        foreach ($this->getPossibleFilesForClass($class, $extension) as $path => $existsPath) {
+            if ($existsPath) {
                 return $path;
             }
         }
