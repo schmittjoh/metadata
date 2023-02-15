@@ -74,7 +74,7 @@ class LazyLoadingDriverTest extends TestCase
                 return $this->service;
             }
 
-            public function has($id)
+            public function has($id): bool
             {
                 return true;
             }
