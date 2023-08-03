@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Metadata\Tests\Cache;
 
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\Cache;
 use Metadata\Cache\DoctrineCacheAdapter;
 use Metadata\ClassMetadata;
 use Metadata\Tests\Driver\Fixture\A\A;
@@ -12,15 +13,16 @@ use Metadata\Tests\Driver\Fixture\B\B;
 use Metadata\Tests\Fixtures\TestObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @requires PHP 5.4
- */
 class DoctrineCacheAdapterTest extends TestCase
 {
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        if (!interface_exists('Doctrine\Common\Cache\Cache')) {
-            $this->markTestSkipped('Doctrine\Common is not installed.');
+        if (!interface_exists(Cache::class)) {
+            static::markTestSkipped('doctrine/cache is not installed.');
+        }
+
+        if (!class_exists(ArrayCache::class)) {
+            static::markTestSkipped('doctrine/cache >=2.0 is installed.');
         }
     }
 
