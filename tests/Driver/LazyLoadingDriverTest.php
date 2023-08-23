@@ -10,7 +10,6 @@ use Metadata\Driver\LazyLoadingDriver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
 
 class LazyLoadingDriverTest extends TestCase
 {
@@ -35,22 +34,6 @@ class LazyLoadingDriverTest extends TestCase
         $this->ref = new \ReflectionClass(\stdClass::class);
 
         $this->realDriver = $this->createMock(DriverInterface::class);
-    }
-
-    public function testSymfonyContainer()
-    {
-        $this->realDriver
-            ->expects($this->once())
-            ->method('loadMetadataForClass')
-            ->with($this->ref)
-            ->willReturn($this->metadata);
-
-        $container = new Container();
-        $container->set('foo', $this->realDriver);
-
-        $driver = new LazyLoadingDriver($container, 'foo');
-
-        self::assertSame($this->metadata, $driver->loadMetadataForClass($this->ref));
     }
 
     public function testPsrContainer()
