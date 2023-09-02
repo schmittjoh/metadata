@@ -61,7 +61,7 @@ class FileCache implements CacheInterface, ClearableCacheInterface
             return;
         }
 
-        $data = '<?php return unserialize(' . var_export(serialize($metadata), true) . ');';
+        $data = '<?php return unserialize(' . var_export($metadata->serialize(), true) . ');';
         $bytesWritten = file_put_contents($tmpFile, $data);
         // use strlen and not mb_strlen. if there is utf8 in the code, it also writes more bytes.
         if ($bytesWritten !== strlen($data)) {
