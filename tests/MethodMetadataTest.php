@@ -14,7 +14,9 @@ class MethodMetadataTest extends TestCase
     {
         $metadata = new MethodMetadata(TestObject::class, 'setFoo');
         $expectedReflector = new \ReflectionMethod(TestObject::class, 'setFoo');
-        $expectedReflector->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $expectedReflector->setAccessible(true);
+        }
 
         $this->assertEquals(TestObject::class, $metadata->class);
         $this->assertEquals('setFoo', $metadata->name);
@@ -43,7 +45,9 @@ class MethodMetadataTest extends TestCase
         $metadata = new MethodMetadata(TestObject::class, 'setFoo');
 
         $reflectionProperty = new \ReflectionProperty(MethodMetadata::class, 'reflection');
-        $reflectionProperty->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $reflectionProperty->setAccessible(true);
+        }
 
         $this->assertNull($reflectionProperty->getValue($metadata));
     }
@@ -54,7 +58,9 @@ class MethodMetadataTest extends TestCase
         unserialize(serialize($metadata));
 
         $reflectionProperty = new \ReflectionProperty(MethodMetadata::class, 'reflection');
-        $reflectionProperty->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $reflectionProperty->setAccessible(true);
+        }
 
         $this->assertNull($reflectionProperty->getValue($metadata));
     }
