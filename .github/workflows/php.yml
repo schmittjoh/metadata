@@ -20,8 +20,9 @@ jobs:
           - "8.2"
           - "8.3"
           - "8.4"
+          - "8.5"
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Validate composer.json and composer.lock
       run: composer validate
 
@@ -55,7 +56,7 @@ jobs:
           - "8.3"
           - "8.4"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -82,7 +83,7 @@ jobs:
         php-version:
           - "7.2"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -116,7 +117,7 @@ jobs:
         php-version:
           - "7.2"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
