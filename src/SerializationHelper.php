@@ -30,11 +30,11 @@ trait SerializationHelper
 
     public function __serialize(): array
     {
-        return [$this->serialize()];
+        return $this->serializeToArray();
     }
 
     public function __unserialize(array $data): void
     {
-        $this->unserialize($data[0]);
+        $this->unserializeFromArray($data);
     }
 }
